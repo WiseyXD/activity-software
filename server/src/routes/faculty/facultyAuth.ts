@@ -21,7 +21,7 @@ authRouter.post(
             if (!result.success) throw Error("Please put valid inputs");
             const user = await createFaculty(email, password);
             if (!user) throw Error("User Already Exist");
-            res.status(200).json(user);
+            res.status(201).json(user);
         } catch (error: any) {
             const msg = error.message;
             res.status(500).json({ msg });
@@ -39,9 +39,9 @@ authRouter.post(
         try {
             const result = facultySchema.safeParse({ email, password });
             if (!result.success) throw Error("Please put valid inputs");
-            const user = await loginFaculty(email, password);
-            if (!user) throw Error("Invalid Credentials");
-            res.status(200).json(user);
+            const userData = await loginFaculty(email, password);
+            if (!userData) throw Error("Invalid Credentials");
+            res.status(200).json(userData);
         } catch (error: any) {
             const msg = error.message;
             res.status(500).json({ msg });

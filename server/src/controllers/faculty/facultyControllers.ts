@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma/index";
+import { generateToken } from "../../services/generateToken";
 import { TFaculty, TProtectedFaculty } from "../../types";
 
 async function findFaculty(email: string): Promise<TFaculty | null> {
@@ -33,7 +34,9 @@ async function createFaculty(
 async function loginFaculty(
     email: string,
     password: string
-): Promise<boolean | TProtectedFaculty> {
+): Promise<
+    string | null | boolean | { token: string | null; user: TProtectedFaculty }
+> {
     const user = await prisma.user.findUnique({
         where: {
             email,
@@ -45,7 +48,8 @@ async function loginFaculty(
         },
     });
     if (!user) return false;
-    return user;
+    const token = await generateToken(user);
+    return { token, user };
 }
 
 export { createFaculty, loginFaculty };
