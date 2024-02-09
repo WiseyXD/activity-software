@@ -1,5 +1,5 @@
-import { prisma } from "../prisma/index";
-import { TFaculty, TProtectedFaculty } from "../types";
+import { prisma } from "../../prisma/index";
+import { TFaculty, TProtectedFaculty } from "../../types";
 
 async function findFaculty(email: string): Promise<TFaculty | null> {
     const user = await prisma.user.findUnique({
