@@ -1,6 +1,7 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
 import { TFaculty } from "../types";
+import { facultySchema } from "../services/inputValidation";
 import { createFaculty, loginFaculty } from "../controllers/facultyControllers";
 
 const facultyRouter = express.Router();
@@ -12,8 +13,9 @@ facultyRouter.post(
         res: Response
     ) => {
         const { email, password } = req.body;
-
         try {
+            const result = facultySchema.safeParse({ email, password });
+            if (!result.success) throw Error("Please put valid inputs");
             const user = await createFaculty(email, password);
             if (!user) throw Error("User Already Exist");
             res.status(200).json(user);
@@ -31,8 +33,9 @@ facultyRouter.post(
         res: Response
     ) => {
         const { email, password } = req.body;
-
         try {
+            const result = facultySchema.safeParse({ email, password });
+            if (!result.success) throw Error("Please put valid inputs");
             const user = await loginFaculty(email, password);
             if (!user) throw Error("Invalid Credentials");
             res.status(200).json(user);
