@@ -4,6 +4,7 @@
 
 ### Faculty Powers
 
--   [x] Create Event Forms such as (Technical Form , Extra Curricular , Achievement , Placement)
+-   [x] Auth for Faculty
+-   [ ] Create Event Forms such as (Technical Form , Extra Curricular , Achievement , Placement)
 -   [ ] Also Recieve an email address with event details and event ID
 -   [ ] Cancel Event (event that are created by them)

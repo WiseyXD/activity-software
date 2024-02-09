@@ -1,4 +1,6 @@
+import bcrypt from "bcrypt";
 import { prisma } from "../../prisma/index";
+
 import { generateToken } from "../../services/generateToken";
 import { TFaculty, TProtectedFaculty } from "../../types";
 
@@ -18,10 +20,11 @@ async function createFaculty(
     if (await findFaculty(email)) {
         return false;
     }
+    const hashPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
         data: {
             email,
-            password,
+            password: hashPassword,
         },
         select: {
             id: true,
@@ -35,21 +38,27 @@ async function loginFaculty(
     email: string,
     password: string
 ): Promise<
-    string | null | boolean | { token: string | null; user: TProtectedFaculty }
+    | string
+    | null
+    | boolean
+    | { token: string | null; userDetails: TProtectedFaculty }
 > {
     const user = await prisma.user.findUnique({
         where: {
             email,
-            password,
         },
         select: {
             id: true,
             email: true,
+            password: true, // Include password for comparison
         },
     });
     if (!user) return false;
-    const token = await generateToken(user);
-    return { token, user };
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) return false;
+    const userDetails = { email: user.email, id: user.id };
+    const token = await generateToken(userDetails);
+    return { token, userDetails };
 }
 
 export { createFaculty, loginFaculty };
