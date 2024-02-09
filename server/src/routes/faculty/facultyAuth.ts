@@ -1,12 +1,15 @@
 require("dotenv").config();
 import express, { Request, Response } from "express";
-import { TFaculty } from "../types";
-import { facultySchema } from "../services/inputValidation";
-import { createFaculty, loginFaculty } from "../controllers/facultyControllers";
+import { TFaculty } from "../../types";
+import { facultySchema } from "../../services/inputValidation";
+import {
+    createFaculty,
+    loginFaculty,
+} from "../../controllers/facultyControllers";
 
-const facultyRouter = express.Router();
+const authRouter = express.Router();
 
-facultyRouter.post(
+authRouter.post(
     "/signup",
     async (
         req: Request<{ params: string }, {}, TFaculty, { query: string }>,
@@ -26,7 +29,7 @@ facultyRouter.post(
     }
 );
 
-facultyRouter.post(
+authRouter.post(
     "/login",
     async (
         req: Request<{ params: string }, {}, TFaculty, { query: string }>,
@@ -45,4 +48,5 @@ facultyRouter.post(
         }
     }
 );
-export default facultyRouter;
+
+export default authRouter;
