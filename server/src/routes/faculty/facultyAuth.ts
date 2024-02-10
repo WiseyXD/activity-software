@@ -5,7 +5,7 @@ import { facultySchema } from "../../services/inputValidation";
 import {
     createFaculty,
     loginFaculty,
-} from "../../controllers/faculty/facultyControllers";
+} from "../../controllers/faculty/authControllers";
 
 const authRouter = express.Router();
 

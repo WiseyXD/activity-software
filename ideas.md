@@ -8,4 +8,4 @@
 
 ### Admin Powers mini tasks
 
--   [ ] Can create new roles of facult members
+-   [ ] Can create new roles of faculty members

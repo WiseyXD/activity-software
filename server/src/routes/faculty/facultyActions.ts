@@ -2,23 +2,11 @@ require("dotenv").config();
 import express, { Request, Response } from "express";
 import { TProtectedFaculty } from "../../types";
 import { authenticateToken } from "../../middleware/authenticateToken";
+import technicalEventRouter from "./facultyTechnicalEvents";
 
 const actionsRouter = express.Router();
 actionsRouter.use(authenticateToken);
 
-actionsRouter.get(
-    "/",
-    (
-        req: Request<
-            { params: string },
-            {},
-            TProtectedFaculty,
-            { query: string }
-        >,
-        res: Response
-    ) => {
-        res.send(req.body.email);
-    }
-);
+actionsRouter.use("/technical", technicalEventRouter);
 
 export default actionsRouter;

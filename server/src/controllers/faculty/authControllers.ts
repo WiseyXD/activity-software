@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../../prisma/index";
-
 import { generateToken } from "../../services/generateToken";
 import { TFaculty, TProtectedFaculty } from "../../types";
 
@@ -50,7 +49,7 @@ async function loginFaculty(
         select: {
             id: true,
             email: true,
-            password: true, // Include password for comparison
+            password: true,
         },
     });
     if (!user) return false;

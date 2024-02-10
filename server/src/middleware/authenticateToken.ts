@@ -2,6 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { TProtectedFaculty } from "../types";
 
+declare module "express" {
+    interface Request {
+        email?: string;
+        id?: string;
+    }
+}
 export function authenticateToken(
     req: Request,
     res: Response,
@@ -23,14 +29,12 @@ export function authenticateToken(
     }
 
     try {
-        // Verify token and extract user details
         const userDetails = jwt.verify(token, jwtKey) as JwtPayload;
-        req.body.email = userDetails.email;
-        req.body.id = userDetails.id;
-        // Call next middleware or route handler
+        req.email = userDetails.email;
+        req.id = userDetails.id;
+
         next();
     } catch (error) {
-        // If token verification fails (e.g., invalid or expired token), return 401 Unauthorized
         return res.status(401).json({ error: "Unauthorized" });
     }
 }
