@@ -96,7 +96,7 @@ technicalEventRouter.put(
     }
 );
 
-technicalEventRouter.put(
+technicalEventRouter.delete(
     "/delete/:eventId",
     async (
         req: Request<{ eventId: string }, {}, {}, { query: string }>,
@@ -106,7 +106,7 @@ technicalEventRouter.put(
         const event = await deleteEventById(id);
         if (!event)
             res.status(500).json({ error: "Error while event deletion" });
-        res.status(201).json({ event });
+        res.status(200).json({ event });
     }
 );
 
