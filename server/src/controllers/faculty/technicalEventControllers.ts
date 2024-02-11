@@ -45,3 +45,16 @@ export async function createTechnicalEvent(
         return false; // Return false if an error occurs during event creation
     }
 }
+
+export async function findEventsByUserId(id: string | undefined) {
+    try {
+        const events = await prisma.technicalEvent.findMany({
+            where: {
+                userId: id,
+            },
+        });
+        return events;
+    } catch (error) {
+        return false;
+    }
+}
