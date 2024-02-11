@@ -39,3 +39,17 @@ export type TExtracurricularEvent = {
     resourcePersonOrg: string;
     resourcePersonDomain: string;
 };
+
+export type TPlacement = {
+    createdBy?: string;
+    nameOfCompany: string;
+    dateOfVisit: Date;
+    orgaisedFor: string[];
+    typeOfVisit: string;
+    salaryPackage: number;
+    noOfParticipationFromSaraswati: number;
+    noOfParticipationOverall: number;
+    noOfStudentsSelectedFromSaraswati: number;
+    noOfStudentsSelectedOverall: number;
+    listOfSelectedStudentsFromSaraswati: string[];
+};

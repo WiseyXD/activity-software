@@ -16,7 +16,7 @@ email String @unique
 password String
 technicalEvents TechnicalEvent[]
 extraCurricularEvents ExtraCurricularEvent[]
-
+placement Placement[]
 }
 
 model TechnicalEvent {
@@ -53,4 +53,20 @@ resourcePersonName String
 resourcePersonDesignation String
 resourcePersonOrg String
 resourcePersonDomain String
+}
+
+model Placement{
+id String @id @default(auto()) @map("_id") @db.ObjectId
+createdBy User @relation(fields: [userId],references: [id])
+userId String @db.ObjectId 
+nameOfCompany String
+dateOfVisit DateTime
+orgaisedFor String[]
+typeOfVisit String
+salaryPackage Float
+noOfParticipationFromSaraswati Int
+noOfParticipationOverall Int
+noOfStudentsSelectedFromSaraswati Int
+noOfStudentsSelectedOverall Int
+listOfSelectedStudentsFromSaraswati String[]
 }
