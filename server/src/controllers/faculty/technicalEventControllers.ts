@@ -58,3 +58,15 @@ export async function findEventsByUserId(id: string | undefined) {
         return false;
     }
 }
+
+export async function updateEventById(id: string | string, evenData: any) {
+    try {
+        const event = await prisma.technicalEvent.update({
+            where: { id },
+            data: evenData,
+        });
+        return event;
+    } catch (error) {
+        return false;
+    }
+}

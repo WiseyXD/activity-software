@@ -5,6 +5,7 @@ import { TProtectedFaculty, TTechnicalEvent } from "../../types";
 import {
     createTechnicalEvent,
     findEventsByUserId,
+    updateEventById,
 } from "../../controllers/faculty/technicalEventControllers";
 
 const technicalEventRouter = express.Router();
@@ -75,16 +76,21 @@ technicalEventRouter.get(
 );
 
 technicalEventRouter.put(
-    "/update",
+    "/update/:eventId",
     async (
-        req: Request<{ params: string }, {}, {}, { query: string }>,
+        req: Request<
+            { eventId: string },
+            {},
+            TTechnicalEvent,
+            { query: string }
+        >,
         res: Response
     ) => {
-        const id = req.id;
-        const createdBy = { id: req.id };
-        const events = await findEventsByUserId(id);
-        if (!events) res.status(500).json({ error: "No Event Created" });
-        res.status(201).json({ events });
+        const id = req.params.eventId;
+        const eventData = req.body;
+        const event = await updateEventById(id, eventData);
+        if (!event) res.status(500).json({ error: "No Event Created" });
+        res.status(201).json({ event });
     }
 );
 
