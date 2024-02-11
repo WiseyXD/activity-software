@@ -23,3 +23,19 @@ export type TTechnicalEvent = {
     resourcePersonOrg: string;
     resourcePersonDomain: string;
 };
+
+export type TExtracurricularEvent = {
+    title: string;
+    department: string;
+    eventLevel: string;
+    orgaisedFor: string[];
+    createdBy?: string;
+    eventType: string;
+    typeOfParticipant: string;
+    startDate: Date;
+    endDate: Date;
+    resourcePersonName: string;
+    resourcePersonDesignation: string;
+    resourcePersonOrg: string;
+    resourcePersonDomain: string;
+};

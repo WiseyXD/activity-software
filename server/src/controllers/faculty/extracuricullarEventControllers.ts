@@ -1,7 +1,7 @@
 import { prisma } from "../../prisma/index";
 import { TTechnicalEvent } from "../../types";
 
-export async function createTechnicalEvent(
+export async function createExtracuricullarEvent(
     title: string,
     department: string,
     createdBy: { id: string | undefined },
@@ -17,7 +17,7 @@ export async function createTechnicalEvent(
     typeOfParticipant: string
 ): Promise<boolean> {
     try {
-        await prisma.technicalEvent.create({
+        await prisma.extraCurricularEvent.create({
             data: {
                 title,
                 department,
@@ -47,7 +47,7 @@ export async function createTechnicalEvent(
 
 export async function findEventsByUserId(id: string | undefined) {
     try {
-        const events = await prisma.technicalEvent.findMany({
+        const events = await prisma.extraCurricularEvent.findMany({
             where: {
                 userId: id,
             },
@@ -60,7 +60,7 @@ export async function findEventsByUserId(id: string | undefined) {
 
 export async function updateEventById(id: string | string, evenData: any) {
     try {
-        const event = await prisma.technicalEvent.update({
+        const event = await prisma.extraCurricularEvent.update({
             where: { id },
             data: evenData,
         });
@@ -72,7 +72,7 @@ export async function updateEventById(id: string | string, evenData: any) {
 
 export async function deleteEventById(id: string | string) {
     try {
-        const event = await prisma.technicalEvent.delete({
+        const event = await prisma.extraCurricularEvent.delete({
             where: { id },
         });
         return event;

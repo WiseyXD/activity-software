@@ -1,23 +1,23 @@
 require("dotenv").config();
-import { prisma } from "../../prisma";
+import { prisma } from "../../../prisma";
 import express, { Request, Response } from "express";
-import { TProtectedFaculty, TTechnicalEvent } from "../../types";
+import { TExtracurricularEvent } from "../../../types";
 import {
-    createTechnicalEvent,
+    createExtracuricullarEvent,
     deleteEventById,
     findEventsByUserId,
     updateEventById,
-} from "../../controllers/faculty/technicalEventControllers";
+} from "../../../controllers/faculty/extracuricullarEventControllers";
 
-const technicalEventRouter = express.Router();
+const extracurricularEventRouter = express.Router();
 
-technicalEventRouter.post(
+extracurricularEventRouter.post(
     "/create",
     async (
         req: Request<
             { params: string },
             {},
-            TTechnicalEvent,
+            TExtracurricularEvent,
             { query: string }
         >,
         res: Response
@@ -37,7 +37,7 @@ technicalEventRouter.post(
             typeOfParticipant,
         } = req.body;
         const createdBy = { id: req.id };
-        const event = await createTechnicalEvent(
+        const event = await createExtracuricullarEvent(
             title,
             department,
             createdBy,
@@ -57,13 +57,13 @@ technicalEventRouter.post(
     }
 );
 
-technicalEventRouter.get(
+extracurricularEventRouter.get(
     "/read",
     async (
         req: Request<
             { params: string },
             {},
-            TTechnicalEvent,
+            TExtracurricularEvent,
             { query: string }
         >,
         res: Response
@@ -76,13 +76,13 @@ technicalEventRouter.get(
     }
 );
 
-technicalEventRouter.put(
+extracurricularEventRouter.put(
     "/update/:eventId",
     async (
         req: Request<
             { eventId: string },
             {},
-            TTechnicalEvent,
+            TExtracurricularEvent,
             { query: string }
         >,
         res: Response
@@ -96,7 +96,7 @@ technicalEventRouter.put(
     }
 );
 
-technicalEventRouter.delete(
+extracurricularEventRouter.delete(
     "/delete/:eventId",
     async (
         req: Request<{ eventId: string }, {}, {}, { query: string }>,
@@ -110,4 +110,4 @@ technicalEventRouter.delete(
     }
 );
 
-export default technicalEventRouter;
+export default extracurricularEventRouter;
