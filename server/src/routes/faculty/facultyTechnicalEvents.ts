@@ -31,7 +31,7 @@ technicalEventRouter.post(
             startDate,
             typeOfParticipant,
         } = req.body;
-        const createdBy = req.id;
+        const createdBy = { id: req.id };
         const event = await createTechnicalEvent(
             title,
             department,
@@ -47,6 +47,8 @@ technicalEventRouter.post(
             startDate,
             typeOfParticipant
         );
+        if (!event) res.status(500).json({ error: "Event creation error" });
+        res.status(201).json({ msg: "Successfull creation" });
     }
 );
 

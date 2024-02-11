@@ -4,7 +4,7 @@ import { TTechnicalEvent } from "../../types";
 export async function createTechnicalEvent(
     title: string,
     department: string,
-    createdBy: string | undefined, // Assuming createdBy is the ID of the user who created the event
+    createdBy: { id: string | undefined }, // Assuming createdBy is the ID of the user who created the event
     endDate: Date,
     eventLevel: string,
     eventType: string,
@@ -23,7 +23,9 @@ export async function createTechnicalEvent(
                 title,
                 department,
                 createdBy: {
-                    connect: { id: createdBy }, // Assuming createdBy is the ID of the user
+                    connect: {
+                        id: createdBy.id,
+                    },
                 },
                 endDate,
                 eventLevel,
