@@ -70,3 +70,14 @@ export async function updateEventById(id: string | string, evenData: any) {
         return false;
     }
 }
+
+export async function deleteEventById(id: string | string) {
+    try {
+        const event = await prisma.technicalEvent.delete({
+            where: { id },
+        });
+        return event;
+    } catch (error) {
+        return false;
+    }
+}

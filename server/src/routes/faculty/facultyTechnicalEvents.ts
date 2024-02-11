@@ -4,6 +4,7 @@ import express, { Request, Response } from "express";
 import { TProtectedFaculty, TTechnicalEvent } from "../../types";
 import {
     createTechnicalEvent,
+    deleteEventById,
     findEventsByUserId,
     updateEventById,
 } from "../../controllers/faculty/technicalEventControllers";
@@ -89,7 +90,22 @@ technicalEventRouter.put(
         const id = req.params.eventId;
         const eventData = req.body;
         const event = await updateEventById(id, eventData);
-        if (!event) res.status(500).json({ error: "No Event Created" });
+        if (!event)
+            res.status(500).json({ error: "Error while event updation" });
+        res.status(201).json({ event });
+    }
+);
+
+technicalEventRouter.put(
+    "/delete/:eventId",
+    async (
+        req: Request<{ eventId: string }, {}, {}, { query: string }>,
+        res: Response
+    ) => {
+        const id = req.params.eventId;
+        const event = await deleteEventById(id);
+        if (!event)
+            res.status(500).json({ error: "Error while event deletion" });
         res.status(201).json({ event });
     }
 );
