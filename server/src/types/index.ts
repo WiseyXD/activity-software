@@ -53,3 +53,28 @@ export type TPlacement = {
     noOfStudentsSelectedOverall: number;
     listOfSelectedStudentsFromSaraswati: string[];
 };
+
+export type TAchievement = {
+    id: string;
+    createdBy: string;
+    instituteName: string;
+    activityType: string;
+    eventLevel: string;
+    dateOfEvent: Date;
+    title: string;
+    description: string;
+    rankAchieved: string;
+    personCategory: string;
+    achievement: string;
+    awardAmount: number;
+    participants: TParticipant[];
+};
+
+export type TParticipant = {
+    id: string;
+    createdBy: string;
+    name: string;
+    department: string;
+    year: string;
+    files: string[];
+};

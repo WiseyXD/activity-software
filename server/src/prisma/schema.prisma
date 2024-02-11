@@ -2,71 +2,99 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-provider = "mongodb"
-url = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-id String @id @default(auto()) @map("_id") @db.ObjectId
-email String @unique
-password String
-technicalEvents TechnicalEvent[]
-extraCurricularEvents ExtraCurricularEvent[]
-placement Placement[]
+  id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
+  email                 String                 @unique
+  password              String
+  technicalEvents       TechnicalEvent[]
+  extraCurricularEvents ExtraCurricularEvent[]
+  placements            Placement[]
+  achievments           Achievement[]
 }
 
 model TechnicalEvent {
-id String @id @default(auto()) @map("_id") @db.ObjectId
-title String
-department String
-eventLevel String
-orgaisedFor String[]
-createdBy User @relation(fields: [userId],references: [id])
-userId String @db.ObjectId
-eventType String
-typeOfParticipant String
-startDate DateTime
-endDate DateTime
-resourcePersonName String
-resourcePersonDesignation String
-resourcePersonOrg String
-resourcePersonDomain String
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                     String
+  department                String
+  eventLevel                String
+  orgaisedFor               String[]
+  createdBy                 User     @relation(fields: [userId], references: [id])
+  userId                    String   @db.ObjectId
+  eventType                 String
+  typeOfParticipant         String
+  startDate                 DateTime
+  endDate                   DateTime
+  resourcePersonName        String
+  resourcePersonDesignation String
+  resourcePersonOrg         String
+  resourcePersonDomain      String
 }
 
 model ExtraCurricularEvent {
-id String @id @default(auto()) @map("_id") @db.ObjectId
-title String
-department String
-eventLevel String
-orgaisedFor String[]
-createdBy User @relation(fields: [userId],references: [id])
-userId String @db.ObjectId 
-eventType String
-typeOfParticipant String
-startDate DateTime
-endDate DateTime
-resourcePersonName String
-resourcePersonDesignation String
-resourcePersonOrg String
-resourcePersonDomain String
+  id                        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title                     String
+  department                String
+  eventLevel                String
+  orgaisedFor               String[]
+  createdBy                 User     @relation(fields: [userId], references: [id])
+  userId                    String   @db.ObjectId
+  eventType                 String
+  typeOfParticipant         String
+  startDate                 DateTime
+  endDate                   DateTime
+  resourcePersonName        String
+  resourcePersonDesignation String
+  resourcePersonOrg         String
+  resourcePersonDomain      String
 }
 
-model Placement{
-id String @id @default(auto()) @map("_id") @db.ObjectId
-createdBy User @relation(fields: [userId],references: [id])
-userId String @db.ObjectId 
-nameOfCompany String
-dateOfVisit DateTime
-orgaisedFor String[]
-typeOfVisit String
-salaryPackage Float
-noOfParticipationFromSaraswati Int
-noOfParticipationOverall Int
-noOfStudentsSelectedFromSaraswati Int
-noOfStudentsSelectedOverall Int
-listOfSelectedStudentsFromSaraswati String[]
+model Placement {
+  id                                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdBy                           User     @relation(fields: [userId], references: [id])
+  userId                              String   @db.ObjectId
+  nameOfCompany                       String
+  dateOfVisit                         DateTime
+  orgaisedFor                         String[]
+  typeOfVisit                         String
+  salaryPackage                       Float
+  noOfParticipationFromSaraswati      Int
+  noOfParticipationOverall            Int
+  noOfStudentsSelectedFromSaraswati   Int
+  noOfStudentsSelectedOverall         Int
+  listOfSelectedStudentsFromSaraswati String[]
+}
+
+model Achievement {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdBy      User          @relation(fields: [userId], references: [id])
+  userId         String        @db.ObjectId
+  instituteName  String
+  activityType   String
+  eventLevel     String
+  dateOfEvent    DateTime
+  title          String
+  description    String?
+  rankAchieved   String?
+  personCategory String
+  achievement    String
+  awardAmount    Int
+  participants   Participant[]
+}
+
+model Participant {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdBy     Achievement @relation(fields: [achievementId], references: [id])
+  achievementId String      @db.ObjectId
+  name          String
+  department    String
+  year          String
+  files         String[]
 }
