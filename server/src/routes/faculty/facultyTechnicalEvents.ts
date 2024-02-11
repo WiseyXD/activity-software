@@ -74,4 +74,18 @@ technicalEventRouter.get(
     }
 );
 
+technicalEventRouter.put(
+    "/update",
+    async (
+        req: Request<{ params: string }, {}, {}, { query: string }>,
+        res: Response
+    ) => {
+        const id = req.id;
+        const createdBy = { id: req.id };
+        const events = await findEventsByUserId(id);
+        if (!events) res.status(500).json({ error: "No Event Created" });
+        res.status(201).json({ events });
+    }
+);
+
 export default technicalEventRouter;
