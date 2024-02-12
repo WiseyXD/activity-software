@@ -86,15 +86,15 @@ model Achievement {
   personCategory String
   achievement    String
   awardAmount    Int
+  achievmentProof String[]
   participants   Participant[]
 }
 
 model Participant {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  createdBy     Achievement @relation(fields: [achievementId], references: [id])
-  achievementId String      @db.ObjectId
-  name          String
-  department    String
-  year          String
-  files         String[]
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdBy       Achievement @relation(fields: [achievementId], references: [id])
+  achievementId   String      @db.ObjectId
+  name            String
+  department      String
+  year            String
 }

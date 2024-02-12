@@ -8,10 +8,15 @@ import {
     findEventsByUserId,
     updateEventById,
 } from "../../../controllers/faculty/achievementEventControllers";
+import { upload } from "../../../services/multer";
 
 const achievementEventRouter = express.Router();
 
-achievementEventRouter.post("/create", createAchievement);
+achievementEventRouter.post(
+    "/create",
+    upload.single("achievmentProof"),
+    createAchievement
+);
 
 achievementEventRouter.get(
     "/read",

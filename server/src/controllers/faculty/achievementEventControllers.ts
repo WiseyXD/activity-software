@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma/index";
-import { TAchievement, TParticipant, TTechnicalEvent } from "../../types";
+import { TAchievement, TParticipant } from "../../types";
 
 export async function findEventsByUserId(id: string | undefined) {
     try {
@@ -40,7 +40,6 @@ export async function deleteEventById(id: string | undefined) {
             where: { achievementId: id },
         });
 
-        // Delete the achievement itself
         await prisma.achievement.delete({
             where: { id },
         });
@@ -70,39 +69,48 @@ export async function createAchievement(
             awardAmount,
             participants,
         } = req.body;
-        const id = req.id;
-        const createdBy = { id: req.id };
-        // Create achievement
-        const createdAchievement = await prisma.achievement.create({
-            data: {
-                createdBy: { connect: { id: createdBy.id } },
-                instituteName,
-                activityType,
-                eventLevel,
-                dateOfEvent,
-                title,
-                description,
-                rankAchieved,
-                personCategory,
-                achievement,
-                awardAmount,
-                participants: {
-                    createMany: {
-                        data: participants.map((participant: any) => ({
-                            name: participant.name,
-                            department: participant.department,
-                            year: participant.year,
-                            files: participant.files,
-                        })),
-                    },
-                },
-            },
-            include: {
-                participants: true,
-            },
-        });
-        res.status(201).json({ msg: "Successfull creation" });
+
+        const createdBy = req.id; // Assuming req.id contains the ID of the user creating the achievement
+
+        // Get the file path if uploaded
+        // @ts-ignore
+        const inputFile = req.file;
+        console.log(inputFile);
+
+        // Create achievement with uploaded file path
+        // const createdAchievement = await prisma.achievement.create({
+        //     data: {
+        //         createdBy: { connect: { id: createdBy } },
+        //         instituteName,
+        //         activityType,
+        //         eventLevel,
+        //         dateOfEvent,
+        //         title,
+        //         description,
+        //         rankAchieved,
+        //         personCategory,
+        //         achievement,
+        //         awardAmount,
+        //         achievmentProof: [inputFile],
+        //         participants: {
+        //             createMany: {
+        //                 // @ts-ignore
+        //                 data: participants.map((participant: any) => ({
+        //                     name: participant.name,
+        //                     department: participant.department,
+        //                     year: participant.year,
+        //                 })),
+        //             },
+        //         },
+        //     },
+        //     include: {
+        //         participants: true,
+        //     },
+        // });
+
+        res.status(201).json({ msg: "Successful creation" });
     } catch (err) {
+        console.error("Error creating achievement:", err);
         res.status(500).json({ error: "Event creation error" });
     }
 }
