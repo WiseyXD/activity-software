@@ -74,43 +74,44 @@ export async function createAchievement(
 
         // Get the file path if uploaded
         // @ts-ignore
-        const inputFile = req.file;
+        const inputFile: Express.Multer.File = req.file;
         console.log(inputFile);
 
         // Create achievement with uploaded file path
-        // const createdAchievement = await prisma.achievement.create({
-        //     data: {
-        //         createdBy: { connect: { id: createdBy } },
-        //         instituteName,
-        //         activityType,
-        //         eventLevel,
-        //         dateOfEvent,
-        //         title,
-        //         description,
-        //         rankAchieved,
-        //         personCategory,
-        //         achievement,
-        //         awardAmount,
-        //         achievmentProof: [inputFile],
-        //         participants: {
-        //             createMany: {
-        //                 // @ts-ignore
-        //                 data: participants.map((participant: any) => ({
-        //                     name: participant.name,
-        //                     department: participant.department,
-        //                     year: participant.year,
-        //                 })),
-        //             },
-        //         },
-        //     },
-        //     include: {
-        //         participants: true,
-        //     },
-        // });
+        const createdAchievement = await prisma.achievement.create({
+            data: {
+                createdBy: { connect: { id: createdBy } },
+                instituteName,
+                activityType,
+                eventLevel,
+                dateOfEvent,
+                title,
+                description,
+                rankAchieved,
+                personCategory,
+                achievement,
+                awardAmount,
+                achievmentProof: [inputFile.path],
+                participants: {
+                    createMany: {
+                        // @ts-ignore
+                        data: participants.map((participant: any) => ({
+                            name: participant.name,
+                            department: participant.department,
+                            year: participant.year,
+                        })),
+                    },
+                },
+            },
+            include: {
+                participants: true,
+            },
+        });
 
         res.status(201).json({ msg: "Successful creation" });
-    } catch (err) {
+    } catch (err: any) {
+        const msg = err.message;
         console.error("Error creating achievement:", err);
-        res.status(500).json({ error: "Event creation error" });
+        res.status(500).json({ msg });
     }
 }

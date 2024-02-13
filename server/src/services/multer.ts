@@ -11,7 +11,8 @@ export const storage = multer.diskStorage({
         file: Express.Multer.File,
         callback: DestinationCallback
     ): void => {
-        callback(null, path.join(__dirname, "../uploads/"));
+        callback(null, path.resolve("./src/services/uploads/"));
+        // callback(null, "../uploads");
     },
 
     filename: (
