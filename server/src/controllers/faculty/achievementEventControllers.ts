@@ -74,7 +74,7 @@ export async function createAchievement(
     const inputFiles: Express.Multer.File[] = req.files;
     const uploadPromises = inputFiles.map(async (file) => {
         const response = await uploadOnCloudinary(file.path);
-        return response.url;
+        return response && response?.url && response.url;
     });
     try {
         const inputFilesPath = await Promise.all(uploadPromises);

@@ -33,16 +33,22 @@ export const fileFilter = (
     file: Express.Multer.File,
     callback: FileFilterCallback
 ): void => {
-    if (
-        file.mimetype === "image/png" ||
-        file.mimetype === "image/jpg" ||
-        file.mimetype === "image/jpeg" ||
-        file.mimetype === "application/pdf"
-    ) {
-        callback(null, true);
-    } else {
-        console.log("Only png,jpg,jpeg,pdf");
-        callback(null, false);
+    try {
+        if (
+            file.mimetype === "image/png" ||
+            file.mimetype === "image/jpg" ||
+            file.mimetype === "image/jpeg" ||
+            file.mimetype === "application/pdf"
+        ) {
+            callback(null, true);
+        } else {
+            console.log(
+                "Only png,jpg,jpeg,pdf and only 3 files can be uploaded"
+            );
+            callback(null, false);
+        }
+    } catch (error) {
+        console.log("Only png,jpg,jpeg,pdf and only 3 files can be uploaded");
     }
 };
 
