@@ -21,11 +21,15 @@ export async function findEventsByUserId(id: string | undefined) {
     }
 }
 
-export async function updateEventById(id: string | undefined, evenData: any) {
+export async function updateEventById(id: string | undefined, eventData: any) {
     try {
+        console.log(eventData);
         const event = await prisma.achievement.update({
             where: { id },
-            data: evenData,
+            data: eventData,
+            include: {
+                participants: true,
+            },
         });
         return event;
     } catch (error) {
