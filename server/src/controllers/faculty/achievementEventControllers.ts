@@ -93,6 +93,7 @@ export async function createAchievement(
                 personCategory,
                 achievement,
                 awardAmount,
+                // @ts-ignore
                 achievmentProof: inputFilesPath,
                 participants: {
                     createMany: {
