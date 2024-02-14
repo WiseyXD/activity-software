@@ -14,7 +14,9 @@ export async function findEventsByUserId(id: string | undefined) {
             },
         });
         return events;
-    } catch (error) {
+    } catch (error: any) {
+        const msg = error.message;
+        console.log({ msg });
         return false;
     }
 }
