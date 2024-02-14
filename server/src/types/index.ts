@@ -67,7 +67,7 @@ export type TAchievement = {
     personCategory: string;
     achievement: string;
     awardAmount: number;
-    achievementProof: File;
+    achievementProof: string[];
     participants: TParticipant[];
 };
 

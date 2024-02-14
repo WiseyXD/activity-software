@@ -14,7 +14,7 @@ const achievementEventRouter = express.Router();
 
 achievementEventRouter.post(
     "/create",
-    upload.single("achievmentProof"),
+    upload.array("achievmentProof", 3),
     createAchievement
 );
 

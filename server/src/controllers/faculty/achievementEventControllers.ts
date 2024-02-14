@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma/index";
 import { TAchievement, TParticipant } from "../../types";
+import uploadOnCloudinary from "../../services/cloudinary";
 
 export async function findEventsByUserId(id: string | undefined) {
     try {
@@ -55,29 +56,28 @@ export async function createAchievement(
     req: Request<{ params: string }, {}, TAchievement, { query: string }>,
     res: Response
 ) {
+    const {
+        instituteName,
+        activityType,
+        eventLevel,
+        dateOfEvent,
+        title,
+        description,
+        rankAchieved,
+        personCategory,
+        achievement,
+        awardAmount,
+        participants,
+    } = req.body;
+    const createdBy = req.id;
+    // @ts-ignore
+    const inputFiles: Express.Multer.File[] = req.files;
+    const uploadPromises = inputFiles.map(async (file) => {
+        const response = await uploadOnCloudinary(file.path);
+        return response.url;
+    });
     try {
-        const {
-            instituteName,
-            activityType,
-            eventLevel,
-            dateOfEvent,
-            title,
-            description,
-            rankAchieved,
-            personCategory,
-            achievement,
-            awardAmount,
-            participants,
-        } = req.body;
-
-        const createdBy = req.id; // Assuming req.id contains the ID of the user creating the achievement
-
-        // Get the file path if uploaded
-        // @ts-ignore
-        const inputFile: Express.Multer.File = req.file;
-        console.log(inputFile);
-
-        // Create achievement with uploaded file path
+        const inputFilesPath = await Promise.all(uploadPromises);
         const createdAchievement = await prisma.achievement.create({
             data: {
                 createdBy: { connect: { id: createdBy } },
@@ -91,7 +91,7 @@ export async function createAchievement(
                 personCategory,
                 achievement,
                 awardAmount,
-                achievmentProof: [inputFile.path],
+                achievmentProof: inputFilesPath,
                 participants: {
                     createMany: {
                         // @ts-ignore
@@ -107,7 +107,6 @@ export async function createAchievement(
                 participants: true,
             },
         });
-
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;
