@@ -7,63 +7,22 @@ import {
     deleteEventById,
     findEventsByUserId,
     updateEventById,
+    updateParticipant,
 } from "../../../controllers/faculty/achievementEventControllers";
-import { upload } from "../../../services/multer";
 
 const achievementEventRouter = express.Router();
 
-achievementEventRouter.post(
-    "/create",
-    upload.array("achievmentProof", 3),
-    createAchievement
-);
-// asd
+achievementEventRouter.post("/create", createAchievement);
 
-achievementEventRouter.get(
-    "/read",
-    async (
-        req: Request<{ params: string }, {}, TAchievement, { query: string }>,
-        res: Response
-    ) => {
-        const id = req.id;
-        const createdBy = { id: req.id };
-        const events = await findEventsByUserId(id);
-        if (!events) res.status(500).json({ error: "No Event Created" });
-        res.status(201).json({ events });
-    }
-);
+achievementEventRouter.get("/read", findEventsByUserId);
+
+achievementEventRouter.put("/update/:eventId", updateEventById);
 
 achievementEventRouter.put(
-    "/update/:eventId",
-    async (
-        req: Request<{ eventId: string }, {}, TAchievement, { query: string }>,
-        res: Response
-    ) => {
-        const id = req.params.eventId;
-        const eventData = req.body;
-        const event = await updateEventById(id, eventData);
-        if (!event)
-            res.status(500).json({ error: "Error while event updation" });
-        res.status(201).json({ event });
-    }
+    "/update/participant/:participantId",
+    updateParticipant
 );
 
-achievementEventRouter.delete(
-    "/delete/:eventId",
-    async (
-        req: Request<{ eventId: string }, {}, {}, { query: string }>,
-        res: Response
-    ) => {
-        const id = req.params.eventId;
-        try {
-            const event = await deleteEventById(id);
-
-            res.status(200).json({ event });
-        } catch (error: any) {
-            const msg = error.message;
-            res.status(500).json({ msg });
-        }
-    }
-);
+achievementEventRouter.delete("/delete/:eventId", deleteEventById);
 
 export default achievementEventRouter;

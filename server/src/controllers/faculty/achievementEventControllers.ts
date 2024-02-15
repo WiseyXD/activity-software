@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma/index";
 import { TAchievement, TParticipant } from "../../types";
-import uploadOnCloudinary from "../../services/cloudinary";
 
-export async function findEventsByUserId(id: string | undefined) {
+export async function findEventsByUserId(
+    req: Request<{ params: string }, {}, TAchievement, { query: string }>,
+    res: Response
+) {
+    const id = req.id;
     try {
         const events = await prisma.achievement.findMany({
             where: {
@@ -13,17 +16,21 @@ export async function findEventsByUserId(id: string | undefined) {
                 participants: true,
             },
         });
-        return events;
+        res.status(200).json({ events });
     } catch (error: any) {
         const msg = error.message;
         console.log({ msg });
-        return false;
+        res.status(500).json({ msg });
     }
 }
 
-export async function updateEventById(id: string | undefined, eventData: any) {
+export async function updateEventById(
+    req: Request<{ eventId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const id = req.params.eventId;
+    const eventData = req.body;
     try {
-        console.log(eventData);
         const event = await prisma.achievement.update({
             where: { id },
             data: eventData,
@@ -31,13 +38,18 @@ export async function updateEventById(id: string | undefined, eventData: any) {
                 participants: true,
             },
         });
-        return event;
+        res.status(201).json({ msg: "Successfull Updation" });
     } catch (error) {
         return false;
+        res.status(500).json({ error: "Error while event updation" });
     }
 }
 
-export async function deleteEventById(id: string | undefined) {
+export async function deleteEventById(
+    req: Request<{ eventId: string }, {}, {}, { query: string }>,
+    res: Response
+) {
+    const id = req.params.eventId;
     try {
         const event = await prisma.achievement.findUnique({
             where: { id },
@@ -51,10 +63,28 @@ export async function deleteEventById(id: string | undefined) {
             where: { id },
         });
 
-        return event;
+        res.status(200).json({ msg: "Event Deleted Succesfully" });
     } catch (error: any) {
-        console.log(error.message);
-        return false;
+        const msg = error.message;
+        res.status(500).json({ msg });
+    }
+}
+
+export async function updateParticipant(
+    req: Request<{ participantId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const id = req.params.participantId;
+    const participantData = req.body;
+    try {
+        const participant = await prisma.participant.update({
+            where: { id },
+            data: participantData,
+        });
+        res.status(200).json({ msg: "Participant Info updated" });
+    } catch (error: any) {
+        const msg = error.message;
+        res.status(500).json({ msg });
     }
 }
 
@@ -73,17 +103,11 @@ export async function createAchievement(
         personCategory,
         achievement,
         awardAmount,
+        achievmentProof,
         participants,
     } = req.body;
     const createdBy = req.id;
-    // @ts-ignore
-    const inputFiles: Express.Multer.File[] = req.files;
-    const uploadPromises = inputFiles.map(async (file) => {
-        const response = await uploadOnCloudinary(file.path);
-        return response && response?.url && response.url;
-    });
     try {
-        const inputFilesPath = await Promise.all(uploadPromises);
         const createdAchievement = await prisma.achievement.create({
             data: {
                 createdBy: { connect: { id: createdBy } },
@@ -97,11 +121,9 @@ export async function createAchievement(
                 personCategory,
                 achievement,
                 awardAmount,
-                // @ts-ignore
-                achievmentProof: inputFilesPath,
+                achievmentProof,
                 participants: {
                     createMany: {
-                        // @ts-ignore
                         data: participants.map((participant: any) => ({
                             name: participant.name,
                             department: participant.department,
