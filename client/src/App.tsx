@@ -1,14 +1,5 @@
-import AchievementForm from "./pages/AchievementForm";
+import React from "react";
 
-function App() {
-    // Add Routing through tanstack router
-    const name = "Aryan";
-
-    return (
-        <>
-            <AchievementForm />
-        </>
-    );
+export default function App() {
+    return <div>App</div>;
 }
-
-export default App;
