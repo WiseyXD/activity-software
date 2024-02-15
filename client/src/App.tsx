@@ -1,5 +1,4 @@
-import { Button } from "@/components/ui/button";
-import AchievementForm from "./components/shared/AchievementForm";
+import AchievementForm from "./pages/AchievementForm";
 
 function App() {
     // Add Routing through tanstack router
