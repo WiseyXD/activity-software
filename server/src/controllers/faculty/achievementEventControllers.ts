@@ -85,7 +85,7 @@ export async function createAchievement(
         personCategory,
         achievement,
         awardAmount,
-        achievmentProof,
+        achievementProof,
         participants,
     } = req.body;
     const createdBy = req.id;
@@ -103,7 +103,7 @@ export async function createAchievement(
                 personCategory,
                 achievement,
                 awardAmount,
-                achievmentProof,
+                achievementProof,
                 participants: {
                     createMany: {
                         data: participants.map((participant: any) => ({
@@ -155,6 +155,26 @@ export async function updateParticipant(
             data: participantData,
         });
         res.status(200).json({ msg: "Participant Info updated" });
+    } catch (error: any) {
+        const msg = error.message;
+        res.status(500).json({ msg });
+    }
+}
+
+export async function addParticipant(
+    req: Request<{ achievementId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const achievementId = req.params.achievementId;
+    const participantData = req.body;
+    try {
+        const participant = await prisma.participant.create({
+            data: {
+                ...participantData,
+                createdBy: { connect: { id: achievementId } },
+            },
+        });
+        res.status(201).json({ msg: "Participant Added" });
     } catch (error: any) {
         const msg = error.message;
         res.status(500).json({ msg });

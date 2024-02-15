@@ -3,6 +3,7 @@ import { prisma } from "../../../prisma";
 import express, { Request, Response } from "express";
 import { TAchievement } from "../../../types";
 import {
+    addParticipant,
     createAchievement,
     deleteEventById,
     deleteParticipant,
@@ -19,16 +20,22 @@ achievementEventRouter.get("/read", findEventsByUserId);
 
 achievementEventRouter.put("/update/:eventId", updateEventById);
 
+achievementEventRouter.delete("/delete/:eventId", deleteEventById);
+
+// participants route
 achievementEventRouter.put(
     "/update/participant/:participantId",
     updateParticipant
 );
 
-achievementEventRouter.delete("/delete/:eventId", deleteEventById);
-
 achievementEventRouter.delete(
     "/delete/participant/:participantId",
     deleteParticipant
+);
+
+achievementEventRouter.post(
+    "/create/participant/:achievementId",
+    addParticipant
 );
 
 export default achievementEventRouter;
