@@ -5,6 +5,7 @@ import { TAchievement } from "../../../types";
 import {
     createAchievement,
     deleteEventById,
+    deleteParticipant,
     findEventsByUserId,
     updateEventById,
     updateParticipant,
@@ -24,5 +25,10 @@ achievementEventRouter.put(
 );
 
 achievementEventRouter.delete("/delete/:eventId", deleteEventById);
+
+achievementEventRouter.delete(
+    "/delete/participant/:participantId",
+    deleteParticipant
+);
 
 export default achievementEventRouter;

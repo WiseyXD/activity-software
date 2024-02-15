@@ -70,24 +70,6 @@ export async function deleteEventById(
     }
 }
 
-export async function updateParticipant(
-    req: Request<{ participantId: string }, {}, any, { query: string }>,
-    res: Response
-) {
-    const id = req.params.participantId;
-    const participantData = req.body;
-    try {
-        const participant = await prisma.participant.update({
-            where: { id },
-            data: participantData,
-        });
-        res.status(200).json({ msg: "Participant Info updated" });
-    } catch (error: any) {
-        const msg = error.message;
-        res.status(500).json({ msg });
-    }
-}
-
 export async function createAchievement(
     req: Request<{ params: string }, {}, TAchievement, { query: string }>,
     res: Response
@@ -140,6 +122,41 @@ export async function createAchievement(
     } catch (err: any) {
         const msg = err.message;
         console.error("Error creating achievement:", err);
+        res.status(500).json({ msg });
+    }
+}
+// Participant Endpoint
+
+export async function deleteParticipant(
+    req: Request<{ participantId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const id = req.params.participantId;
+    try {
+        const participant = await prisma.participant.delete({
+            where: { id },
+        });
+        res.status(200).json({ msg: "Participant Deleted" });
+    } catch (error: any) {
+        const msg = error.message;
+        res.status(500).json({ msg });
+    }
+}
+
+export async function updateParticipant(
+    req: Request<{ participantId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const id = req.params.participantId;
+    const participantData = req.body;
+    try {
+        const participant = await prisma.participant.update({
+            where: { id },
+            data: participantData,
+        });
+        res.status(200).json({ msg: "Participant Info updated" });
+    } catch (error: any) {
+        const msg = error.message;
         res.status(500).json({ msg });
     }
 }
