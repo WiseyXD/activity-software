@@ -5,12 +5,13 @@ import { store, persistor } from "./app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { ThemeProvider } from "@/components/theme-provider";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
 // Create a new router instance
-const router = createRouter({ routeTree });
+const router = createRouter({ routeTree, context: { store } });
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
@@ -23,7 +24,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
         <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
-                <RouterProvider router={router} />
+                <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                    <RouterProvider router={router} />
+                </ThemeProvider>
             </PersistGate>
         </Provider>
     </React.StrictMode>

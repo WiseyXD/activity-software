@@ -1,30 +1,21 @@
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { RootState } from "@/app/store";
+import Navbar from "@/components/shared/Navbar";
+import { Store } from "@reduxjs/toolkit";
+import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-export const Route = createRootRoute({
-    component: () => (
+export const Route = createRootRouteWithContext()<{
+    store: Store;
+}>({
+    component: RootComponent,
+});
+
+function RootComponent() {
+    return (
         <>
-            <div className="p-2 flex gap-2">
-                <Link
-                    to="/"
-                    activeProps={{
-                        className: "font-bold",
-                    }}
-                >
-                    Home
-                </Link>{" "}
-                <Link
-                    to="/about"
-                    activeProps={{
-                        className: "font-bold",
-                    }}
-                >
-                    About
-                </Link>
-            </div>
-            <hr />
+            <Navbar />
             <Outlet />
             <TanStackRouterDevtools />
         </>
-    ),
-});
+    );
+}
