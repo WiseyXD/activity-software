@@ -11,14 +11,22 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NoobImport } from './routes/noob'
 import { Route as LoginImport } from './routes/login'
 import { Route as UserImport } from './routes/_user'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserTechnicalFormImport } from './routes/_user/technicalForm'
 import { Route as UserPlacementFormImport } from './routes/_user/placementForm'
+import { Route as UserExtracurricularFormImport } from './routes/_user/extracurricularForm'
+import { Route as UserAchievementFormImport } from './routes/_user/achievementForm'
 
 // Create/Update Routes
+
+const NoobRoute = NoobImport.update({
+  path: '/noob',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -50,6 +58,16 @@ const UserPlacementFormRoute = UserPlacementFormImport.update({
   getParentRoute: () => UserRoute,
 } as any)
 
+const UserExtracurricularFormRoute = UserExtracurricularFormImport.update({
+  path: '/extracurricularForm',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserAchievementFormRoute = UserAchievementFormImport.update({
+  path: '/achievementForm',
+  getParentRoute: () => UserRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -70,6 +88,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/noob': {
+      preLoaderRoute: typeof NoobImport
+      parentRoute: typeof rootRoute
+    }
+    '/_user/achievementForm': {
+      preLoaderRoute: typeof UserAchievementFormImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/extracurricularForm': {
+      preLoaderRoute: typeof UserExtracurricularFormImport
+      parentRoute: typeof UserImport
+    }
     '/_user/placementForm': {
       preLoaderRoute: typeof UserPlacementFormImport
       parentRoute: typeof UserImport
@@ -86,8 +116,14 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
   AdminRoute,
-  UserRoute.addChildren([UserPlacementFormRoute, UserTechnicalFormRoute]),
+  UserRoute.addChildren([
+    UserAchievementFormRoute,
+    UserExtracurricularFormRoute,
+    UserPlacementFormRoute,
+    UserTechnicalFormRoute,
+  ]),
   LoginRoute,
+  NoobRoute,
 ])
 
 /* prettier-ignore-end */
