@@ -3,12 +3,14 @@ import Navbar from "@/components/shared/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Separator } from "@/components/ui/separator";
 import { Store } from "@reduxjs/toolkit";
-import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
+import {
+    createRootRoute,
+    createRootRouteWithContext,
+    Outlet,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-export const Route = createRootRouteWithContext()<{
-    store: Store;
-}>({
+export const Route = createRootRoute({
     component: RootComponent,
 });
 

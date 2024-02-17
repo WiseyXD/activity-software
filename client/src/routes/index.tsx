@@ -7,14 +7,14 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-    const isAuthorized = useSelector(
-        (state: RootState) => state.root.auth.token
+    const { token: isAuthorized, userId } = useSelector(
+        (state: RootState) => state.root.auth
     );
     return !isAuthorized ? (
         <Navigate to="/login" />
     ) : (
         <div className="p-2">
-            <h3>Welcome Home!</h3>
+            <h3>Welcome Home{userId}!</h3>
         </div>
         // if user
         // Proivde links to all the other routes for user
