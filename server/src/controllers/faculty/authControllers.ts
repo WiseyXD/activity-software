@@ -40,7 +40,7 @@ async function loginFaculty(
     | string
     | null
     | boolean
-    | { token: string | null; userDetails: TProtectedFaculty }
+    | { token: string | null; userEmail: string; userId: string }
 > {
     const user = await prisma.user.findUnique({
         where: {
@@ -55,9 +55,11 @@ async function loginFaculty(
     if (!user) return false;
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return false;
+    const userEmail = user.email;
+    const userId = user.id;
     const userDetails = { email: user.email, id: user.id };
     const token = await generateToken(userDetails);
-    return { token, userDetails };
+    return { token, userEmail, userId };
 }
 
 export { createFaculty, loginFaculty };
