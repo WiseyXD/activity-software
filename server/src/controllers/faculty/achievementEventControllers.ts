@@ -96,7 +96,7 @@ export async function createAchievement(
                 instituteName,
                 activityType,
                 eventLevel,
-                dateOfEvent,
+                dateOfEvent: dateOfEvent.toISOString(),
                 title,
                 description,
                 rankAchieved,
