@@ -9,7 +9,7 @@ type TLinksProps = {
 export default function Links({ to, title }: TLinksProps) {
     return (
         <div className="py-4">
-            <Link to={to}>
+            <Link to={to} className="[&.active]:underline">
                 <p className="text-lg font-semibold"> {title}</p>
             </Link>
             <Separator />

@@ -21,13 +21,7 @@ function Index() {
 
             {/* if user */}
             {/* Provide links to all the other routes for user */}
-            {isAdmin ? (
-                <p>Admin</p>
-            ) : (
-                <div>
-                    <Link to="/placementForm">Placement</Link>
-                </div>
-            )}
+            {isAdmin ? <p>Admin</p> : <div>User Home</div>}
         </div>
     );
 }

@@ -14,6 +14,7 @@ import {
 import { AlignLeft } from "lucide-react";
 import Links from "./Links";
 import { Separator } from "../ui/separator";
+import { Link } from "@tanstack/react-router";
 
 export default function Navbar() {
     const { token: isAuthorized, isAdmin } = useSelector(
@@ -83,7 +84,9 @@ export default function Navbar() {
                             </SheetHeader>
                         </SheetContent>
                     </Sheet>
-                    <h1 className="text-3xl">Actify</h1>
+                    <Link to="/">
+                        <h1 className="text-3xl">Actify</h1>
+                    </Link>
                 </div>
                 <div className="flex gap-3">
                     <ModeToggle />
