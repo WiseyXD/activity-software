@@ -66,7 +66,7 @@ export type TAchievement = {
     rankAchieved: string;
     personCategory: string;
     achievement: string;
-    awardAmount: number;
+    awardAmount: string;
     achievementProof: string;
     participants: TParticipant[];
 };

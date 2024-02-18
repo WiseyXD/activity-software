@@ -38,7 +38,7 @@ import { useCreateAchievementMutation } from "@/services/api/achievementApi";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_user/achievementForm")({
-    component: PlacementForm,
+    component: AchievementFrom,
 });
 
 const activityTypeOptions: string[] = [
@@ -78,6 +78,18 @@ const personCategoryOptions = [
     "teaching-staff",
     "non-teaching-staff",
 ];
+
+const departmentOptions = [
+    "CSE-AIML",
+    "CSE-DS",
+    "COMPS",
+    "IT",
+    "MECH",
+    "CIVIL",
+    "AUTOMOBILE",
+];
+
+const yearOptions = ["1st", "2nd", "3rd", "4th"];
 
 const formSchema = z.object({
     instituteName: z
@@ -121,7 +133,7 @@ const formSchema = z.object({
     ),
 });
 
-function PlacementForm() {
+function AchievementFrom() {
     const [createAchievement] = useCreateAchievementMutation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -140,13 +152,21 @@ function PlacementForm() {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
-        // @ts-ignore
-        const { data, isFetching } = await createAchievement(values);
-        if (isFetching) {
-            setIsLoading(true);
+        setIsLoading(true);
+        try {
+            // @ts-ignore
+            const { data, isFetching } = await createAchievement(values);
+            setIsLoading(false);
+            toast({
+                title: "Achievement Created",
+            });
+            form.reset();
+        } catch (error) {
+            toast({
+                title: "Error while createing achievement entry.",
+            });
+            setIsLoading(false);
         }
-        setIsLoading(false);
-        console.log(data);
     }
 
     const { fields, append, remove } = useFieldArray({
@@ -521,19 +541,21 @@ function PlacementForm() {
                             </FormItem>
                         )}
                     />
+                    <h1 className="text-xl mt-5">Participant's Details</h1>
                     {/* Add Grid for layout , md size screen */}
                     <div className="flex flex-col my-2">
                         {fields.map((participant, index) => {
                             return (
                                 <div key={participant.name}>
-                                    <div className="grid grid-cols-1 md:grid-cols-3">
+                                    <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
                                         <FormField
                                             control={form.control}
                                             name={`participants.${index}.name`}
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>
-                                                        Participant Name
+                                                        Participant {index + 1}{" "}
+                                                        Name
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
@@ -545,18 +567,51 @@ function PlacementForm() {
                                                 </FormItem>
                                             )}
                                         />
+
                                         <FormField
                                             control={form.control}
                                             name={`participants.${index}.year`}
                                             render={({ field }) => (
                                                 <FormItem>
-                                                    <FormLabel>Year</FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            placeholder="3rd"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
+                                                    <FormLabel>
+                                                        {" "}
+                                                        Participant {index +
+                                                            1}{" "}
+                                                        Year
+                                                    </FormLabel>
+                                                    <Select
+                                                        onValueChange={
+                                                            field.onChange
+                                                        }
+                                                        defaultValue={
+                                                            field.value
+                                                        }
+                                                    >
+                                                        <FormControl>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select Year" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            {yearOptions.map(
+                                                                (activity) => {
+                                                                    return (
+                                                                        <SelectItem
+                                                                            value={
+                                                                                activity
+                                                                            }
+                                                                            key={
+                                                                                activity
+                                                                            }
+                                                                        >
+                                                                            {activity.toString()}
+                                                                        </SelectItem>
+                                                                    );
+                                                                }
+                                                            )}
+                                                        </SelectContent>
+                                                    </Select>
+
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -567,33 +622,64 @@ function PlacementForm() {
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel>
-                                                        Department Name
+                                                        {" "}
+                                                        Participant {index +
+                                                            1}{" "}
+                                                        Department
                                                     </FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            placeholder="CSE-AIML"
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-
+                                                    <Select
+                                                        onValueChange={
+                                                            field.onChange
+                                                        }
+                                                        defaultValue={
+                                                            field.value
+                                                        }
+                                                    >
+                                                        <FormControl>
+                                                            <SelectTrigger>
+                                                                <SelectValue placeholder="Select Department" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            {departmentOptions.map(
+                                                                (activity) => {
+                                                                    return (
+                                                                        <SelectItem
+                                                                            value={
+                                                                                activity
+                                                                            }
+                                                                            key={
+                                                                                activity
+                                                                            }
+                                                                        >
+                                                                            {activity.toString()}
+                                                                        </SelectItem>
+                                                                    );
+                                                                }
+                                                            )}
+                                                        </SelectContent>
+                                                    </Select>
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
                                     </div>{" "}
                                     <div className="mt-2 flex gap-2 justify-end">
-                                        <PlusCircle
-                                            role="button"
-                                            onClick={handleAppend}
-                                        />
-                                        {index != 0 && (
-                                            <Trash2
+                                        {index === fields.length - 1 && (
+                                            <PlusCircle
                                                 role="button"
-                                                onClick={() =>
-                                                    handleRemove(index)
-                                                }
+                                                onClick={handleAppend}
                                             />
                                         )}
+                                        {index != 0 &&
+                                            index === fields.length - 1 && (
+                                                <Trash2
+                                                    role="button"
+                                                    onClick={() =>
+                                                        handleRemove(index)
+                                                    }
+                                                />
+                                            )}
                                     </div>
                                 </div>
                             );
