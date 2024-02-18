@@ -34,6 +34,9 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { PlusCircle, Trash2 } from "lucide-react";
 
+import { useCreateAchievementMutation } from "@/services/api/achievementApi";
+import { useState } from "react";
+
 export const Route = createFileRoute("/_user/achievementForm")({
     component: PlacementForm,
 });
@@ -79,7 +82,7 @@ const personCategoryOptions = [
 const formSchema = z.object({
     instituteName: z
         .string()
-        .min(2, "Minimum 5 Characters are required")
+        .min(2, "Minimum 2 Characters are required")
         .max(50, "Max 50 Characters are allowed"),
     achievementDescription: z
         .string()
@@ -92,7 +95,8 @@ const formSchema = z.object({
         .string()
         .min(2, "Minimum 2 Characters are required")
         .max(50, "Max 50 Characters are allowed"),
-    awardAmount: z.string().min(2, "Minimum 5 Characters are required"),
+    awardAmount: z.string().min(2, "Minimum 2 Characters are required"),
+    achievementProof: z.string().min(5, "Minimum 5 Characters are required"),
     activityType: z.string({
         required_error: "Please select an Activity Type to display.",
     }),
@@ -118,6 +122,8 @@ const formSchema = z.object({
 });
 
 function PlacementForm() {
+    const [createAchievement] = useCreateAchievementMutation();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -126,13 +132,21 @@ function PlacementForm() {
             awardAmount: "",
             rankAchieved: "",
             title: "",
+            achievementProof: "",
             participants: [{ name: "", year: "", department: "" }],
         },
     });
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values);
+        // @ts-ignore
+        const { data, isFetching } = await createAchievement(values);
+        if (isFetching) {
+            setIsLoading(true);
+        }
+        setIsLoading(false);
+        console.log(data);
     }
 
     const { fields, append, remove } = useFieldArray({
@@ -200,6 +214,25 @@ function PlacementForm() {
                                     </FormControl>
                                     <FormDescription>
                                         Award Granted from the achievement
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="achievementProof"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Achievement Proof</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="https://drive..."
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Achievement Proof document.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -488,11 +521,12 @@ function PlacementForm() {
                             </FormItem>
                         )}
                     />
+                    {/* Add Grid for layout , md size screen */}
                     <div className="flex flex-col my-2">
                         {fields.map((participant, index) => {
                             return (
                                 <div key={participant.name}>
-                                    <div className="flex justify-between items-center">
+                                    <div className="grid grid-cols-1 md:grid-cols-3">
                                         <FormField
                                             control={form.control}
                                             name={`participants.${index}.name`}
@@ -507,7 +541,6 @@ function PlacementForm() {
                                                             {...field}
                                                         />
                                                     </FormControl>
-
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -524,7 +557,6 @@ function PlacementForm() {
                                                             {...field}
                                                         />
                                                     </FormControl>
-
                                                     <FormMessage />
                                                 </FormItem>
                                             )}
@@ -567,7 +599,11 @@ function PlacementForm() {
                             );
                         })}
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={isLoading}
+                    >
                         Submit
                     </Button>
                 </form>

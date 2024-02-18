@@ -15,7 +15,7 @@ function RootComponent() {
             <div className="min-h-screen">
                 <Navbar />
                 <Separator />
-                <div className="max-w-[90%] w-full mx-auto mt-4 max-h-screen">
+                <div className="max-w-[80%] w-full mx-auto mt-4 max-h-screen">
                     <Outlet />
                 </div>
             </div>
