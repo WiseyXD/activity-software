@@ -89,6 +89,7 @@ export async function createAchievement(
         participants,
     } = req.body;
     const createdBy = req.id;
+
     try {
         const createdAchievement = await prisma.achievement.create({
             data: {
@@ -96,7 +97,7 @@ export async function createAchievement(
                 instituteName,
                 activityType,
                 eventLevel,
-                dateOfEvent: dateOfEvent.toISOString(),
+                dateOfEvent,
                 title,
                 description,
                 rankAchieved,

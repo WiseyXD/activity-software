@@ -85,7 +85,7 @@ model Achievement {
   rankAchieved   String?
   personCategory String
   achievement    String
-  awardAmount    Int
+  awardAmount    String
   achievementProof String
   participants   Participant[]
 }
