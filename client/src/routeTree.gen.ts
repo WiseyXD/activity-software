@@ -16,9 +16,13 @@ import { Route as LoginImport } from './routes/login'
 import { Route as UserImport } from './routes/_user'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as UserTechnicalHomeImport } from './routes/_user/technicalHome'
 import { Route as UserTechnicalFormImport } from './routes/_user/technicalForm'
+import { Route as UserPlacementHomeImport } from './routes/_user/placementHome'
 import { Route as UserPlacementFormImport } from './routes/_user/placementForm'
 import { Route as UserExtracurricularFormImport } from './routes/_user/extracurricularForm'
+import { Route as UserExtracuricullarHomeImport } from './routes/_user/extracuricullarHome'
+import { Route as UserAchievementHomeImport } from './routes/_user/achievementHome'
 import { Route as UserAchievementFormImport } from './routes/_user/achievementForm'
 
 // Create/Update Routes
@@ -48,8 +52,18 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const UserTechnicalHomeRoute = UserTechnicalHomeImport.update({
+  path: '/technicalHome',
+  getParentRoute: () => UserRoute,
+} as any)
+
 const UserTechnicalFormRoute = UserTechnicalFormImport.update({
   path: '/technicalForm',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserPlacementHomeRoute = UserPlacementHomeImport.update({
+  path: '/placementHome',
   getParentRoute: () => UserRoute,
 } as any)
 
@@ -60,6 +74,16 @@ const UserPlacementFormRoute = UserPlacementFormImport.update({
 
 const UserExtracurricularFormRoute = UserExtracurricularFormImport.update({
   path: '/extracurricularForm',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserExtracuricullarHomeRoute = UserExtracuricullarHomeImport.update({
+  path: '/extracuricullarHome',
+  getParentRoute: () => UserRoute,
+} as any)
+
+const UserAchievementHomeRoute = UserAchievementHomeImport.update({
+  path: '/achievementHome',
   getParentRoute: () => UserRoute,
 } as any)
 
@@ -96,6 +120,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserAchievementFormImport
       parentRoute: typeof UserImport
     }
+    '/_user/achievementHome': {
+      preLoaderRoute: typeof UserAchievementHomeImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/extracuricullarHome': {
+      preLoaderRoute: typeof UserExtracuricullarHomeImport
+      parentRoute: typeof UserImport
+    }
     '/_user/extracurricularForm': {
       preLoaderRoute: typeof UserExtracurricularFormImport
       parentRoute: typeof UserImport
@@ -104,8 +136,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserPlacementFormImport
       parentRoute: typeof UserImport
     }
+    '/_user/placementHome': {
+      preLoaderRoute: typeof UserPlacementHomeImport
+      parentRoute: typeof UserImport
+    }
     '/_user/technicalForm': {
       preLoaderRoute: typeof UserTechnicalFormImport
+      parentRoute: typeof UserImport
+    }
+    '/_user/technicalHome': {
+      preLoaderRoute: typeof UserTechnicalHomeImport
       parentRoute: typeof UserImport
     }
   }
@@ -118,9 +158,13 @@ export const routeTree = rootRoute.addChildren([
   AdminRoute,
   UserRoute.addChildren([
     UserAchievementFormRoute,
+    UserAchievementHomeRoute,
+    UserExtracuricullarHomeRoute,
     UserExtracurricularFormRoute,
     UserPlacementFormRoute,
+    UserPlacementHomeRoute,
     UserTechnicalFormRoute,
+    UserTechnicalHomeRoute,
   ]),
   LoginRoute,
   NoobRoute,
