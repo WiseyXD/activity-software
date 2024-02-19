@@ -87,9 +87,10 @@ const departmentOptions = [
     "MECH",
     "CIVIL",
     "AUTOMOBILE",
+    "NON-TEACHING",
 ];
 
-const yearOptions = ["1st", "2nd", "3rd", "4th"];
+const yearOptions = ["1st", "2nd", "3rd", "4th", "TEACHING", "NON-TEACHING"];
 
 const formSchema = z.object({
     instituteName: z
@@ -160,7 +161,7 @@ function AchievementFrom() {
                 title: "Achievement Created",
             });
             form.reset();
-            navigate({ from: "/achievementForm", to: "/achievementHome" });
+            navigate({ from: "/achievementForm", to: "/achievements" });
         } catch (error) {
             toast({
                 title: "Error while createing achievement entry.",

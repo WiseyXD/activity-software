@@ -51,8 +51,17 @@ export const achievementApi = createApi({
                 method: "GET",
             }),
         }),
+        getAchievementById: builder.query<Achievementbody, string>({
+            query: (id: string) => ({
+                url: "read/" + id,
+                method: "GET",
+            }),
+        }),
     }),
 });
 
-export const { useCreateAchievementMutation, useGetAllAchievementQuery } =
-    achievementApi;
+export const {
+    useCreateAchievementMutation,
+    useGetAllAchievementQuery,
+    useGetAchievementByIdQuery,
+} = achievementApi;

@@ -27,7 +27,7 @@ export default function Navbar() {
 
     const options = [
         { title: "Placement", to: "/placementHome" },
-        { title: "Achievement", to: "/achievementHome" },
+        { title: "Achievement", to: "/achievements" },
         { title: "Technical", to: "/technicalHome" },
         { title: "Extracurricular", to: "/extracuricullarHome" },
     ];

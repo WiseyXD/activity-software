@@ -3,13 +3,14 @@ import NewEventCard from "@/components/shared/NewEventCard";
 import Shimmer from "@/components/shared/Shimmer";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetAllAchievementQuery } from "@/services/api/achievementApi";
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_user/achievementHome")({
+export const Route = createFileRoute("/_user/achievements")({
     component: AchievementHome,
 });
 
-type AchievementData = {
+export type TAchievementData = {
+    id: string;
     instituteName: string;
     activityType: string;
     eventLevel: string;
@@ -24,7 +25,7 @@ type AchievementData = {
     participants: Participant[];
 };
 
-interface Participant {
+export interface Participant {
     id: string;
     createdBy: string;
     name: string;
@@ -40,7 +41,7 @@ function AchievementHome() {
     }
     // @ts-ignore
     const { events } = data;
-
+    console.log(events);
     return (
         <>
             <h1 className="mb-3 text-2xl">Achievements</h1>
@@ -50,9 +51,12 @@ function AchievementHome() {
                         eventType="Achievement"
                         to="/achievementForm"
                     />
-                    {events.map((achievement: AchievementData) => {
+                    {events.map((achievement: TAchievementData) => {
                         return (
-                            <AchievementCard achievementData={achievement} />
+                            <AchievementCard
+                                achievementData={achievement}
+                                key={achievement.id}
+                            />
                         );
                     })}
                 </div>

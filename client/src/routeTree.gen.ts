@@ -16,13 +16,14 @@ import { Route as LoginImport } from './routes/login'
 import { Route as UserImport } from './routes/_user'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as AchievementsAchievementIdImport } from './routes/achievements.$achievementId'
 import { Route as UserTechnicalHomeImport } from './routes/_user/technicalHome'
 import { Route as UserTechnicalFormImport } from './routes/_user/technicalForm'
 import { Route as UserPlacementHomeImport } from './routes/_user/placementHome'
 import { Route as UserPlacementFormImport } from './routes/_user/placementForm'
 import { Route as UserExtracurricularFormImport } from './routes/_user/extracurricularForm'
 import { Route as UserExtracuricullarHomeImport } from './routes/_user/extracuricullarHome'
-import { Route as UserAchievementHomeImport } from './routes/_user/achievementHome'
+import { Route as UserAchievementsImport } from './routes/_user/achievements'
 import { Route as UserAchievementFormImport } from './routes/_user/achievementForm'
 
 // Create/Update Routes
@@ -49,6 +50,11 @@ const AdminRoute = AdminImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AchievementsAchievementIdRoute = AchievementsAchievementIdImport.update({
+  path: '/achievements/$achievementId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -82,8 +88,8 @@ const UserExtracuricullarHomeRoute = UserExtracuricullarHomeImport.update({
   getParentRoute: () => UserRoute,
 } as any)
 
-const UserAchievementHomeRoute = UserAchievementHomeImport.update({
-  path: '/achievementHome',
+const UserAchievementsRoute = UserAchievementsImport.update({
+  path: '/achievements',
   getParentRoute: () => UserRoute,
 } as any)
 
@@ -120,8 +126,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserAchievementFormImport
       parentRoute: typeof UserImport
     }
-    '/_user/achievementHome': {
-      preLoaderRoute: typeof UserAchievementHomeImport
+    '/_user/achievements': {
+      preLoaderRoute: typeof UserAchievementsImport
       parentRoute: typeof UserImport
     }
     '/_user/extracuricullarHome': {
@@ -148,6 +154,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserTechnicalHomeImport
       parentRoute: typeof UserImport
     }
+    '/achievements/$achievementId': {
+      preLoaderRoute: typeof AchievementsAchievementIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -158,7 +168,7 @@ export const routeTree = rootRoute.addChildren([
   AdminRoute,
   UserRoute.addChildren([
     UserAchievementFormRoute,
-    UserAchievementHomeRoute,
+    UserAchievementsRoute,
     UserExtracuricullarHomeRoute,
     UserExtracurricularFormRoute,
     UserPlacementFormRoute,
@@ -168,6 +178,7 @@ export const routeTree = rootRoute.addChildren([
   ]),
   LoginRoute,
   NoobRoute,
+  AchievementsAchievementIdRoute,
 ])
 
 /* prettier-ignore-end */

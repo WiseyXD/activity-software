@@ -19,7 +19,7 @@ import { Link } from "@tanstack/react-router";
 export default function NewEventCard({ eventType, to }: NewEventCardProps) {
     const navigate = useNavigate();
     return (
-        <Card className="flex justify-center items-center h-[350px] lg:h-[300px]">
+        <Card className="flex justify-center items-center">
             <Link to={to}>
                 <Button>Add {eventType} Event</Button>
             </Link>
