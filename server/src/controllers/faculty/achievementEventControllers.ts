@@ -24,6 +24,33 @@ export async function findEventsByUserId(
     }
 }
 
+export async function findEventsByEventId(
+    req: Request<
+        { achievementId: string },
+        {},
+        TAchievement,
+        { query: string }
+    >,
+    res: Response
+) {
+    const id = req.params.achievementId;
+    try {
+        const event = await prisma.achievement.findFirst({
+            where: {
+                id,
+            },
+            include: {
+                participants: true,
+            },
+        });
+        res.status(200).json({ event });
+    } catch (error: any) {
+        const msg = error.message;
+        console.log({ msg });
+        res.status(500).json({ msg });
+    }
+}
+
 export async function updateEventById(
     req: Request<{ eventId: string }, {}, any, { query: string }>,
     res: Response

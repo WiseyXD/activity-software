@@ -7,6 +7,7 @@ import {
     createAchievement,
     deleteEventById,
     deleteParticipant,
+    findEventsByEventId,
     findEventsByUserId,
     updateEventById,
     updateParticipant,
@@ -17,6 +18,8 @@ const achievementEventRouter = express.Router();
 achievementEventRouter.post("/create", createAchievement);
 
 achievementEventRouter.get("/read", findEventsByUserId);
+
+achievementEventRouter.get("/read/:achievementId", findEventsByEventId);
 
 achievementEventRouter.put("/update/:eventId", updateEventById);
 
