@@ -26,10 +26,10 @@ export default function Navbar() {
     }
 
     const options = [
-        { title: "Placement", to: "/placementForm" },
-        { title: "Achievement", to: "/achievementForm" },
-        { title: "Technical", to: "/technicalForm" },
-        { title: "Extracurricular", to: "/extracurricularForm" },
+        { title: "Placement", to: "/placementHome" },
+        { title: "Achievement", to: "/achievementHome" },
+        { title: "Technical", to: "/technicalHome" },
+        { title: "Extracurricular", to: "/extracuricullarHome" },
     ];
 
     return isAuthorized ? (

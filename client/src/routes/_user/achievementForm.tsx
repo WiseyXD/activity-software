@@ -1,6 +1,6 @@
 "use client";
 import { z } from "zod";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -96,9 +96,7 @@ const formSchema = z.object({
         .string()
         .min(2, "Minimum 2 Characters are required")
         .max(50, "Max 50 Characters are allowed"),
-    achievementDescription: z
-        .string()
-        .min(10, "Minimum 10 Characters are required"),
+    description: z.string().min(10, "Minimum 10 Characters are required"),
     rankAchieved: z
         .string()
         .min(2, "Minimum 2 Characters are required")
@@ -135,13 +133,14 @@ const formSchema = z.object({
 
 function AchievementFrom() {
     const [createAchievement] = useCreateAchievementMutation();
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             instituteName: "",
-            achievementDescription: "",
             awardAmount: "",
+            description: "",
             rankAchieved: "",
             title: "",
             achievementProof: "",
@@ -161,6 +160,7 @@ function AchievementFrom() {
                 title: "Achievement Created",
             });
             form.reset();
+            navigate({ from: "/achievementForm", to: "/achievementHome" });
         } catch (error) {
             toast({
                 title: "Error while createing achievement entry.",
@@ -428,45 +428,7 @@ function AchievementFrom() {
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="achievement"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Achievement</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select kind of Achievement" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {achievementOptions.map(
-                                                (activity) => {
-                                                    return (
-                                                        <SelectItem
-                                                            value={activity}
-                                                            key={activity}
-                                                        >
-                                                            {activity
-                                                                .toString()
-                                                                .toUpperCase()}
-                                                        </SelectItem>
-                                                    );
-                                                }
-                                            )}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>
-                                        Type of achievement.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+
                         <FormField
                             control={form.control}
                             name="personCategory"
@@ -525,7 +487,7 @@ function AchievementFrom() {
                     </div>
                     <FormField
                         control={form.control}
-                        name="achievementDescription"
+                        name="description"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Achievement Description</FormLabel>
