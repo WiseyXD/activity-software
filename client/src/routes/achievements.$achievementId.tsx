@@ -126,7 +126,12 @@ function AchievementOverview() {
                     })}
                 </Accordion>
             </div>
-            <Button className="w-full mt-3">Export PDF</Button>
+            <div className="flex gap-2">
+                <Button className="w-full mt-3" variant={"outline"}>
+                    Edit
+                </Button>
+                <Button className="w-full mt-3">Export PDF</Button>
+            </div>
         </>
     );
 }
