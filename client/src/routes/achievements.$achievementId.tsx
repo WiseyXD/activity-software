@@ -11,9 +11,17 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { Separator } from "@/components/ui/separator";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { TAchievementData } from "./_user/achievements";
-import { Separator } from "@/components/ui/separator";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Navigate } from "@tanstack/react-router";
@@ -31,7 +39,7 @@ function AchievementOverview() {
     if (isFetching) {
         <Shimmer />;
     }
-    // null day
+
     // @ts-ignore
     const event: TAchievementData = data?.event;
     console.log(event);
@@ -41,7 +49,7 @@ function AchievementOverview() {
                 <Navigate to="/login" />
             ) : (
                 <>
-                    <h1 className="text-2xl mt-3">Achievement</h1>
+                    <h1 className="text-2xl mt-3 font-semibold">Achievement</h1>
                     <Separator className="my-2" />
                     <div className="flex flex-col">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-2">
@@ -152,11 +160,33 @@ function AchievementOverview() {
                             ))}
                         </Accordion>
                     </div>
-                    <div className="flex gap-2">
-                        <Button className="w-full mt-3" variant={"outline"}>
-                            Edit
-                        </Button>
-                        <Button className="w-full mt-3">Export PDF</Button>
+                    <div className="flex gap-2 mt-3">
+                        <div className="w-full">
+                            <Dialog>
+                                <DialogTrigger className="w-full">
+                                    <Button
+                                        className=" w-full"
+                                        variant={"outline"}
+                                    >
+                                        Edit
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>
+                                            Are you absolutely sure?
+                                        </DialogTitle>
+                                        <DialogDescription>
+                                            This action cannot be undone. This
+                                            will permanently delete your account
+                                            and remove your data from our
+                                            servers.
+                                        </DialogDescription>
+                                    </DialogHeader>
+                                </DialogContent>
+                            </Dialog>
+                        </div>
+                        <Button className="w-full">Export PDF</Button>
                     </div>
                 </>
             )}
