@@ -39,6 +39,7 @@ function AchievementOverview() {
     if (isFetching) {
         <Shimmer />;
     }
+    // null day
 
     // @ts-ignore
     const event: TAchievementData = data?.event;
