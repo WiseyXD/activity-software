@@ -39,7 +39,7 @@ function AchievementOverview() {
     if (isFetching) {
         <Shimmer />;
     }
-    // null day
+    // edit participant in accordian
 
     // @ts-ignore
     const event: TAchievementData = data?.event;
