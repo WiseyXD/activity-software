@@ -40,6 +40,7 @@ function AchievementOverview() {
         <Shimmer />;
     }
     // edit participant in accordian
+    // edit feature on achievement
 
     // @ts-ignore
     const event: TAchievementData = data?.event;
