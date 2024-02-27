@@ -41,6 +41,7 @@ function AchievementOverview() {
     }
     // edit participant in accordian
     // edit feature on achievement
+    // null day
 
     // @ts-ignore
     const event: TAchievementData = data?.event;
