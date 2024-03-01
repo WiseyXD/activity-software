@@ -1,8 +1,10 @@
-import Shimmer from "@/components/shared/Shimmer";
-import { useGetAchievementByIdQuery } from "@/services/api/achievementApi";
 import { createFileRoute } from "@tanstack/react-router";
-import { Label } from "@/components/ui/label";
+
 import moment from "moment";
+import { useGetAchievementByIdQuery } from "@/services/api/achievementApi";
+
+import Shimmer from "@/components/shared/Shimmer";
+import { Label } from "@/components/ui/label";
 import {
     Accordion,
     AccordionContent,
@@ -16,6 +18,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -26,6 +29,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { Navigate } from "@tanstack/react-router";
 
+import { useState } from "react";
+import AchievementUpdateForm from "@/components/shared/AchievementUpdateForm";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 export const Route = createFileRoute("/achievements/$achievementId")({
     component: AchievementOverview,
 });
@@ -34,14 +41,15 @@ function AchievementOverview() {
     const isAuthorized = useSelector(
         (state: RootState) => state.root.auth.token
     );
+    const [isLoading, setIsLoading] = useState(false);
     const { achievementId } = Route.useParams();
     const { data, isFetching } = useGetAchievementByIdQuery(achievementId);
     if (isFetching) {
         <Shimmer />;
     }
+
     // edit participant in accordian
     // edit feature on achievement
-    // null day 3
 
     // @ts-ignore
     const event: TAchievementData = data?.event;
@@ -51,7 +59,7 @@ function AchievementOverview() {
             {!isAuthorized ? (
                 <Navigate to="/login" />
             ) : (
-                <>
+                <div className="pb-4">
                     <h1 className="text-2xl mt-3 font-semibold">Achievement</h1>
                     <Separator className="my-2" />
                     <div className="flex flex-col">
@@ -166,32 +174,41 @@ function AchievementOverview() {
                     <div className="flex gap-2 mt-3">
                         <div className="w-full">
                             <Dialog>
-                                <DialogTrigger className="w-full">
+                                <DialogTrigger asChild>
                                     <Button
-                                        className=" w-full"
-                                        variant={"outline"}
+                                        variant="outline"
+                                        className="w-full"
                                     >
-                                        Edit
+                                        Edit Profile
                                     </Button>
                                 </DialogTrigger>
-                                <DialogContent>
+                                Scr
+                                <DialogContent className="max-w-lg">
                                     <DialogHeader>
                                         <DialogTitle>
-                                            Are you absolutely sure?
+                                            Edit Achievement
                                         </DialogTitle>
                                         <DialogDescription>
-                                            This action cannot be undone. This
-                                            will permanently delete your account
-                                            and remove your data from our
-                                            servers.
+                                            Make changes to your profile here.
+                                            Click save when you're done.
                                         </DialogDescription>
                                     </DialogHeader>
+                                    <div className="flex gap-4 py-4">
+                                        <ScrollArea>
+                                            <AchievementUpdateForm />
+                                        </ScrollArea>
+                                    </div>
+                                    <DialogFooter>
+                                        <Button type="submit">
+                                            Save changes
+                                        </Button>
+                                    </DialogFooter>
                                 </DialogContent>
                             </Dialog>
                         </div>
                         <Button className="w-full">Export PDF</Button>
                     </div>
-                </>
+                </div>
             )}
         </>
     );
