@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "../ui/label";
+
 import { Input } from "../ui/input";
 import { toast } from "@/components/ui/use-toast";
 
@@ -32,7 +32,6 @@ import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import { PlusCircle, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
 const activityTypeOptions: string[] = [

@@ -173,38 +173,39 @@ function AchievementOverview() {
                     </div>
                     <div className="flex gap-2 mt-3">
                         <div className="w-full">
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        className="w-full"
-                                    >
-                                        Edit Profile
-                                    </Button>
-                                </DialogTrigger>
-                                Scr
-                                <DialogContent className="max-w-lg">
-                                    <DialogHeader>
-                                        <DialogTitle>
-                                            Edit Achievement
-                                        </DialogTitle>
-                                        <DialogDescription>
-                                            Make changes to your profile here.
-                                            Click save when you're done.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="flex gap-4 py-4">
-                                        <ScrollArea>
-                                            <AchievementUpdateForm />
-                                        </ScrollArea>
-                                    </div>
-                                    <DialogFooter>
-                                        <Button type="submit">
-                                            Save changes
+                            <ScrollArea>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full"
+                                        >
+                                            Edit Profile
                                         </Button>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
+                                    </DialogTrigger>
+
+                                    <DialogContent className="max-w-lg">
+                                        <DialogHeader>
+                                            <DialogTitle>
+                                                Edit Achievement
+                                            </DialogTitle>
+                                            <DialogDescription>
+                                                Make changes to your profile
+                                                here. Click save when you're
+                                                done.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="flex gap-4 py-4">
+                                            <AchievementUpdateForm />
+                                        </div>
+                                        <DialogFooter>
+                                            <Button type="submit">
+                                                Save changes
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </ScrollArea>
                         </div>
                         <Button className="w-full">Export PDF</Button>
                     </div>
