@@ -14,6 +14,6 @@
 
 -   [ ] Pagination on Achievement Feed Page
 
--   [ ] Delete Achievement Feature
+-   [x] Delete Achievement Feature
 
 -   [ ] CSS Fix in Update Achievement Dialog

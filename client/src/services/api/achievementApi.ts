@@ -75,6 +75,13 @@ export const achievementApi = createApi({
             }),
             invalidatesTags: ["Achievement"],
         }),
+        deleteAchievementById: builder.mutation<string, string>({
+            query: (id) => ({
+                url: `delete/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Achievement"],
+        }),
         getAchievementById: builder.query<Achievementbody, string>({
             query: (id: string) => ({
                 url: "read/" + id,
@@ -136,6 +143,7 @@ export const {
     useCreateAchievementMutation,
     useGetAllAchievementQuery,
     useGetAchievementByIdQuery,
+    useDeleteAchievementByIdMutation,
     useUpdateAchievementByIdMutation,
     useUpdateParticipantDetailsByIdMutation,
     useDeleteParticipantDetailsByIdMutation,

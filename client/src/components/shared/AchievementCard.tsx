@@ -9,6 +9,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Link } from "@tanstack/react-router";
+import { Button } from "../ui/button";
+import { useDeleteAchievementByIdMutation } from "@/services/api/achievementApi";
 
 interface Participant {
     id: string;
@@ -40,7 +42,6 @@ type TAchievementCardProps = {
 export default function AchievementCard({
     achievementData,
 }: TAchievementCardProps) {
-    console.log(achievementData);
     return (
         // <Card className="transition duration-100 ease-in-out h-[230px] md:h-[210px]">
         <Link
@@ -48,12 +49,14 @@ export default function AchievementCard({
             params={{
                 achievementId: achievementData.id,
             }}
-            className="block py-1 text-blue-800 hover:text-blue-600"
+            className="block py-1"
         >
             <Card className="transition duration-100 ease-in-out ">
                 <CardHeader className="flex flex-row justify-between">
                     <div className="flex flex-col gap-1">
-                        <CardTitle>{achievementData.title}</CardTitle>
+                        <CardTitle className="w-full flex justify-between">
+                            {achievementData.title}
+                        </CardTitle>
                         <CardDescription>
                             {achievementData.description?.substring(0, 40)} ...
                         </CardDescription>

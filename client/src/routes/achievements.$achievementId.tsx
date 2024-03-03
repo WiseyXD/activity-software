@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import moment from "moment";
 import {
+    useDeleteAchievementByIdMutation,
     useDeleteParticipantDetailsByIdMutation,
     useGetAchievementByIdQuery,
 } from "@/services/api/achievementApi";
@@ -43,6 +44,7 @@ import AchievementUpdateForm from "@/components/shared/AchievementUpdateForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import AchievementUpdateParticipant from "@/components/shared/AchievementUpdateParticipant";
 import AchievementAddParticipant from "@/components/shared/AchievementAddParticipant";
+import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/achievements/$achievementId")({
     component: AchievementOverview,
@@ -53,6 +55,9 @@ function AchievementOverview() {
         (state: RootState) => state.root.auth.token
     );
     const [deleteParticipant] = useDeleteParticipantDetailsByIdMutation();
+    const [deleteAchievement] = useDeleteAchievementByIdMutation();
+    const naviagte = useNavigate();
+    console.log(naviagte);
     const [isLoading, setIsLoading] = useState(false);
     const { achievementId } = Route.useParams();
 
@@ -67,6 +72,18 @@ function AchievementOverview() {
         // @ts-ignore
         const { data, isFetching } = await deleteParticipant(id);
         console.log(data);
+    }
+
+    async function handleDelete() {
+        // @ts-ignore
+        const { data, isFetching, error } = deleteAchievement(event?.id);
+        if (isFetching) return null;
+        if (error) console.log(error);
+        console.log(data);
+        toast({
+            title: "Achievement Deleted",
+            variant: "destructive",
+        });
     }
 
     // edit participant in accordian
@@ -337,6 +354,15 @@ function AchievementOverview() {
                             </Dialog>
                         </div>
                         <Button className="w-full">Export PDF</Button>
+                        <Link to="/achievements">
+                            <Button
+                                className="w-full"
+                                variant={"destructive"}
+                                onClick={handleDelete}
+                            >
+                                <Trash2Icon />
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             )}
