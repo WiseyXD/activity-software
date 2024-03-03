@@ -1,9 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import moment from "moment";
-import { useGetAchievementByIdQuery } from "@/services/api/achievementApi";
+import {
+    useDeleteParticipantDetailsByIdMutation,
+    useGetAchievementByIdQuery,
+} from "@/services/api/achievementApi";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 
 import Shimmer from "@/components/shared/Shimmer";
+
 import { Label } from "@/components/ui/label";
 import {
     Accordion,
@@ -13,12 +18,16 @@ import {
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -32,6 +41,8 @@ import { Navigate } from "@tanstack/react-router";
 import { useState } from "react";
 import AchievementUpdateForm from "@/components/shared/AchievementUpdateForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import AchievementUpdateParticipant from "@/components/shared/AchievementUpdateParticipant";
+import AchievementAddParticipant from "@/components/shared/AchievementAddParticipant";
 
 export const Route = createFileRoute("/achievements/$achievementId")({
     component: AchievementOverview,
@@ -41,19 +52,25 @@ function AchievementOverview() {
     const isAuthorized = useSelector(
         (state: RootState) => state.root.auth.token
     );
+    const [deleteParticipant] = useDeleteParticipantDetailsByIdMutation();
     const [isLoading, setIsLoading] = useState(false);
     const { achievementId } = Route.useParams();
+
     const { data, isFetching } = useGetAchievementByIdQuery(achievementId);
     if (isFetching) {
         <Shimmer />;
     }
+    // @ts-ignore
+    const event: TAchievementData = data?.event;
+
+    async function handleDeleteParticipant(id: string) {
+        // @ts-ignore
+        const { data, isFetching } = await deleteParticipant(id);
+        console.log(data);
+    }
 
     // edit participant in accordian
     // edit feature on achievement
-
-    // @ts-ignore
-    const event: TAchievementData = data?.event;
-    console.log(event);
     return (
         <>
             {!isAuthorized ? (
@@ -62,7 +79,7 @@ function AchievementOverview() {
                 <div className="pb-4">
                     <h1 className="text-2xl mt-3 font-semibold">Achievement</h1>
                     <Separator className="my-2" />
-                    <div className="flex flex-col">
+                    <div className="flex flex-col my-3">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-2">
                             <div className="flex-col flex gap-1">
                                 <Label className="text-slate-500">
@@ -147,29 +164,144 @@ function AchievementOverview() {
                             Participant Details
                         </h2>
                         <Separator />
-                        <Accordion type="multiple">
-                            {event?.participants.map((participant, index) => (
-                                <AccordionItem
-                                    value={"item-" + index}
-                                    key={index}
-                                >
-                                    <AccordionTrigger>
-                                        {participant?.name}
-                                    </AccordionTrigger>
-                                    <AccordionContent>
-                                        <div className="flex-col flex gap-2">
-                                            <div>
-                                                Department -{" "}
-                                                {participant?.department}
+                        {event?.participants.length > 0 ? (
+                            <>
+                                <Accordion type="multiple">
+                                    {event?.participants.map(
+                                        (participant, index) => (
+                                            <AccordionItem
+                                                value={"item-" + index}
+                                                key={index}
+                                            >
+                                                <AccordionTrigger>
+                                                    {participant?.name}
+                                                </AccordionTrigger>
+                                                <AccordionContent className="flex justify-between">
+                                                    <div className="flex-col flex gap-2">
+                                                        <div>
+                                                            Department -{" "}
+                                                            {
+                                                                participant?.department
+                                                            }
+                                                        </div>
+                                                        <div>
+                                                            Year -{" "}
+                                                            {participant?.year}
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <Popover>
+                                                            <PopoverTrigger
+                                                                asChild
+                                                            >
+                                                                <Button variant="outline">
+                                                                    <PencilIcon
+                                                                        size={
+                                                                            20
+                                                                        }
+                                                                    />
+                                                                </Button>
+                                                            </PopoverTrigger>
+                                                            <PopoverContent className="w-80">
+                                                                <div className="grid gap-4">
+                                                                    <div className="space-y-2">
+                                                                        <h4 className="font-medium leading-none">
+                                                                            Participant
+                                                                            Details
+                                                                        </h4>
+                                                                        <p className="text-sm text-muted-foreground">
+                                                                            Update
+                                                                            the
+                                                                            details.
+                                                                        </p>
+                                                                    </div>
+                                                                    <AchievementUpdateParticipant
+                                                                        participantData={
+                                                                            participant
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            </PopoverContent>
+                                                        </Popover>
+                                                        <Button
+                                                            variant={"outline"}
+                                                            onClick={() =>
+                                                                handleDeleteParticipant(
+                                                                    participant.id
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash2Icon
+                                                                size={20}
+                                                            />
+                                                        </Button>
+                                                        {index ==
+                                                            event?.participants
+                                                                .length -
+                                                                1 && (
+                                                            <Popover>
+                                                                <PopoverTrigger
+                                                                    asChild
+                                                                >
+                                                                    <Button>
+                                                                        Add
+                                                                        Participant
+                                                                    </Button>
+                                                                </PopoverTrigger>
+                                                                <PopoverContent className="w-80">
+                                                                    <div className="grid gap-4">
+                                                                        <div className="space-y-2">
+                                                                            <h4 className="font-medium leading-none">
+                                                                                Participant
+                                                                                Details
+                                                                            </h4>
+                                                                            <p className="text-sm text-muted-foreground">
+                                                                                Add
+                                                                                the
+                                                                                details.
+                                                                            </p>
+                                                                        </div>
+                                                                        <AchievementAddParticipant
+                                                                            achievementId={
+                                                                                event?.id
+                                                                            }
+                                                                        />
+                                                                    </div>
+                                                                </PopoverContent>
+                                                            </Popover>
+                                                        )}
+                                                    </div>
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        )
+                                    )}
+                                </Accordion>
+                            </>
+                        ) : (
+                            <div className="flex flex-col gap-2">
+                                <p>No Participants for this Event</p>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button>Add Participant</Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-80">
+                                        <div className="grid gap-4">
+                                            <div className="space-y-2">
+                                                <h4 className="font-medium leading-none">
+                                                    Participant Details
+                                                </h4>
+                                                <p className="text-sm text-muted-foreground">
+                                                    Add the details.
+                                                </p>
                                             </div>
-                                            <div>
-                                                Year - {participant?.year}
-                                            </div>
+                                            <AchievementAddParticipant
+                                                achievementId={event?.id}
+                                            />
                                         </div>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            ))}
-                        </Accordion>
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                        )}
                     </div>
                     <div className="flex gap-2 mt-3">
                         <div className="w-full">
@@ -179,7 +311,7 @@ function AchievementOverview() {
                                         variant="outline"
                                         className="w-full"
                                     >
-                                        Edit Profile
+                                        Edit Achievement
                                     </Button>
                                 </DialogTrigger>
                                 <ScrollArea>
@@ -200,11 +332,6 @@ function AchievementOverview() {
                                                 achievementId={achievementId}
                                             />
                                         </div>
-                                        {/* <DialogFooter>
-                                            <Button type="submit">
-                                                Save changes
-                                            </Button>
-                                        </DialogFooter> */}
                                     </DialogContent>
                                 </ScrollArea>
                             </Dialog>

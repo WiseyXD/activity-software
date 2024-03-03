@@ -14,6 +14,7 @@ interface Achievementbody {
     awardAmount: string;
     achievementProof: string;
     participants: Participant[];
+    id: string;
 }
 
 interface UpdateAchievementbody {
@@ -28,6 +29,12 @@ interface UpdateAchievementbody {
     achievement: string;
     awardAmount: string;
     achievementProof: string;
+}
+
+interface UpdateParticipantBody {
+    name: string;
+    year: string;
+    department: string;
 }
 
 interface Participant {
@@ -51,25 +58,22 @@ export const achievementApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ["Achievement", "AchievementOverview"],
     endpoints: (builder) => ({
+        getAllAchievement: builder.query<Achievementbody[], void>({
+            query: () => ({
+                url: "read",
+                method: "GET",
+            }),
+            providesTags: ["Achievement"],
+        }),
         createAchievement: builder.mutation<string, Achievementbody>({
             query: (credentials) => ({
                 url: "create",
                 method: "POST",
                 body: credentials,
             }),
-        }),
-        getAllAchievement: builder.query<Achievementbody[], void>({
-            query: () => ({
-                url: "read",
-                method: "GET",
-            }),
-        }),
-        getAchievementById: builder.query<Achievementbody, string>({
-            query: (id: string) => ({
-                url: "read/" + id,
-                method: "GET",
-            }),
+            invalidatesTags: ["Achievement"],
         }),
         updateAchievementById: builder.mutation<
             string,
@@ -80,6 +84,51 @@ export const achievementApi = createApi({
                 method: "PUT",
                 body: credentials,
             }),
+            invalidatesTags: (result, error, arg) => [
+                { type: "Achievement", id: arg.id },
+            ],
+        }),
+        getAchievementById: builder.query<Achievementbody, string>({
+            query: (id: string) => ({
+                url: "read/" + id,
+                method: "GET",
+            }),
+            providesTags: ["AchievementOverview"],
+        }),
+        updateParticipantDetailsById: builder.mutation<
+            string,
+            {
+                id: string;
+                credentials: UpdateParticipantBody;
+            }
+        >({
+            query: ({ id, credentials }) => ({
+                url: `update/participant/${id}`,
+                method: "PUT",
+                body: credentials,
+            }),
+            invalidatesTags: ["AchievementOverview"],
+        }),
+        createParticipant: builder.mutation<
+            string,
+            {
+                id: string;
+                credentials: UpdateParticipantBody;
+            }
+        >({
+            query: ({ id, credentials }) => ({
+                url: `create/participant/${id}`,
+                method: "POST",
+                body: credentials,
+            }),
+            invalidatesTags: ["AchievementOverview"],
+        }),
+        deleteParticipantDetailsById: builder.mutation<string, string>({
+            query: (id) => ({
+                url: `delete/participant/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["AchievementOverview"],
         }),
     }),
 });
@@ -89,4 +138,7 @@ export const {
     useGetAllAchievementQuery,
     useGetAchievementByIdQuery,
     useUpdateAchievementByIdMutation,
+    useUpdateParticipantDetailsByIdMutation,
+    useDeleteParticipantDetailsByIdMutation,
+    useCreateParticipantMutation,
 } = achievementApi;
