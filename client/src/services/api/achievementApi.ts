@@ -75,6 +75,13 @@ export const achievementApi = createApi({
             }),
             invalidatesTags: ["Achievement"],
         }),
+        getAchievementById: builder.query<Achievementbody, string>({
+            query: (id: string) => ({
+                url: "read/" + id,
+                method: "GET",
+            }),
+            providesTags: ["AchievementOverview"],
+        }),
         updateAchievementById: builder.mutation<
             string,
             { id: string; credentials: UpdateAchievementbody }
@@ -84,17 +91,9 @@ export const achievementApi = createApi({
                 method: "PUT",
                 body: credentials,
             }),
-            invalidatesTags: (result, error, arg) => [
-                { type: "Achievement", id: arg.id },
-            ],
+            invalidatesTags: ["AchievementOverview"],
         }),
-        getAchievementById: builder.query<Achievementbody, string>({
-            query: (id: string) => ({
-                url: "read/" + id,
-                method: "GET",
-            }),
-            providesTags: ["AchievementOverview"],
-        }),
+
         updateParticipantDetailsById: builder.mutation<
             string,
             {

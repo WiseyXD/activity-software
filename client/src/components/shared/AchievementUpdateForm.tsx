@@ -232,6 +232,7 @@ export default function AchievementUpdateForm({
                                 </FormItem>
                             )}
                         />
+
                         <FormField
                             control={form.control}
                             name="dateOfEvent"
@@ -268,7 +269,17 @@ export default function AchievementUpdateForm({
                                             <Calendar
                                                 mode="single"
                                                 selected={field.value}
-                                                onSelect={field.onChange}
+                                                onSelect={(date) => {
+                                                    console.log(
+                                                        "Selected date:",
+                                                        date
+                                                    );
+                                                    field.onChange(date);
+                                                    console.log(
+                                                        "Form value after change:",
+                                                        form.getValues()
+                                                    );
+                                                }}
                                                 disabled={(date) =>
                                                     date > new Date() ||
                                                     date <

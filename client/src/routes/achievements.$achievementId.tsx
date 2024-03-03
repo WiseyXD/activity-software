@@ -76,7 +76,7 @@ function AchievementOverview() {
             {!isAuthorized ? (
                 <Navigate to="/login" />
             ) : (
-                <div className="pb-4">
+                <div className="pb-4 min-h-screen">
                     <h1 className="text-2xl mt-3 font-semibold">Achievement</h1>
                     <Separator className="my-2" />
                     <div className="flex flex-col my-3">

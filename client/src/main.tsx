@@ -23,7 +23,7 @@ declare module "@tanstack/react-router" {
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
                 <Toaster />
                 <RouterProvider router={router} />
             </ThemeProvider>
