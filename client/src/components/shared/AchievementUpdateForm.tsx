@@ -33,6 +33,13 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { Button } from "../ui/button";
+import { TAchievementData } from "@/routes/_user/achievements";
+import { useUpdateAchievementByIdMutation } from "@/services/api/achievementApi";
+
+type AchievementUpdateFormProps = {
+    event: TAchievementData;
+    achievementId: string;
+};
 
 const activityTypeOptions: string[] = [
     "poster-presentation",
@@ -72,19 +79,6 @@ const personCategoryOptions = [
     "non-teaching-staff",
 ];
 
-const departmentOptions = [
-    "CSE-AIML",
-    "CSE-DS",
-    "COMPS",
-    "IT",
-    "MECH",
-    "CIVIL",
-    "AUTOMOBILE",
-    "NON-TEACHING",
-];
-
-const yearOptions = ["1st", "2nd", "3rd", "4th", "TEACHING", "NON-TEACHING"];
-
 const formSchema = z.object({
     instituteName: z
         .string()
@@ -118,17 +112,26 @@ const formSchema = z.object({
     }),
 });
 
-export default function AchievementUpdateForm() {
+export default function AchievementUpdateForm({
+    event,
+    achievementId,
+}: AchievementUpdateFormProps) {
+    const [updateAchievement] = useUpdateAchievementByIdMutation();
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            instituteName: "",
-            awardAmount: "",
-            description: "",
-            rankAchieved: "",
-            title: "",
-            achievementProof: "",
+            instituteName: `${event.instituteName}`,
+            awardAmount: `${event.awardAmount}`,
+            description: `${event.description}`,
+            rankAchieved: `${event.rankAchieved}`,
+            title: `${event.rankAchieved}`,
+            achievementProof: `${event.achievementProof}`,
+            activityType: `${event.activityType}`,
+            eventLevel: `${event.eventLevel}`,
+            achievement: `${event.achievement}`,
+            personCategory: `${event.personCategory}`,
+            dateOfEvent: new Date(event.dateOfEvent),
         },
     });
 
@@ -138,12 +141,15 @@ export default function AchievementUpdateForm() {
         setIsLoading(true);
         try {
             // @ts-ignore
-            const { data, isFetching } = await createAchievement(values);
+            const { data, isFetching } = await updateAchievement({
+                id: achievementId,
+                credentials: values,
+            });
+            console.log(data);
             setIsLoading(false);
             toast({
                 title: "Achievement Updated",
             });
-            form.reset();
         } catch (error) {
             toast({
                 title: "Error while Updating achievement entry.",

@@ -11,9 +11,23 @@ interface Achievementbody {
     rankAchieved: string;
     personCategory: string;
     achievement: string;
-    awardAmount: number;
+    awardAmount: string;
     achievementProof: string;
     participants: Participant[];
+}
+
+interface UpdateAchievementbody {
+    instituteName: string;
+    activityType: string;
+    eventLevel: string;
+    dateOfEvent: Date;
+    title: string;
+    description: string;
+    rankAchieved: string;
+    personCategory: string;
+    achievement: string;
+    awardAmount: string;
+    achievementProof: string;
 }
 
 interface Participant {
@@ -57,6 +71,16 @@ export const achievementApi = createApi({
                 method: "GET",
             }),
         }),
+        updateAchievementById: builder.mutation<
+            string,
+            { id: string; credentials: UpdateAchievementbody }
+        >({
+            query: ({ id, credentials }) => ({
+                url: `update/${id}`,
+                method: "PUT",
+                body: credentials,
+            }),
+        }),
     }),
 });
 
@@ -64,4 +88,5 @@ export const {
     useCreateAchievementMutation,
     useGetAllAchievementQuery,
     useGetAchievementByIdQuery,
+    useUpdateAchievementByIdMutation,
 } = achievementApi;

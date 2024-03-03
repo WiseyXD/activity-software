@@ -173,18 +173,17 @@ function AchievementOverview() {
                     </div>
                     <div className="flex gap-2 mt-3">
                         <div className="w-full">
-                            <ScrollArea>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button
-                                            variant="outline"
-                                            className="w-full"
-                                        >
-                                            Edit Profile
-                                        </Button>
-                                    </DialogTrigger>
-
-                                    <DialogContent className="max-w-lg">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className="w-full"
+                                    >
+                                        Edit Profile
+                                    </Button>
+                                </DialogTrigger>
+                                <ScrollArea>
+                                    <DialogContent className="">
                                         <DialogHeader>
                                             <DialogTitle>
                                                 Edit Achievement
@@ -195,17 +194,20 @@ function AchievementOverview() {
                                                 done.
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <div className="flex gap-4 py-4">
-                                            <AchievementUpdateForm />
+                                        <div className="">
+                                            <AchievementUpdateForm
+                                                event={event}
+                                                achievementId={achievementId}
+                                            />
                                         </div>
-                                        <DialogFooter>
+                                        {/* <DialogFooter>
                                             <Button type="submit">
                                                 Save changes
                                             </Button>
-                                        </DialogFooter>
+                                        </DialogFooter> */}
                                     </DialogContent>
-                                </Dialog>
-                            </ScrollArea>
+                                </ScrollArea>
+                            </Dialog>
                         </div>
                         <Button className="w-full">Export PDF</Button>
                     </div>

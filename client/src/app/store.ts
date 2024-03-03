@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { persistStore } from "redux-persist";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "@/services/auth";
+
 import { achievementApi } from "@/services/api/achievementApi";
 import { extracuricullarApi } from "@/services/api/extracuricullarApi";
 import { placementApi } from "@/services/api/placementApi";
