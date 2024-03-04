@@ -17,3 +17,5 @@
 -   [x] Delete Achievement Feature
 
 -   [ ] CSS Fix in Update Achievement Dialog
+
+-   [ ] Navigation Blocking
