@@ -18,6 +18,10 @@
 
 -   [ ] CSS Fix in Update Achievement Dialog
 
--   [ ] Navigation Blocking
+-   [x] Navigation Blocking
+
+-   [ ] Export PDF
+
+-   [ ] Send mail when create or delete an event
 
 -   [ ] Create Landing Page
