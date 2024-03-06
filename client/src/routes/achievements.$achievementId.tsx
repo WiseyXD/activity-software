@@ -1,5 +1,11 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-
+import { useState, useRef } from "react";
+import {
+    createFileRoute,
+    useNavigate,
+    Link,
+    Navigate,
+} from "@tanstack/react-router";
+import { useReactToPrint } from "react-to-print";
 import moment from "moment";
 import {
     useDeleteAchievementByIdMutation,
@@ -34,17 +40,13 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { TAchievementData } from "./_user/achievements";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-import { Navigate } from "@tanstack/react-router";
-
-import { useState } from "react";
 import AchievementUpdateForm from "@/components/shared/AchievementUpdateForm";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import AchievementUpdateParticipant from "@/components/shared/AchievementUpdateParticipant";
 import AchievementAddParticipant from "@/components/shared/AchievementAddParticipant";
-import { Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/achievements/$achievementId")({
     component: AchievementOverview,
@@ -57,7 +59,7 @@ function AchievementOverview() {
     const [deleteParticipant] = useDeleteParticipantDetailsByIdMutation();
     const [deleteAchievement] = useDeleteAchievementByIdMutation();
     const naviagte = useNavigate();
-    console.log(naviagte);
+    const componentRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
     const { achievementId } = Route.useParams();
 
@@ -86,8 +88,12 @@ function AchievementOverview() {
         });
     }
 
-    // edit participant in accordian
-    // edit feature on achievement
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: "Achievement",
+        onAfterPrint: () => console.log("Printed PDF successfully!"),
+    });
+
     return (
         <>
             {!isAuthorized ? (
@@ -96,7 +102,11 @@ function AchievementOverview() {
                 <div className="pb-4 min-h-screen">
                     <h1 className="text-2xl mt-3 font-semibold">Achievement</h1>
                     <Separator className="my-2" />
-                    <div className="flex flex-col my-3">
+                    <div
+                        ref={componentRef}
+                        className="flex flex-col my-3"
+                        style={{ width: "100%" }}
+                    >
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-2">
                             <div className="flex-col flex gap-1">
                                 <Label className="text-slate-500">
@@ -353,7 +363,12 @@ function AchievementOverview() {
                                 </ScrollArea>
                             </Dialog>
                         </div>
-                        <Button className="w-full">Export PDF</Button>
+                        <Button
+                            className="w-full"
+                            onClick={() => handlePrint()}
+                        >
+                            Export PDF
+                        </Button>
                         <Link to="/achievements">
                             <Button
                                 className="w-full"
