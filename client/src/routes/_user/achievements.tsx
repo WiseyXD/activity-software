@@ -47,10 +47,20 @@ function AchievementHome() {
             <h1 className="mb-3 text-2xl">Achievements</h1>
             <ScrollArea className="h-[50rem] w-full">
                 <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                    <NewEventCard
-                        eventType="Achievement"
-                        to="/achievementForm"
-                    />
+                    {events.length < 1 ? (
+                        <NewEventCard
+                            eventType="Achievement"
+                            to="/achievementForm"
+                            firstCard={true}
+                        />
+                    ) : (
+                        <NewEventCard
+                            eventType="Achievement"
+                            to="/achievementForm"
+                            firstCard={false}
+                        />
+                    )}
+
                     {events.map((achievement: TAchievementData) => {
                         return (
                             <AchievementCard

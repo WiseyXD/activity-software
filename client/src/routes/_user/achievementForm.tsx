@@ -1,6 +1,10 @@
 "use client";
 import { z } from "zod";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+    createFileRoute,
+    useNavigate,
+    useBlocker,
+} from "@tanstack/react-router";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -92,7 +96,7 @@ const departmentOptions = [
 
 const yearOptions = ["1st", "2nd", "3rd", "4th", "TEACHING", "NON-TEACHING"];
 
-const formSchema = z.object({
+const formSchema: any = z.object({
     instituteName: z
         .string()
         .min(2, "Minimum 2 Characters are required")
@@ -136,6 +140,8 @@ function AchievementFrom() {
     const [createAchievement] = useCreateAchievementMutation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [formDirty, setFormDirty] = useState<boolean>(true);
+    useBlocker(() => window.confirm("From is not fully filled yet"), formDirty);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -160,6 +166,7 @@ function AchievementFrom() {
             toast({
                 title: "Achievement Created",
             });
+            setFormDirty(false);
             form.reset();
             navigate({ from: "/achievementForm", to: "/achievements" });
         } catch (error) {
@@ -509,7 +516,7 @@ function AchievementFrom() {
                     <div className="flex flex-col my-2">
                         {fields.map((participant, index) => {
                             return (
-                                <div key={participant.name}>
+                                <div key={index}>
                                     <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
                                         <FormField
                                             control={form.control}
