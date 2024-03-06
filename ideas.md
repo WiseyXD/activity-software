@@ -12,7 +12,7 @@
 
 ### Mini Tasks
 
--   [ ] Pagination on Achievement Feed Page
+-   [x] Pagination on Achievement Feed Page
 
 -   [x] Delete Achievement Feature
 
