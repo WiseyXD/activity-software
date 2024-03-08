@@ -78,7 +78,7 @@ export async function deleteEventById(
 ) {
     const id = req.params.eventId;
     try {
-        const event = await prisma.achievement.findUnique({
+        const event = await prisma.achievement.findUnique({ 
             where: { id },
             include: { participants: true },
         });

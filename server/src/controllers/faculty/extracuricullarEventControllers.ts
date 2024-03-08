@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import { prisma } from "../../prisma/index";
 import { TTechnicalEvent } from "../../types";
 
@@ -70,13 +71,20 @@ export async function updateEventById(id: string | string, evenData: any) {
     }
 }
 
-export async function deleteEventById(id: string | string) {
+export async function deleteEventById(
+    req: Request<{ eventId: string }, {}, {}, { query: string }>,
+    res: Response
+  ) {
+    const id = req.params.eventId;
     try {
-        const event = await prisma.extraCurricularEvent.delete({
-            where: { id },
-        });
-        return event;
-    } catch (error) {
-        return false;
+      const event = await prisma.extraCurricularEvent.delete({
+        where: { id },
+      });
+
+  
+      res.status(200).json({ msg: 'Event Deleted Successfully' });
+    } catch (error: any) {
+      const msg = error.message;
+      res.status(500).json({ msg });
     }
-}
+  }
