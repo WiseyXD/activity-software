@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../prisma/index";
 import { TAchievement, TParticipant } from "../../types";
-
+import main from "../../services/mail";
 export async function findEventsByUserId(
     req: Request<{ params: string }, {}, TAchievement, { query: string }>,
     res: Response
@@ -146,6 +146,9 @@ export async function createAchievement(
                 participants: true,
             },
         });
+        console.log(createdAchievement);
+
+        main(createdAchievement, req.email);
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;

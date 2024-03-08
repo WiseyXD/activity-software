@@ -26,6 +26,9 @@ dependencies:
   '@types/node':
     specifier: ^20.11.16
     version: 20.11.16
+  '@types/nodemailer':
+    specifier: ^6.4.14
+    version: 6.4.14
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
@@ -50,6 +53,9 @@ dependencies:
   multer:
     specifier: 1.4.5-lts.1
     version: 1.4.5-lts.1
+  nodemailer:
+    specifier: ^6.9.11
+    version: 6.9.11
   ts-node-dev:
     specifier: ^2.0.0
     version: 2.0.0(@types/node@20.11.16)(typescript@5.3.3)
@@ -206,6 +212,12 @@ packages:
     resolution: {integrity: sha512-gKb0enTmRCzXSSUJDq6/sPcqrfCv2mkkG6Jt/clpn5eiCbKTY+SgZUxo+p8ZKMof5dCp9vHQUAB7wOUTod22wQ==}
     dependencies:
       undici-types: 5.26.5
+
+  /@types/nodemailer@6.4.14:
+    resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
+    dependencies:
+      '@types/node': 20.11.16
+    dev: false
 
   /@types/qs@6.9.11:
     resolution: {integrity: sha512-oGk0gmhnEJK4Yyk+oI7EfXsLayXatCWPHary1MtcmbAifkobT9cM9yutG/hZKIseOU0MqbIwQ/u2nn/Gb+ltuQ==}
@@ -1045,6 +1057,11 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: false
+
+  /nodemailer@6.9.11:
+    resolution: {integrity: sha512-UiAkgiERuG94kl/3bKfE8o10epvDnl0vokNEtZDPTq9BWzIl6EFT9336SbIT4oaTBD8NmmUTLsQyXHV82eXSWg==}
+    engines: {node: '>=6.0.0'}
     dev: false
 
   /nodemon@3.0.3:
