@@ -29,6 +29,7 @@ export const extracuricullarApi = createApi({
             return headers;
         },
     }),
+    tagTypes: ["Extracurricular", "ExtracurricularOverview"],
     endpoints: (builder) => ({
         createExtracurricular: builder.mutation<string, ExtracurricularEvent>({
             query: (credentials) => ({
@@ -36,12 +37,39 @@ export const extracuricullarApi = createApi({
                 method: "POST",
                 body: credentials,
             }),
+            invalidatesTags: ["Extracurricular"],
         }),
         getAllExtracuricullar: builder.query<ExtracurricularEvent[], void>({
             query: () => ({
                 url: "read",
                 method: "GET",
             }),
+            providesTags: ["Extracurricular"],
+        }),
+        deleteExtracurricularById: builder.mutation<string, string>({
+            query: (id) => ({
+                url: "delete/" + id,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Extracurricular"],
+        }),
+        updateExtracurricularById: builder.mutation<
+            string,
+            { id: string; credentials: ExtracurricularEvent }
+        >({
+            query: ({ id, credentials }) => ({
+                url: "update/" + id,
+                method: "PUT",
+                body: credentials,
+            }),
+            invalidatesTags: ["Extracurricular", "ExtracurricularOverview"],
+        }),
+        getExtracuricullarById: builder.query<ExtracurricularEvent, string>({
+            query: (id) => ({
+                url: "read/" + id,
+                method: "GET",
+            }),
+            providesTags: ["ExtracurricularOverview"],
         }),
     }),
 });
@@ -49,4 +77,7 @@ export const extracuricullarApi = createApi({
 export const {
     useCreateExtracurricularMutation,
     useGetAllExtracuricullarQuery,
+    useGetExtracuricullarByIdQuery,
+    useDeleteExtracurricularByIdMutation,
+    useUpdateExtracurricularByIdMutation,
 } = extracuricullarApi;

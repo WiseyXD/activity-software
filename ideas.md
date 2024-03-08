@@ -22,6 +22,6 @@
 
 -   [x] Export PDF
 
--   [ ] Send mail when create or delete an event
+-   [x] Send mail when create an event
 
 -   [ ] Create Landing Page

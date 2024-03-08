@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma/index";
+
 import { TTechnicalEvent } from "../../types";
 
 export async function createExtracuricullarEvent(
@@ -17,7 +18,7 @@ export async function createExtracuricullarEvent(
     typeOfParticipant: string
 ): Promise<boolean> {
     try {
-        await prisma.extraCurricularEvent.create({
+        const event = await prisma.extraCurricularEvent.create({
             data: {
                 title,
                 department,
@@ -53,6 +54,19 @@ export async function findEventsByUserId(id: string | undefined) {
             },
         });
         return events;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function findEventByEventId(id: string | undefined) {
+    try {
+        const events = await prisma.extraCurricularEvent.findFirst({
+            where: {
+                id,
+            },
+        });
+        return event;
     } catch (error) {
         return false;
     }

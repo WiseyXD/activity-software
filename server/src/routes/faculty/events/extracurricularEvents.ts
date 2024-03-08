@@ -7,6 +7,7 @@ import {
     deleteEventById,
     findEventsByUserId,
     updateEventById,
+    findEventByEventId,
 } from "../../../controllers/faculty/extracuricullarEventControllers";
 
 const extracurricularEventRouter = express.Router();
@@ -73,6 +74,25 @@ extracurricularEventRouter.get(
         const events = await findEventsByUserId(id);
         if (!events) res.status(500).json({ error: "No Event Created" });
         res.status(201).json({ events });
+    }
+);
+
+extracurricularEventRouter.get(
+    "/read/:extracurricularId",
+    async (
+        req: Request<
+            { extracurricularId: string },
+            {},
+            TExtracurricularEvent,
+            { query: string }
+        >,
+        res: Response
+    ) => {
+        const id = req.params.extracurricularId;
+        const createdBy = { id: req.id };
+        const event = await findEventByEventId(id);
+        if (!event) res.status(500).json({ error: "No Event Found" });
+        res.status(201).json({ event });
     }
 );
 
