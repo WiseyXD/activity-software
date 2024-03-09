@@ -1,5 +1,5 @@
 "use client";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import {
     createFileRoute,
     useNavigate,
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { Textarea } from "@/components/ui/textarea";
+
 import {
     Form,
     FormControl,
@@ -32,12 +32,22 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format, addDays } from "date-fns";
 import { DateRange } from "react-day-picker";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, PlusCircle, Trash2 } from "lucide-react";
 
 import { useState } from "react";
 import { useCreateExtracurricularMutation } from "@/services/api/extracuricullarApi";
@@ -123,10 +133,7 @@ const formSchema: any = z.object({
 });
 
 function ExtracurricularForm() {
-    const [eventDate, setEventDate] = useState<DateRange | undefined>({
-        from: new Date(),
-        to: addDays(new Date(), 5),
-    });
+    const [step, setStep] = useState(0);
     const [createExtracurricular] = useCreateExtracurricularMutation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -152,17 +159,26 @@ function ExtracurricularForm() {
         setIsLoading(true);
         try {
             // @ts-ignore
-            const { data, isFetching } = await createExtracurricular(values);
+            const { data, isFetching, isError } =
+                await createExtracurricular(values);
             setIsLoading(false);
+            if (isError) {
+                toast({
+                    variant: "destructive",
+                    title: "Extracurricular Event Created error",
+                });
+                setIsLoading(false);
+                return;
+            }
             toast({
                 title: "Extracurricular Event Created",
             });
             setFormDirty(false);
-            // form.reset();
-            // navigate({
-            //     from: "/extracurricularForm",
-            //     to: "/extracuricullarHome",
-            // });
+            form.reset();
+            navigate({
+                from: "/extracurricularForm",
+                to: "/extracuricullarHome",
+            });
         } catch (error) {
             toast({
                 title: "Error while creating extracuricullar entry.",
@@ -712,14 +728,41 @@ function ExtracurricularForm() {
                             );
                         })} */}
                     </div>
-
-                    <Button
-                        type="submit"
-                        className="w-full"
-                        disabled={isLoading}
-                    >
-                        Submit
-                    </Button>
+                    <div className="flex gap-3">
+                        {step === 1 && (
+                            <Button
+                                onClick={() => {
+                                    setStep(0);
+                                }}
+                            >
+                                <div className="flex justify-center">
+                                    <ChevronLeft />
+                                    <p>Previous</p>
+                                </div>
+                            </Button>
+                        )}
+                        {step === 0 && (
+                            <Button
+                                onClick={() => {
+                                    setStep(1);
+                                }}
+                            >
+                                <div className="flex justify-center">
+                                    <p>Next</p>
+                                    <ChevronRight />
+                                </div>
+                            </Button>
+                        )}
+                        {step === 1 && (
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                Submit
+                            </Button>
+                        )}
+                    </div>
                 </form>
             </Form>
         </>
