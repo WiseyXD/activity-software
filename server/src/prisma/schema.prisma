@@ -72,7 +72,7 @@ model Placement {
   userId                              String   @db.ObjectId
   nameOfCompany                       String
   dateOfVisit                         DateTime
-  organisedFor                         String[]
+  organisedFor                         String
   typeOfVisit                         String
   salaryPackage                       Float
   noOfParticipationFromSaraswati      Int
