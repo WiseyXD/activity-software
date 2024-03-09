@@ -54,6 +54,16 @@ model ExtraCurricularEvent {
   resourcePersonDesignation String
   resourcePersonOrg         String
   resourcePersonDomain      String
+  description String
+  outcome String?
+  expenditure Int?
+  revenue Int?
+  fundingAgency String?
+  fundsRecieved Int?
+  honorariumPaid Int?
+  rankAchieved String?
+  departmentAchievement String?
+  collegeAchievement String?
 }
 
 model Placement {
