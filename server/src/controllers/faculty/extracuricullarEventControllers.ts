@@ -68,7 +68,8 @@ export async function findEventsByUserId(
     >,
     res: Response
 ) {
-    const id = req.params.eventId;
+    const id = req.id;
+    console.log(id);
     try {
         const events = await prisma.extraCurricularEvent.findMany({
             where: {
@@ -95,8 +96,8 @@ export async function updateEventById(
             data: evenData,
         });
         res.status(201).json({ msg: "Successfull Updation" });
-    } catch (error) {
-        res.status(500).json({ error: "Error while Updation " });
+    } catch (error: any) {
+        res.status(500).json({ msg: "Error while Updation" + error.message });
     }
 }
 
