@@ -67,7 +67,7 @@ export async function updateEventById(
         });
         res.status(201).json({ msg: "Successfull Updation" });
     } catch (error) {
-        return false;
+        // return false;
         res.status(500).json({ error: "Error while event updation" });
     }
 }
@@ -78,7 +78,7 @@ export async function deleteEventById(
 ) {
     const id = req.params.eventId;
     try {
-        const event = await prisma.achievement.findUnique({
+        const event = await prisma.achievement.findUnique({ 
             where: { id },
             include: { participants: true },
         });

@@ -29,7 +29,7 @@ extracurricularEventRouter.post(
             endDate,
             eventLevel,
             eventType,
-            organisedFor,
+            orgaisedFor,
             resourcePersonDesignation,
             resourcePersonDomain,
             resourcePersonName,
@@ -45,7 +45,7 @@ extracurricularEventRouter.post(
             endDate,
             eventLevel,
             eventType,
-            organisedFor,
+            orgaisedFor,
             resourcePersonDesignation,
             resourcePersonDomain,
             resourcePersonName,
@@ -77,25 +77,6 @@ extracurricularEventRouter.get(
     }
 );
 
-extracurricularEventRouter.get(
-    "/read/:extracurricularId",
-    async (
-        req: Request<
-            { extracurricularId: string },
-            {},
-            TExtracurricularEvent,
-            { query: string }
-        >,
-        res: Response
-    ) => {
-        const id = req.params.extracurricularId;
-        const createdBy = { id: req.id };
-        const event = await findEventByEventId(id);
-        if (!event) res.status(500).json({ error: "No Event Found" });
-        res.status(201).json({ event });
-    }
-);
-
 extracurricularEventRouter.put(
     "/update/:eventId",
     async (
@@ -116,18 +97,8 @@ extracurricularEventRouter.put(
     }
 );
 
-extracurricularEventRouter.delete(
-    "/delete/:eventId",
-    async (
-        req: Request<{ eventId: string }, {}, {}, { query: string }>,
-        res: Response
-    ) => {
-        const id = req.params.eventId;
-        const event = await deleteEventById(id);
-        if (!event)
-            res.status(500).json({ error: "Error while event deletion" });
-        res.status(200).json({ event });
-    }
-);
+extracurricularEventRouter.put("/update/:eventId", updateEventById);
+
+extracurricularEventRouter.delete("/delete/:eventId", deleteEventById);
 
 export default extracurricularEventRouter;
