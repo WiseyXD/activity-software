@@ -1,23 +1,22 @@
 import { prisma } from "../../prisma/index";
 import { TPlacement } from "../../types";
-import { Request , Response } from "express";
+import { Request, Response } from "express";
 
 export async function createPlacementEvent(
-
     req: Request<{ params: string }, {}, TPlacement, { query: string }>,
     res: Response
-){
-    const{
+) {
+    const {
         nameOfCompany,
-    dateOfVisit,
-    orgaisedFor,
-    typeOfVisit,
-    salaryPackage,
-    noOfParticipationFromSaraswati,
-    noOfParticipationOverall,
-    noOfStudentsSelectedFromSaraswati,
-    noOfStudentsSelectedOverall,
-    listOfSelectedStudentsFromSaraswati
+        dateOfVisit,
+        orgaisedFor,
+        typeOfVisit,
+        salaryPackage,
+        noOfParticipationFromSaraswati,
+        noOfParticipationOverall,
+        noOfStudentsSelectedFromSaraswati,
+        noOfStudentsSelectedOverall,
+        listOfSelectedStudentsFromSaraswati,
     } = req.body;
     const createdBy = req.id;
     try {
@@ -43,18 +42,15 @@ export async function createPlacementEvent(
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;
-        console.error("Error creating achievement:", err);
+        console.error("Error creating placement:", err);
         res.status(500).json({ msg });
     }
 }
 
-export async function findEventsByUserId(req: Request<
-    { placementId: string },
-    {},
-    TPlacement,
-    { query: string }
->,
-res: Response) {
+export async function findEventsByUserId(
+    req: Request<{ placementId: string }, {}, TPlacement, { query: string }>,
+    res: Response
+) {
     const id = req.params.placementId;
     try {
         const events = await prisma.placement.findMany({
@@ -73,9 +69,9 @@ res: Response) {
 export async function updateEventById(
     req: Request<{ eventId: string }, {}, any, { query: string }>,
     res: Response
-    ) {
-        const id = req.params.eventId;
-        const eventData = req.body;
+) {
+    const id = req.params.eventId;
+    const eventData = req.body;
     try {
         const event = await prisma.placement.update({
             where: { id },
@@ -91,8 +87,8 @@ export async function updateEventById(
 export async function deleteEventById(
     req: Request<{ eventId: string }, {}, {}, { query: string }>,
     res: Response
-    ){
-        const id = req.params.eventId;
+) {
+    const id = req.params.eventId;
     try {
         const event = await prisma.placement.delete({
             where: { id },
