@@ -28,7 +28,7 @@ export type TExtracurricularEvent = {
     title: string;
     department: string;
     eventLevel: string;
-    orgaisedFor: string[];
+    organisedFor: string;
     createdBy?: string;
     eventType: string;
     typeOfParticipant: string;

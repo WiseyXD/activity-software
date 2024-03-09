@@ -58,71 +58,72 @@ function ExtracurricularHome() {
     const { events } = data;
     console.log(events);
     return (
-        <div className="flex flex-col justify-between">
-            <div className="basis-5/6">
-                <h1 className="mb-3 text-2xl">Extracuricullar Events</h1>
-                <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                    {startIndex === 0 &&
-                        (events.length < 1 ? (
-                            <NewEventCard
-                                eventType="Extracuricullar"
-                                to="/extracurricularForm"
-                                firstCard={true}
-                            />
-                        ) : (
-                            <NewEventCard
-                                eventType="Extracuricullar"
-                                to="/extracurricularForm"
-                                firstCard={false}
-                            />
-                        ))}
-                    {events
-                        .slice(startIndex, endIndex)
-                        .map((achievement: TAchievementData) => {
-                            return (
-                                <AchievementCard
-                                    achievementData={achievement}
-                                    key={achievement.id}
-                                />
-                            );
-                        })}
-                </div>
-            </div>
+        <h1>Hey</h1>
+        // <div className="flex flex-col justify-between">
+        //     <div className="basis-5/6">
+        //         <h1 className="mb-3 text-2xl">Extracuricullar Events</h1>
+        //         <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+        //             {startIndex === 0 &&
+        //                 (events.length < 1 ? (
+        //                     <NewEventCard
+        //                         eventType="Extracuricullar"
+        //                         to="/extracurricularForm"
+        //                         firstCard={true}
+        //                     />
+        //                 ) : (
+        //                     <NewEventCard
+        //                         eventType="Extracuricullar"
+        //                         to="/extracurricularForm"
+        //                         firstCard={false}
+        //                     />
+        //                 ))}
+        //             {events
+        //                 .slice(startIndex, endIndex)
+        //                 .map((achievement: TAchievementData) => {
+        //                     return (
+        //                         <AchievementCard
+        //                             achievementData={achievement}
+        //                             key={achievement.id}
+        //                         />
+        //                     );
+        //                 })}
+        //         </div>
+        //     </div>
 
-            {events.length > cardsPerPage && (
-                <Pagination className="">
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious
-                                className={
-                                    startIndex === 0
-                                        ? "pointer-events-none opacity-50"
-                                        : undefined
-                                }
-                                onClick={() => {
-                                    setStartIndex(startIndex - cardsPerPage);
-                                    setEndIndex(endIndex - cardsPerPage);
-                                }}
-                            />
-                        </PaginationItem>
+        //     {events.length > cardsPerPage && (
+        //         <Pagination className="">
+        //             <PaginationContent>
+        //                 <PaginationItem>
+        //                     <PaginationPrevious
+        //                         className={
+        //                             startIndex === 0
+        //                                 ? "pointer-events-none opacity-50"
+        //                                 : undefined
+        //                         }
+        //                         onClick={() => {
+        //                             setStartIndex(startIndex - cardsPerPage);
+        //                             setEndIndex(endIndex - cardsPerPage);
+        //                         }}
+        //                     />
+        //                 </PaginationItem>
 
-                        <PaginationItem>
-                            <PaginationNext
-                                className={
-                                    events.slice(startIndex, endIndex).length <
-                                    endIndex
-                                        ? "pointer-events-none opacity-50"
-                                        : undefined
-                                }
-                                onClick={() => {
-                                    setStartIndex(startIndex + cardsPerPage);
-                                    setEndIndex(endIndex + cardsPerPage);
-                                }}
-                            />
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
-            )}
-        </div>
+        //                 <PaginationItem>
+        //                     <PaginationNext
+        //                         className={
+        //                             events.slice(startIndex, endIndex).length <
+        //                             endIndex
+        //                                 ? "pointer-events-none opacity-50"
+        //                                 : undefined
+        //                         }
+        //                         onClick={() => {
+        //                             setStartIndex(startIndex + cardsPerPage);
+        //                             setEndIndex(endIndex + cardsPerPage);
+        //                         }}
+        //                     />
+        //                 </PaginationItem>
+        //             </PaginationContent>
+        //         </Pagination>
+        //     )}
+        // </div>
     );
 }

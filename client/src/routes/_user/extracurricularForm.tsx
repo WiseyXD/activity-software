@@ -35,7 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { PlusCircle, Trash2 } from "lucide-react";
 
 import { useState } from "react";
@@ -45,18 +46,14 @@ export const Route = createFileRoute("/_user/extracurricularForm")({
     component: ExtracurricularForm,
 });
 
-const activityTypeOptions: string[] = [
-    "poster-presentation",
-    "technical-conference",
-    "model-competition",
-    "project-competition",
-    "paper-presentation",
-    "research-proposal",
-    "research-paper",
-    "technical-talk",
-    "non-tecnical-event-judge",
-    "patents",
-    "syllabus-revision",
+const eventTypeOptions: string[] = [
+    "social",
+    "sports",
+    "cultural",
+    "health",
+    "ptm",
+    "alumni-meet",
+    "farewell",
     "any-other",
 ];
 
@@ -68,19 +65,17 @@ const eventLevelOptions = [
     "institutional",
 ];
 
-const achievementOptions = [
-    "best-paper",
-    "secured-rank",
-    "research-grant",
-    "patent-registration",
-    "award",
-    "any-other",
-];
-
 const personCategoryOptions = [
     "student",
     "teaching-staff",
     "non-teaching-staff",
+    "male-students",
+    "female-students",
+    "male teaching-staff",
+    "female teaching-staff",
+    "male non-teaching-staff",
+    "female non-teaching-staff",
+    "all",
 ];
 
 const departmentOptions = [
@@ -94,49 +89,44 @@ const departmentOptions = [
     "NON-TEACHING",
 ];
 
-const yearOptions = ["1st", "2nd", "3rd", "4th", "TEACHING", "NON-TEACHING"];
-
 const formSchema: any = z.object({
-    instituteName: z
-        .string()
-        .min(2, "Minimum 2 Characters are required")
-        .max(50, "Max 50 Characters are allowed"),
-    description: z.string().min(10, "Minimum 10 Characters are required"),
-    rankAchieved: z
-        .string()
-        .min(2, "Minimum 2 Characters are required")
-        .max(50, "Max 50 Characters are allowed"),
     title: z
         .string()
         .min(2, "Minimum 2 Characters are required")
         .max(50, "Max 50 Characters are allowed"),
-    awardAmount: z.string().min(2, "Minimum 2 Characters are required"),
-    achievementProof: z.string().min(5, "Minimum 5 Characters are required"),
-    activityType: z.string({
-        required_error: "Please select an Activity Type to display.",
+    department: z.string().nonempty("Department is Required"),
+    organisedFor: z.string().min(2, "Minimum 5 Characters are required"),
+    resourcePersonName: z.string().min(2, "Minimum 2 Characters are required"),
+    resourcePersonDesignation: z
+        .string()
+        .min(5, "Minimum 5 Characters are required"),
+    resourcePersonOrg: z.string().min(5, "Minimum 5 Characters are required"),
+    resourcePersonDomain: z
+        .string()
+        .min(5, "Minimum 5 Characters are required"),
+    eventType: z.string({
+        required_error: "Please select an Event Type to display.",
     }),
     eventLevel: z.string({
         required_error: "Please select Level of the event to display.",
     }),
-    achievement: z.string({
-        required_error: "Please select Achievement to display.",
-    }),
-    personCategory: z.string({
+
+    typeOfParticipant: z.string({
         required_error: "Please select the Category to display.",
     }),
-    dateOfEvent: z.date({
+    startDate: z.date({
         required_error: "Date of Event is required.",
     }),
-    participants: z.array(
-        z.object({
-            name: z.string().min(2, "Minimum 2 Characters are required"),
-            year: z.string().nonempty("Year is Required"),
-            department: z.string().nonempty("Department is Required"),
-        })
-    ),
+    endDate: z.date({
+        required_error: "Date of Event is required.",
+    }),
 });
 
 function ExtracurricularForm() {
+    const [eventDate, setEventDate] = useState<DateRange | undefined>({
+        from: new Date(),
+        to: addDays(new Date(), 5),
+    });
     const [createExtracurricular] = useCreateExtracurricularMutation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -145,13 +135,14 @@ function ExtracurricularForm() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            instituteName: "",
-            awardAmount: "",
-            description: "",
-            rankAchieved: "",
             title: "",
-            achievementProof: "",
-            participants: [{ name: "", year: "", department: "" }],
+
+            resourcePersonName: "",
+            resourcePersonDesignation: "",
+            resourcePersonOrg: "",
+            resourcePersonDomain: "",
+            // organizedFor: [{ department: "" }],
+            organisedFor: "",
         },
     });
 
@@ -164,17 +155,17 @@ function ExtracurricularForm() {
             const { data, isFetching } = await createExtracurricular(values);
             setIsLoading(false);
             toast({
-                title: "Achievement Created",
+                title: "Extracurricular Event Created",
             });
             setFormDirty(false);
-            form.reset();
-            navigate({
-                from: "/extracurricularForm",
-                to: "/extracuricullarHome",
-            });
+            // form.reset();
+            // navigate({
+            //     from: "/extracurricularForm",
+            //     to: "/extracuricullarHome",
+            // });
         } catch (error) {
             toast({
-                title: "Error while createing achievement entry.",
+                title: "Error while creating extracuricullar entry.",
             });
             setIsLoading(false);
         }
@@ -182,11 +173,11 @@ function ExtracurricularForm() {
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
-        name: "participants",
+        name: "organizedFor",
     });
 
     function handleAppend() {
-        append({ name: "", year: "", department: "" });
+        append({ department: "" });
     }
 
     function handleRemove(index: number) {
@@ -195,56 +186,24 @@ function ExtracurricularForm() {
 
     return (
         <>
-            <h1 className="mb-3 text-2xl">Achievement Form</h1>
+            <h1 className="mb-3 text-2xl">Extracuricullar Form</h1>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4">
-                        <FormField
-                            control={form.control}
-                            name="instituteName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Institute Name</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="SCOE" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Name of the Institute
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 mb-4">
                         <FormField
                             control={form.control}
                             name="title"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Title</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Title" {...field} />
-                                    </FormControl>
-                                    <FormDescription>
-                                        Title of achievement
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="awardAmount"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Award Granted</FormLabel>
+                                    <FormLabel>Title </FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="Award Granted"
+                                            placeholder="Enter Event Title"
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Award Granted from the achievement
+                                        Title of the Event
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -252,18 +211,58 @@ function ExtracurricularForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="achievementProof"
+                            name="department"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Achievement Proof</FormLabel>
+                                    <FormLabel>Organizing Department</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Department" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {departmentOptions.map(
+                                                (activity) => {
+                                                    return (
+                                                        <SelectItem
+                                                            value={activity}
+                                                            key={activity}
+                                                        >
+                                                            {activity
+                                                                .toString()
+                                                                .toUpperCase()}
+                                                        </SelectItem>
+                                                    );
+                                                }
+                                            )}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                        Enter Department name.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="organisedFor"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Organized For </FormLabel>
                                     <FormControl>
                                         <Input
-                                            placeholder="https://drive..."
+                                            placeholder="Enter Department Names"
                                             {...field}
                                         />
                                     </FormControl>
                                     <FormDescription>
-                                        Achievement Proof document.
+                                        All the departments name must be
+                                        seprated by ,
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -271,10 +270,49 @@ function ExtracurricularForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="dateOfEvent"
+                            name="eventLevel"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Event Level</FormLabel>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select level of the event" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {eventLevelOptions.map(
+                                                (activity) => {
+                                                    return (
+                                                        <SelectItem
+                                                            value={activity}
+                                                            key={activity}
+                                                        >
+                                                            {activity
+                                                                .toString()
+                                                                .toUpperCase()}
+                                                        </SelectItem>
+                                                    );
+                                                }
+                                            )}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormDescription>
+                                        Type of event level.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="startDate"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col pt-3">
-                                    <FormLabel>Date of Event</FormLabel>
+                                    <FormLabel>Start Date of Event</FormLabel>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <FormControl>
@@ -324,10 +362,135 @@ function ExtracurricularForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="activityType"
+                            name="endDate"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col pt-3">
+                                    <FormLabel>End Date of Event</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "pl-3 text-left font-normal",
+                                                        !field.value &&
+                                                            "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {field.value ? (
+                                                        format(
+                                                            field.value,
+                                                            "PPP"
+                                                        )
+                                                    ) : (
+                                                        <span>Pick a date</span>
+                                                    )}
+                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="w-auto p-0"
+                                            align="center"
+                                        >
+                                            <Calendar
+                                                mode="single"
+                                                selected={field.value}
+                                                onSelect={field.onChange}
+                                                disabled={(date) =>
+                                                    date > new Date() ||
+                                                    date <
+                                                        new Date("1900-01-01")
+                                                }
+                                                initialFocus
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormDescription>
+                                        Date when the event ended
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* <FormField
+                            control={form.control}
+                            name="dateOfEvent"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col pt-3">
+                                    <FormLabel>Date of Event</FormLabel>
+                                    <div className={cn("grid gap-2")}>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    // id="eventDate"
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "w-[300px] justify-start text-left font-normal",
+                                                        !field.value &&
+                                                            "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    {field.value?.from ? (
+                                                        field.value.to ? (
+                                                            <>
+                                                                {format(
+                                                                    field.value
+                                                                        .from,
+                                                                    "LLL dd, y"
+                                                                )}{" "}
+                                                                -{" "}
+                                                                {format(
+                                                                    field.value
+                                                                        .to,
+                                                                    "LLL dd, y"
+                                                                )}
+                                                            </>
+                                                        ) : (
+                                                            format(
+                                                                field.value
+                                                                    .from,
+                                                                "LLL dd, y"
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <span>
+                                                            Pick a eventDate
+                                                        </span>
+                                                    )}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                className="w-auto p-0"
+                                                align="start"
+                                            >
+                                                <Calendar
+                                                    initialFocus
+                                                    mode="range"
+                                                    defaultMonth={
+                                                        eventDate?.from
+                                                    }
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    numberOfMonths={2}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <FormDescription>
+                                        Date when the event was hosted
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        /> */}
+                        <FormField
+                            control={form.control}
+                            name="eventType"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Activity Type</FormLabel>
+                                    <FormLabel>Event Type</FormLabel>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
@@ -338,7 +501,7 @@ function ExtracurricularForm() {
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            {activityTypeOptions.map(
+                                            {eventTypeOptions.map(
                                                 (activity) => {
                                                     return (
                                                         <SelectItem
@@ -355,85 +518,7 @@ function ExtracurricularForm() {
                                         </SelectContent>
                                     </Select>
                                     <FormDescription>
-                                        Type of activity.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="eventLevel"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Event Level</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select level of the event" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {eventLevelOptions.map(
-                                                (activity) => {
-                                                    return (
-                                                        <SelectItem
-                                                            value={activity}
-                                                            key={activity}
-                                                        >
-                                                            {activity
-                                                                .toString()
-                                                                .toUpperCase()}
-                                                        </SelectItem>
-                                                    );
-                                                }
-                                            )}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>
-                                        Type of event level.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="achievement"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Achievement</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select kind of Achievement" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {achievementOptions.map(
-                                                (activity) => {
-                                                    return (
-                                                        <SelectItem
-                                                            value={activity}
-                                                            key={activity}
-                                                        >
-                                                            {activity
-                                                                .toString()
-                                                                .toUpperCase()}
-                                                        </SelectItem>
-                                                    );
-                                                }
-                                            )}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormDescription>
-                                        Type of achievement.
+                                        Type of Event.
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
@@ -442,7 +527,7 @@ function ExtracurricularForm() {
 
                         <FormField
                             control={form.control}
-                            name="personCategory"
+                            name="typeOfParticipant"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Person Category</FormLabel>
@@ -481,162 +566,131 @@ function ExtracurricularForm() {
                         />
                         <FormField
                             control={form.control}
-                            name="rankAchieved"
+                            name="resourcePersonName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Rank Achieved</FormLabel>
+                                    <FormLabel>Resource Person Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Rank" {...field} />
+                                        <Input
+                                            placeholder="Enter Name"
+                                            {...field}
+                                        />
                                     </FormControl>
                                     <FormDescription>
-                                        About the rank achieved
+                                        Name of the resource person
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    </div>
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Achievement Description</FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        placeholder="Tell us a little bit about the achievement"
-                                        className="resize"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormDescription></FormDescription>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <h1 className="text-xl mt-5">Participant's Details</h1>
-                    {/* Add Grid for layout , md size screen */}
-                    <div className="flex flex-col my-2">
-                        {fields.map((participant, index) => {
+                        <FormField
+                            control={form.control}
+                            name="resourcePersonDesignation"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Resource Person Post</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Tell us a little bit about their post"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        About the post of the person
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="resourcePersonOrg"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Resource Person Organzation
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Tell us a little bit about their company"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        Name of the person organization
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="resourcePersonDomain"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>
+                                        Resource Person Area of Expertise
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Tell us a little bit about their domain"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormDescription>
+                                        About the Domain Expertise of person
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        {/* {fields.map((dept, index) => {
                             return (
-                                <div key={index}>
-                                    <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
-                                        <FormField
-                                            control={form.control}
-                                            name={`participants.${index}.name`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>
-                                                        Participant {index + 1}{" "}
-                                                        Name
-                                                    </FormLabel>
+                                <>
+                                    <FormField
+                                        control={form.control}
+                                        name={`organizedFor.${index}.department`}
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>
+                                                    {" "}
+                                                    Participant {index + 1}{" "}
+                                                    Department
+                                                </FormLabel>
+                                                <Select
+                                                    onValueChange={
+                                                        field.onChange
+                                                    }
+                                                    defaultValue={field.value}
+                                                >
                                                     <FormControl>
-                                                        <Input
-                                                            placeholder="Aryan Nagbanshi..."
-                                                            {...field}
-                                                        />
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select Department" />
+                                                        </SelectTrigger>
                                                     </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-
-                                        <FormField
-                                            control={form.control}
-                                            name={`participants.${index}.year`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>
-                                                        {" "}
-                                                        Participant {index +
-                                                            1}{" "}
-                                                        Year
-                                                    </FormLabel>
-                                                    <Select
-                                                        onValueChange={
-                                                            field.onChange
-                                                        }
-                                                        defaultValue={
-                                                            field.value
-                                                        }
-                                                    >
-                                                        <FormControl>
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="Select Year" />
-                                                            </SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            {yearOptions.map(
-                                                                (activity) => {
-                                                                    return (
-                                                                        <SelectItem
-                                                                            value={
-                                                                                activity
-                                                                            }
-                                                                            key={
-                                                                                activity
-                                                                            }
-                                                                        >
-                                                                            {activity.toString()}
-                                                                        </SelectItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </SelectContent>
-                                                    </Select>
-
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name={`participants.${index}.department`}
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>
-                                                        {" "}
-                                                        Participant {index +
-                                                            1}{" "}
-                                                        Department
-                                                    </FormLabel>
-                                                    <Select
-                                                        onValueChange={
-                                                            field.onChange
-                                                        }
-                                                        defaultValue={
-                                                            field.value
-                                                        }
-                                                    >
-                                                        <FormControl>
-                                                            <SelectTrigger>
-                                                                <SelectValue placeholder="Select Department" />
-                                                            </SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            {departmentOptions.map(
-                                                                (activity) => {
-                                                                    return (
-                                                                        <SelectItem
-                                                                            value={
-                                                                                activity
-                                                                            }
-                                                                            key={
-                                                                                activity
-                                                                            }
-                                                                        >
-                                                                            {activity.toString()}
-                                                                        </SelectItem>
-                                                                    );
-                                                                }
-                                                            )}
-                                                        </SelectContent>
-                                                    </Select>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>{" "}
+                                                    <SelectContent>
+                                                        {departmentOptions.map(
+                                                            (activity) => {
+                                                                return (
+                                                                    <SelectItem
+                                                                        value={
+                                                                            activity
+                                                                        }
+                                                                        key={
+                                                                            activity
+                                                                        }
+                                                                    >
+                                                                        {activity.toString()}
+                                                                    </SelectItem>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                     <div className="mt-2 flex gap-2 justify-end">
                                         {index === fields.length - 1 && (
                                             <PlusCircle
@@ -654,10 +708,11 @@ function ExtracurricularForm() {
                                                 />
                                             )}
                                     </div>
-                                </div>
+                                </>
                             );
-                        })}
+                        })} */}
                     </div>
+
                     <Button
                         type="submit"
                         className="w-full"

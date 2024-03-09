@@ -9,7 +9,7 @@ export async function createExtracuricullarEvent(
     endDate: Date,
     eventLevel: string,
     eventType: string,
-    orgaisedFor: string[],
+    organisedFor: string,
     resourcePersonDesignation: string,
     resourcePersonDomain: string,
     resourcePersonName: string,
@@ -30,7 +30,7 @@ export async function createExtracuricullarEvent(
                 endDate,
                 eventLevel,
                 eventType,
-                orgaisedFor: { set: orgaisedFor },
+                organisedFor,
                 resourcePersonDesignation,
                 resourcePersonDomain,
                 resourcePersonName,
@@ -41,7 +41,7 @@ export async function createExtracuricullarEvent(
         });
         return true;
     } catch (error) {
-        console.error("Error creating technical event:", error);
+        console.error("Error creating extracurricular event:", error);
         return false;
     }
 }
