@@ -1,21 +1,28 @@
 import { prisma } from "../../prisma/index";
 import { TTechnicalEvent } from "../../types";
+import { Request , Response } from "express";
 
 export async function createTechnicalEvent(
-    title: string,
-    department: string,
-    createdBy: { id: string | undefined },
-    endDate: Date,
-    eventLevel: string,
-    eventType: string,
-    orgaisedFor: string[],
-    resourcePersonDesignation: string,
-    resourcePersonDomain: string,
-    resourcePersonName: string,
-    resourcePersonOrg: string,
-    startDate: Date,
-    typeOfParticipant: string
-): Promise<boolean> {
+
+    req: Request<{ params: string }, {}, TTechnicalEvent, { query: string }>,
+    res: Response
+
+){
+    const {
+        title,
+    department,
+    endDate,
+    eventLevel,
+    eventType,
+    orgaisedFor,
+    resourcePersonDesignation,
+    resourcePersonDomain,
+    resourcePersonName,
+    resourcePersonOrg,
+    startDate,
+    typeOfParticipant
+    } = req.body;
+    const createdBy = req.id;
     try {
         await prisma.technicalEvent.create({
             data: {
@@ -23,7 +30,7 @@ export async function createTechnicalEvent(
                 department,
                 createdBy: {
                     connect: {
-                        id: createdBy.id,
+                        id: createdBy,
                     },
                 },
                 endDate,
@@ -38,45 +45,62 @@ export async function createTechnicalEvent(
                 typeOfParticipant,
             },
         });
-        return true;
-    } catch (error) {
-        console.error("Error creating technical event:", error);
-        return false;
+        res.status(201).json({ msg: "Successful creation" });
+    } catch (err:any) {
+        const msg = err.message;
+        console.error("Error creating achievement:", err);
+        res.status(500).json({ msg });
     }
 }
 
-export async function findEventsByUserId(id: string | undefined) {
+export async function findEventsByUserId(
+    req: Request<{ params: string }, {}, TTechnicalEvent, { query: string }>,
+    res: Response
+    ) {
     try {
+        const id = req.id;
         const events = await prisma.technicalEvent.findMany({
             where: {
                 userId: id,
             },
         });
-        return events;
-    } catch (error) {
-        return false;
+        res.status(200).json({ events });
+    } catch (error:any) {
+        const msg = error.message;
+        console.log({ msg });
+        res.status(500).json({ msg });
     }
 }
 
-export async function updateEventById(id: string | string, evenData: any) {
+export async function updateEventById( 
+    req: Request<{ eventId: string }, {}, any, { query: string }>,
+    res: Response
+    ) {
+        const id = req.params.eventId;
+        const eventData = req.body;
     try {
         const event = await prisma.technicalEvent.update({
             where: { id },
-            data: evenData,
+            data: eventData,
         });
-        return event;
+        res.status(201).json({ msg: "Successfull Updation" });
     } catch (error) {
-        return false;
+        res.status(500).json({ error: "Error while event updation" });
     }
 }
 
-export async function deleteEventById(id: string | string) {
+export async function deleteEventById(
+    req: Request<{ eventId: string }, {}, {}, { query: string }>,
+    res: Response
+    ) {
+        const id = req.params.eventId;
     try {
         const event = await prisma.technicalEvent.delete({
             where: { id },
         });
-        return event;
-    } catch (error) {
-        return false;
+        res.status(200).json({ msg: "Event Deleted Succesfully" });
+    } catch (error: any) {
+        const msg = error.message;
+        res.status(500).json({ msg });
     }
 }

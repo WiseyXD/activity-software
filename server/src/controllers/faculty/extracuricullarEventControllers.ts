@@ -1,30 +1,35 @@
+
 import { Request, Response } from 'express';
 import { prisma } from "../../prisma/index";
-import { TTechnicalEvent } from "../../types";
+import { TExtracurricularEvent } from "../../types";
 
 export async function createExtracuricullarEvent(
-    title: string,
-    department: string,
-    createdBy: { id: string | undefined },
-    endDate: Date,
-    eventLevel: string,
-    eventType: string,
-    orgaisedFor: string[],
-    resourcePersonDesignation: string,
-    resourcePersonDomain: string,
-    resourcePersonName: string,
-    resourcePersonOrg: string,
-    startDate: Date,
-    typeOfParticipant: string
-): Promise<boolean> {
+    req: Request<{ params: string }, {}, TExtracurricularEvent, { query: string }>,
+    res: Response
+) {
+    const {
+        title,
+    department,
+    endDate,
+    eventLevel,
+    eventType,
+    orgaisedFor,
+    resourcePersonDesignation,
+    resourcePersonDomain,
+    resourcePersonName,
+    resourcePersonOrg,
+    startDate,
+    typeOfParticipant,
+ } = req.body;
+ const createdBy = req.id;
     try {
-        await prisma.extraCurricularEvent.create({
+        const created = await prisma.extraCurricularEvent.create({
             data: {
                 title,
                 department,
                 createdBy: {
                     connect: {
-                        id: createdBy.id,
+                        id: createdBy,
                     },
                 },
                 endDate,
@@ -39,35 +44,52 @@ export async function createExtracuricullarEvent(
                 typeOfParticipant,
             },
         });
-        return true;
-    } catch (error) {
+        res.status(201).json({ msg: "Successful creation" });
+    } catch (error: any) {
+        const msg = error.message;
         console.error("Error creating technical event:", error);
-        return false;
+        res.status(500).json({ msg });
     }
 }
 
-export async function findEventsByUserId(id: string | undefined) {
+export async function findEventsByUserId(
+    req: Request<
+    { eventId: string },
+    {},
+    TExtracurricularEvent,
+    { query: string }
+>,
+res: Response
+) {
+    const id = req.params.eventId;
     try {
         const events = await prisma.extraCurricularEvent.findMany({
             where: {
                 userId: id,
             },
         });
-        return events;
-    } catch (error) {
-        return false;
+            res.status(200).json({events});
+    } catch (error: any) {
+        const msg = error.message;
+        console.log({msg});
+        res.status(500).json({msg});
     }
 }
 
-export async function updateEventById(id: string | string, evenData: any) {
+export async function updateEventById(
+    req: Request<{ eventId: string }, {}, any, { query: string }>,
+    res: Response
+    ) {
+        const id = req.params.eventId;
+        const evenData = req.body;
     try {
         const event = await prisma.extraCurricularEvent.update({
             where: { id },
             data: evenData,
         });
-        return event;
+        res.status(201).json({msg: "Successfull Updation"});
     } catch (error) {
-        return false;
+        res.status(500).json({error: "Error while Updation "})
     }
 }
 

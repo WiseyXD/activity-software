@@ -67,7 +67,7 @@ export async function updateEventById(
         });
         res.status(201).json({ msg: "Successfull Updation" });
     } catch (error) {
-        return false;
+        // return false;
         res.status(500).json({ error: "Error while event updation" });
     }
 }
