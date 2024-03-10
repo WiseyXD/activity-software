@@ -51,6 +51,7 @@ import { ChevronLeft, ChevronRight, PlusCircle, Trash2 } from "lucide-react";
 
 import { useState } from "react";
 import { useCreateExtracurricularMutation } from "@/services/api/extracuricullarApi";
+import { Textarea } from "@/components/ui/textarea";
 
 export const Route = createFileRoute("/_user/extracurricularForm")({
     component: ExtracurricularForm,
@@ -130,6 +131,7 @@ const formSchema: any = z.object({
     endDate: z.date({
         required_error: "Date of Event is required.",
     }),
+    description: z.string().min(10, "Minimum 10 Characters are required"),
 });
 
 function ExtracurricularForm() {
@@ -143,7 +145,7 @@ function ExtracurricularForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
-
+            description: "",
             resourcePersonName: "",
             resourcePersonDesignation: "",
             resourcePersonOrg: "",
@@ -660,83 +662,35 @@ function ExtracurricularForm() {
                                 </FormItem>
                             )}
                         />
-                        {/* {fields.map((dept, index) => {
-                            return (
-                                <>
-                                    <FormField
-                                        control={form.control}
-                                        name={`organizedFor.${index}.department`}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>
-                                                    {" "}
-                                                    Participant {index + 1}{" "}
-                                                    Department
-                                                </FormLabel>
-                                                <Select
-                                                    onValueChange={
-                                                        field.onChange
-                                                    }
-                                                    defaultValue={field.value}
-                                                >
-                                                    <FormControl>
-                                                        <SelectTrigger>
-                                                            <SelectValue placeholder="Select Department" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        {departmentOptions.map(
-                                                            (activity) => {
-                                                                return (
-                                                                    <SelectItem
-                                                                        value={
-                                                                            activity
-                                                                        }
-                                                                        key={
-                                                                            activity
-                                                                        }
-                                                                    >
-                                                                        {activity.toString()}
-                                                                    </SelectItem>
-                                                                );
-                                                            }
-                                                        )}
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <div className="mt-2 flex gap-2 justify-end">
-                                        {index === fields.length - 1 && (
-                                            <PlusCircle
-                                                role="button"
-                                                onClick={handleAppend}
-                                            />
-                                        )}
-                                        {index != 0 &&
-                                            index === fields.length - 1 && (
-                                                <Trash2
-                                                    role="button"
-                                                    onClick={() =>
-                                                        handleRemove(index)
-                                                    }
-                                                />
-                                            )}
-                                    </div>
-                                </>
-                            );
-                        })} */}
                     </div>
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Achievement Description</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Tell us a little bit about the achievement"
+                                        className="resize"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormDescription></FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                     <div className="flex gap-3">
                         {step === 1 && (
                             <Button
                                 onClick={() => {
                                     setStep(0);
                                 }}
+                                variant={"outline"}
                             >
-                                <div className="flex justify-center">
-                                    <ChevronLeft />
+                                <div className="flex justify-center gap-2">
+                                    <ChevronLeft size={20} />
                                     <p>Previous</p>
                                 </div>
                             </Button>
@@ -746,10 +700,12 @@ function ExtracurricularForm() {
                                 onClick={() => {
                                     setStep(1);
                                 }}
+                                variant={"outline"}
+                                className="self-end"
                             >
-                                <div className="flex justify-center">
+                                <div className="flex justify-center gap-2">
                                     <p>Next</p>
-                                    <ChevronRight />
+                                    <ChevronRight size={20} />
                                 </div>
                             </Button>
                         )}
