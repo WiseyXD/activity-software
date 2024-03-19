@@ -135,6 +135,7 @@ const formSchema: any = z.object({
 });
 
 function ExtracurricularForm() {
+    // Create this
     const [step, setStep] = useState(0);
     const [createExtracurricular] = useCreateExtracurricularMutation();
     const navigate = useNavigate();
