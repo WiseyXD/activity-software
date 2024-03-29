@@ -133,6 +133,7 @@ const formSchema: any = z.object({
     }),
     description: z.string().min(10, "Minimum 10 Characters are required"),
 });
+// Null Day
 
 function ExtracurricularForm() {
     // TODO : Create this form , null day and learnt TurboRepo
