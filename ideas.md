@@ -25,3 +25,7 @@
 -   [x] Send mail when create an event
 
 -   [ ] Create Landing Page
+
+### Restart
+
+-   [] working on extracurricular form
