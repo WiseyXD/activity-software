@@ -29,3 +29,5 @@
 ### Restart
 
 -   [] working on extracurricular form
+
+-   [] Update the schema for each form
