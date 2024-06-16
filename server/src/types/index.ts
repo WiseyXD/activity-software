@@ -81,7 +81,7 @@ export type TPlacement = {
     noOfParticipationOverall: number;
     noOfStudentsSelectedFromSaraswati: number;
     noOfStudentsSelectedOverall: number;
-    listOfSelectedStudentsFromSaraswati: string[];
+    listOfSelectedStudentsFromSaraswati: string;
 };
 
 export type TAchievement = {
