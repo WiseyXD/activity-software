@@ -44,16 +44,20 @@ import { useBlocker } from "@tanstack/react-router";
 const typeOfPool = ["On Campus", "Off Campus", "Walk In"];
 
 const formSchema: any = z.object({
-    nameOfCompany: z.string().min(1),
+    nameOfCompany: z
+        .string()
+        .min(5, { message: "Atleast 5 cahracters are required" }),
     dateOfVisit: z.date({ required_error: "Date of Event is required." }),
-    organisedFor: z.string().min(1),
+    organisedFor: z.string().min(3),
     typeOfVisit: z.string().min(1),
     salaryPackage: z.number().positive(),
     noOfParticipationFromSaraswati: z.number().int().nonnegative(),
     noOfParticipationOverall: z.number().int().nonnegative(),
     noOfStudentsSelectedFromSaraswati: z.number().int().nonnegative(),
     noOfStudentsSelectedOverall: z.number().int().nonnegative(),
-    listOfSelectedStudentsFromSaraswati: z.string().min(1),
+    listOfSelectedStudentsFromSaraswati: z
+        .string()
+        .min(5, { message: "Atleast 5 cahracters are required" }),
 });
 
 export const Route = createFileRoute("/_user/placementForm")({
