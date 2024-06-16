@@ -57,8 +57,6 @@ export const Route = createFileRoute("/_user/extracurricularForm")({
     component: ExtracurricularForm,
 });
 
-// Null Day
-
 const eventTypeOptions: string[] = [
     "social",
     "sports",
