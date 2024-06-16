@@ -5,7 +5,7 @@ import {
     useNavigate,
     useBlocker,
 } from "@tanstack/react-router";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,26 +32,16 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format, addDays } from "date-fns";
-import { DateRange } from "react-day-picker";
-import { ChevronLeft, ChevronRight, PlusCircle, Trash2 } from "lucide-react";
+import { format } from "date-fns";
 
 import { useState } from "react";
 import { useCreateExtracurricularMutation } from "@/services/api/extracuricullarApi";
 import { Textarea } from "@/components/ui/textarea";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_user/extracurricularForm")({
     component: ExtracurricularForm,
@@ -221,18 +211,18 @@ function ExtracurricularForm() {
         }
     }
 
-    const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: "organizedFor",
-    });
+    // const { fields, append, remove } = useFieldArray({
+    //     control: form.control,
+    //     name: "organizedFor",
+    // });
 
-    function handleAppend() {
-        append({ department: "" });
-    }
+    // function handleAppend() {
+    //     append({ department: "" });
+    // }
 
-    function handleRemove(index: number) {
-        remove(index);
-    }
+    // function handleRemove(index: number) {
+    //     remove(index);
+    // }
 
     return (
         <>
