@@ -26,6 +26,15 @@ export async function createExtracuricullarEvent(
         startDate,
         typeOfParticipant,
         description,
+        outcome,
+        expenditure,
+        revenue,
+        fundingAgency,
+        fundsReceived,
+        honorariumPaid,
+        rankAchieved,
+        departmentAchievement,
+        collegeAchievement,
     } = req.body;
     const createdBy = req.id;
     try {
@@ -49,6 +58,15 @@ export async function createExtracuricullarEvent(
                 startDate,
                 typeOfParticipant,
                 description,
+                outcome,
+                expenditure,
+                revenue,
+                fundingAgency,
+                fundsReceived,
+                honorariumPaid,
+                rankAchieved,
+                departmentAchievement,
+                collegeAchievement,
             },
         });
         res.status(201).json({ msg: "Successful creation" });

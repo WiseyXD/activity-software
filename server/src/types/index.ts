@@ -24,6 +24,24 @@ export type TTechnicalEvent = {
     resourcePersonDomain: string;
 };
 
+// export type TExtracurricularEvent = {
+//     title: string;
+//     department: string;
+//     eventLevel: string;
+//     organisedFor: string;
+//     createdBy?: string;
+//     eventType: string;
+//     typeOfParticipant: string;
+//     startDate: Date;
+//     endDate: Date;
+//     resourcePersonName: string;
+//     resourcePersonDesignation: string;
+//     resourcePersonOrg: string;
+//     resourcePersonDomain: string;
+//     description: string;
+
+// };
+
 export type TExtracurricularEvent = {
     title: string;
     department: string;
@@ -39,6 +57,17 @@ export type TExtracurricularEvent = {
     resourcePersonOrg: string;
     resourcePersonDomain: string;
     description: string;
+
+    // New fields
+    outcome: string;
+    expenditure: number;
+    revenue: number;
+    fundingAgency: string;
+    fundsReceived: number;
+    honorariumPaid: number;
+    rankAchieved: string;
+    departmentAchievement: string;
+    collegeAchievement: string;
 };
 
 export type TPlacement = {

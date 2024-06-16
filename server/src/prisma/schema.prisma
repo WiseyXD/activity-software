@@ -62,7 +62,7 @@ model ExtraCurricularEvent {
   expenditure Int
   revenue Int
   fundingAgency String
-  fundsRecieved Int
+  fundsReceived Int
   honorariumPaid Int
   rankAchieved String
   departmentAchievement String
