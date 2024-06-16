@@ -82,7 +82,7 @@ model Placement {
   noOfParticipationOverall            Int
   noOfStudentsSelectedFromSaraswati   Int
   noOfStudentsSelectedOverall         Int
-  listOfSelectedStudentsFromSaraswati String[]
+  listOfSelectedStudentsFromSaraswati String
 }
 
 model Achievement {

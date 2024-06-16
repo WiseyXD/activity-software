@@ -6,5 +6,5 @@ export const Route = createFileRoute("/_user/placementForm")({
 });
 
 function PlacementForm() {
-    return <div>I'm Placement!</div>;
+    return <div>I'm Placement Form!</div>;
 }
