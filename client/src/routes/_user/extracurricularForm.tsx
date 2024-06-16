@@ -1,5 +1,5 @@
 "use client";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import {
     createFileRoute,
     useNavigate,
@@ -132,8 +132,29 @@ const formSchema: any = z.object({
         required_error: "Date of Event is required.",
     }),
     description: z.string().min(10, "Minimum 10 Characters are required"),
+    outcome: z
+        .string()
+        .min(10, { message: "Outcome must be at least 10 characters long" }),
+    expenditure: z.number().int({ message: "Expenditure must be an integer" }),
+    revenue: z.number().int({ message: "Revenue must be an integer" }),
+    fundingAgency: z.string().min(10, {
+        message: "Funding Agency must be at least 10 characters long",
+    }),
+    fundsReceived: z.number(),
+    // .int({ message: "Funds Received must be an integer" }),
+    honorariumPaid: z
+        .number()
+        .int({ message: "Honorarium Paid must be an integer" }),
+    rankAchieved: z.string().min(10, {
+        message: "Rank Achieved must be at least 10 characters long",
+    }),
+    departmentAchievement: z.string().min(10, {
+        message: "Department Achievement must be at least 10 characters long",
+    }),
+    collegeAchievement: z.string().min(10, {
+        message: "College Achievement must be at least 10 characters long",
+    }),
 });
-// Null Day
 
 function ExtracurricularForm() {
     // TODO : Create this form , null day and learnt TurboRepo
@@ -154,6 +175,15 @@ function ExtracurricularForm() {
             resourcePersonDomain: "",
             // organizedFor: [{ department: "" }],
             organisedFor: "",
+            outcome: "",
+            expenditure: 0,
+            revenue: 0,
+            fundingAgency: "",
+            fundsReceived: 0,
+            honorariumPaid: 0,
+            rankAchieved: "",
+            departmentAchievement: "",
+            collegeAchievement: "",
         },
     });
 
@@ -733,7 +763,214 @@ function ExtracurricularForm() {
                             />
                         </>
                     ) : (
-                        <>2nd Part of the form</>
+                        <>
+                            <>2nd Part of the form</>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 mb-4">
+                                <FormField
+                                    control={form.control}
+                                    name="fundsReceived"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Funds Received
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Enter the amount of funds received"
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            e.target
+                                                                .valueAsNumber
+                                                        )
+                                                    }
+                                                    min={0}
+                                                    // {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="honorariumPaid"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Honorarium Paid
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Enter the amount of honorarium paid"
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            e.target
+                                                                .valueAsNumber
+                                                        )
+                                                    }
+                                                    min={0}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="expenditure"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Expenditure</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Enter the expenditure amount"
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            e.target
+                                                                .valueAsNumber
+                                                        )
+                                                    }
+                                                    min={0}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="revenue"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Revenue</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Enter the revenue amount"
+                                                    onChange={(e) =>
+                                                        field.onChange(
+                                                            e.target
+                                                                .valueAsNumber
+                                                        )
+                                                    }
+                                                    min={0}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="fundingAgency"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Funding Agency
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Enter the name of the funding agency"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="rankAchieved"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Rank Achieved</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    placeholder="Tell us about the rank achieved."
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="departmentAchievement"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                Department Achievement
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="Describe the department achievement"
+                                                    className="resize"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="collegeAchievement"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>
+                                                College Achievement
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="Describe the college achievement"
+                                                    className="resize"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="outcome"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Outcome</FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="Describe the outcome"
+                                                    className="resize"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormDescription />
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </>
                     )}
                     <div className="flex gap-3">
                         {step === 1 && (
