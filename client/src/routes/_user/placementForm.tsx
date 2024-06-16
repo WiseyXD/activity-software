@@ -131,6 +131,7 @@ function PlacementForm() {
                                         <Input
                                             placeholder="Enter name of the hiring company."
                                             {...field}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -150,6 +151,7 @@ function PlacementForm() {
                                         <Input
                                             placeholder="Organized for which departments."
                                             {...field}
+                                            disabled={isLoading}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -260,7 +262,13 @@ function PlacementForm() {
                                         <Input
                                             type="number"
                                             placeholder="Enter the salary package"
-                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.valueAsNumber
+                                                )
+                                            }
+                                            disabled={isLoading}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -283,7 +291,13 @@ function PlacementForm() {
                                         <Input
                                             type="number"
                                             placeholder="Enter the number of participants from Saraswati"
-                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.valueAsNumber
+                                                )
+                                            }
+                                            disabled={isLoading}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -307,7 +321,13 @@ function PlacementForm() {
                                         <Input
                                             type="number"
                                             placeholder="Enter the overall number of participants"
-                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.valueAsNumber
+                                                )
+                                            }
+                                            disabled={isLoading}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -330,7 +350,13 @@ function PlacementForm() {
                                         <Input
                                             type="number"
                                             placeholder="Enter the number of students selected from Saraswati"
-                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.valueAsNumber
+                                                )
+                                            }
+                                            disabled={isLoading}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -354,7 +380,13 @@ function PlacementForm() {
                                         <Input
                                             type="number"
                                             placeholder="Enter the overall number of students selected"
-                                            {...field}
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.valueAsNumber
+                                                )
+                                            }
+                                            disabled={isLoading}
+                                            min={0}
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -376,6 +408,7 @@ function PlacementForm() {
                                 <FormControl>
                                     <Textarea
                                         placeholder="Enter the list of selected students from Saraswati"
+                                        disabled={isLoading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -387,7 +420,11 @@ function PlacementForm() {
                             </FormItem>
                         )}
                     />
-                    <Button type="submit" className="mt-3 w-full">
+                    <Button
+                        type="submit"
+                        className="mt-3 w-full"
+                        disabled={isLoading}
+                    >
                         Submit
                     </Button>
                 </form>
