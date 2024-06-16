@@ -890,45 +890,45 @@ function ExtracurricularForm() {
                             </div>
                         </>
                     )}
-                    <div className="flex gap-3">
-                        {step === 1 && (
-                            <Button
-                                onClick={() => {
-                                    setStep(0);
-                                }}
-                                variant={"outline"}
-                            >
-                                <div className="flex justify-center gap-2">
-                                    <ChevronLeft size={20} />
-                                    <p>Previous</p>
-                                </div>
-                            </Button>
-                        )}
-                        {step === 0 && (
-                            <Button
-                                onClick={() => {
-                                    setStep(1);
-                                }}
-                                variant={"outline"}
-                                className="self-start"
-                            >
-                                <div className="flex justify-center gap-2">
-                                    <p>Next</p>
-                                    <ChevronRight size={20} />
-                                </div>
-                            </Button>
-                        )}
-                        {step === 1 && (
-                            <Button
-                                type="submit"
-                                className="w-full"
-                                disabled={isLoading}
-                            >
-                                Submit
-                            </Button>
-                        )}
-                    </div>
                 </form>
+                <div className="flex gap-3 mt-3">
+                    {step === 1 && (
+                        <Button
+                            onClick={() => {
+                                setStep(0);
+                            }}
+                            variant={"outline"}
+                        >
+                            <div className="flex justify-center gap-2">
+                                <ChevronLeft size={20} />
+                                <p>Previous</p>
+                            </div>
+                        </Button>
+                    )}
+                    {step === 0 && (
+                        <Button
+                            onClick={() => {
+                                setStep(1);
+                            }}
+                            variant={"outline"}
+                            className="self-start"
+                        >
+                            <div className="flex justify-center gap-2">
+                                <p>Next</p>
+                                <ChevronRight size={20} />
+                            </div>
+                        </Button>
+                    )}
+                    {step === 1 && (
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={isLoading}
+                        >
+                            Submit
+                        </Button>
+                    )}
+                </div>
             </Form>
         </>
     );
