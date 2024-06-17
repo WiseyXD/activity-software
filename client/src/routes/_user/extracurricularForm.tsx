@@ -5,7 +5,7 @@ import {
     useNavigate,
     useBlocker,
 } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,16 +32,26 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
 
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { ChevronLeft, ChevronRight, PlusCircle, Trash2 } from "lucide-react";
 
 import { useState } from "react";
 import { useCreateExtracurricularMutation } from "@/services/api/extracuricullarApi";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_user/extracurricularForm")({
     component: ExtracurricularForm,
@@ -163,7 +173,7 @@ function ExtracurricularForm() {
             resourcePersonDesignation: "",
             resourcePersonOrg: "",
             resourcePersonDomain: "",
-
+            // organizedFor: [{ department: "" }],
             organisedFor: "",
             outcome: "",
             expenditure: 0,
@@ -211,18 +221,18 @@ function ExtracurricularForm() {
         }
     }
 
-    // const { fields, append, remove } = useFieldArray({
-    //     control: form.control,
-    //     name: "organizedFor",
-    // });
+    const { fields, append, remove } = useFieldArray({
+        control: form.control,
+        name: "organizedFor",
+    });
 
-    // function handleAppend() {
-    //     append({ department: "" });
-    // }
+    function handleAppend() {
+        append({ department: "" });
+    }
 
-    // function handleRemove(index: number) {
-    //     remove(index);
-    // }
+    function handleRemove(index: number) {
+        remove(index);
+    }
 
     return (
         <>
@@ -483,7 +493,78 @@ function ExtracurricularForm() {
                                         </FormItem>
                                     )}
                                 />
-
+                                {/* <FormField
+                            control={form.control}
+                            name="dateOfEvent"
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col pt-3">
+                                    <FormLabel>Date of Event</FormLabel>
+                                    <div className={cn("grid gap-2")}>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    // id="eventDate"
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "w-[300px] justify-start text-left font-normal",
+                                                        !field.value &&
+                                                            "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                                    {field.value?.from ? (
+                                                        field.value.to ? (
+                                                            <>
+                                                                {format(
+                                                                    field.value
+                                                                        .from,
+                                                                    "LLL dd, y"
+                                                                )}{" "}
+                                                                -{" "}
+                                                                {format(
+                                                                    field.value
+                                                                        .to,
+                                                                    "LLL dd, y"
+                                                                )}
+                                                            </>
+                                                        ) : (
+                                                            format(
+                                                                field.value
+                                                                    .from,
+                                                                "LLL dd, y"
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <span>
+                                                            Pick a eventDate
+                                                        </span>
+                                                    )}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent
+                                                className="w-auto p-0"
+                                                align="start"
+                                            >
+                                                <Calendar
+                                                    initialFocus
+                                                    mode="range"
+                                                    defaultMonth={
+                                                        eventDate?.from
+                                                    }
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    numberOfMonths={2}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <FormDescription>
+                                        Date when the event was hosted
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        /> */}
                                 <FormField
                                     control={form.control}
                                     name="eventType"
@@ -683,6 +764,7 @@ function ExtracurricularForm() {
                         </>
                     ) : (
                         <>
+                            <>2nd Part of the form</>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 mb-4">
                                 <FormField
                                     control={form.control}
@@ -890,45 +972,45 @@ function ExtracurricularForm() {
                             </div>
                         </>
                     )}
+                    <div className="flex gap-3">
+                        {step === 1 && (
+                            <Button
+                                onClick={() => {
+                                    setStep(0);
+                                }}
+                                variant={"outline"}
+                            >
+                                <div className="flex justify-center gap-2">
+                                    <ChevronLeft size={20} />
+                                    <p>Previous</p>
+                                </div>
+                            </Button>
+                        )}
+                        {step === 0 && (
+                            <Button
+                                onClick={() => {
+                                    setStep(1);
+                                }}
+                                variant={"outline"}
+                                className="self-end"
+                            >
+                                <div className="flex justify-center gap-2">
+                                    <p>Next</p>
+                                    <ChevronRight size={20} />
+                                </div>
+                            </Button>
+                        )}
+                        {step === 1 && (
+                            <Button
+                                type="submit"
+                                className="w-full"
+                                disabled={isLoading}
+                            >
+                                Submit
+                            </Button>
+                        )}
+                    </div>
                 </form>
-                <div className="flex gap-3 mt-3">
-                    {step === 1 && (
-                        <Button
-                            onClick={() => {
-                                setStep(0);
-                            }}
-                            variant={"outline"}
-                        >
-                            <div className="flex justify-center gap-2">
-                                <ChevronLeft size={20} />
-                                <p>Previous</p>
-                            </div>
-                        </Button>
-                    )}
-                    {step === 0 && (
-                        <Button
-                            onClick={() => {
-                                setStep(1);
-                            }}
-                            variant={"outline"}
-                            className="self-start"
-                        >
-                            <div className="flex justify-center gap-2">
-                                <p>Next</p>
-                                <ChevronRight size={20} />
-                            </div>
-                        </Button>
-                    )}
-                    {step === 1 && (
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            disabled={isLoading}
-                        >
-                            Submit
-                        </Button>
-                    )}
-                </div>
             </Form>
         </>
     );
