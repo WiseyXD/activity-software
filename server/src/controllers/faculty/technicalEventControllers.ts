@@ -1,26 +1,33 @@
 import { prisma } from "../../prisma/index";
 import { TTechnicalEvent } from "../../types";
-import { Request , Response } from "express";
+import { Request, Response } from "express";
 
 export async function createTechnicalEvent(
-
     req: Request<{ params: string }, {}, TTechnicalEvent, { query: string }>,
     res: Response
-
-){
+) {
     const {
         title,
-    department,
-    endDate,
-    eventLevel,
-    eventType,
-    orgaisedFor,
-    resourcePersonDesignation,
-    resourcePersonDomain,
-    resourcePersonName,
-    resourcePersonOrg,
-    startDate,
-    typeOfParticipant
+        department,
+        endDate,
+        eventLevel,
+        eventType,
+        organisedFor,
+        resourcePersonDesignation,
+        resourcePersonDomain,
+        resourcePersonName,
+        resourcePersonOrg,
+        startDate,
+        typeOfParticipant,
+        description,
+        outcome,
+        expenditure,
+        revenue,
+        fundingAgency,
+        fundsReceived,
+        rankAchieved,
+        departmentAchievement,
+        collegeAchievement,
     } = req.body;
     const createdBy = req.id;
     try {
@@ -28,25 +35,34 @@ export async function createTechnicalEvent(
             data: {
                 title,
                 department,
+                eventLevel,
+                organisedFor,
                 createdBy: {
                     connect: {
                         id: createdBy,
                     },
                 },
-                endDate,
-                eventLevel,
-                eventType,
-                orgaisedFor: { set: orgaisedFor },
-                resourcePersonDesignation,
-                resourcePersonDomain,
-                resourcePersonName,
-                resourcePersonOrg,
-                startDate,
                 typeOfParticipant,
+                eventType,
+                startDate,
+                endDate,
+                resourcePersonName,
+                resourcePersonDesignation,
+                resourcePersonOrg,
+                resourcePersonDomain,
+                description,
+                outcome,
+                expenditure,
+                revenue,
+                fundingAgency,
+                fundsReceived,
+                rankAchieved,
+                departmentAchievement,
+                collegeAchievement,
             },
         });
         res.status(201).json({ msg: "Successful creation" });
-    } catch (err:any) {
+    } catch (err: any) {
         const msg = err.message;
         console.error("Error creating achievement:", err);
         res.status(500).json({ msg });
@@ -56,7 +72,7 @@ export async function createTechnicalEvent(
 export async function findEventsByUserId(
     req: Request<{ params: string }, {}, TTechnicalEvent, { query: string }>,
     res: Response
-    ) {
+) {
     try {
         const id = req.id;
         const events = await prisma.technicalEvent.findMany({
@@ -65,19 +81,19 @@ export async function findEventsByUserId(
             },
         });
         res.status(200).json({ events });
-    } catch (error:any) {
+    } catch (error: any) {
         const msg = error.message;
         console.log({ msg });
         res.status(500).json({ msg });
     }
 }
 
-export async function updateEventById( 
+export async function updateEventById(
     req: Request<{ eventId: string }, {}, any, { query: string }>,
     res: Response
-    ) {
-        const id = req.params.eventId;
-        const eventData = req.body;
+) {
+    const id = req.params.eventId;
+    const eventData = req.body;
     try {
         const event = await prisma.technicalEvent.update({
             where: { id },
@@ -92,8 +108,8 @@ export async function updateEventById(
 export async function deleteEventById(
     req: Request<{ eventId: string }, {}, {}, { query: string }>,
     res: Response
-    ) {
-        const id = req.params.eventId;
+) {
+    const id = req.params.eventId;
     try {
         const event = await prisma.technicalEvent.delete({
             where: { id },

@@ -12,7 +12,7 @@ export type TTechnicalEvent = {
     title: string;
     department: string;
     eventLevel: string;
-    orgaisedFor: string[];
+    organisedFor: string;
     createdBy?: string;
     eventType: string;
     typeOfParticipant: string;
@@ -22,25 +22,18 @@ export type TTechnicalEvent = {
     resourcePersonDesignation: string;
     resourcePersonOrg: string;
     resourcePersonDomain: string;
+    description: string;
+
+    // New fields
+    outcome: string;
+    expenditure: number;
+    revenue: number;
+    fundingAgency: string;
+    fundsReceived: number;
+    rankAchieved: string;
+    departmentAchievement: string;
+    collegeAchievement: string;
 };
-
-// export type TExtracurricularEvent = {
-//     title: string;
-//     department: string;
-//     eventLevel: string;
-//     organisedFor: string;
-//     createdBy?: string;
-//     eventType: string;
-//     typeOfParticipant: string;
-//     startDate: Date;
-//     endDate: Date;
-//     resourcePersonName: string;
-//     resourcePersonDesignation: string;
-//     resourcePersonOrg: string;
-//     resourcePersonDomain: string;
-//     description: string;
-
-// };
 
 export type TExtracurricularEvent = {
     title: string;
