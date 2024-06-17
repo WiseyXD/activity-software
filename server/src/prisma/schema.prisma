@@ -36,6 +36,19 @@ model TechnicalEvent {
   resourcePersonDesignation String
   resourcePersonOrg         String
   resourcePersonDomain      String
+  description               String
+
+
+  // 2nd Part
+
+  outcome String
+  expenditure Int
+  revenue Int
+  fundingAgency String
+  fundsReceived Int
+  rankAchieved String
+  departmentAchievement String
+  collegeAchievement String
 }
 
 model ExtraCurricularEvent {
