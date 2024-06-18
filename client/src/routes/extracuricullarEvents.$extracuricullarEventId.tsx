@@ -42,13 +42,10 @@ import {
 } from "@/components/ui/dialog";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
-// import { TAchievementData } from "./_user/achievements";
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
-// import AchievementUpdateForm from "@/components/shared/AchievementUpdateForm";
-// import AchievementUpdateParticipant from "@/components/shared/AchievementUpdateParticipant";
-// import AchievementAddParticipant from "@/components/shared/AchievementAddParticipant";
+import ExtracurricularUpdateForm from "@/components/shared/ExtracuricullarUpdateForm";
 
 export const Route = createFileRoute(
     "/extracuricullarEvents/$extracuricullarEventId"
@@ -464,12 +461,12 @@ function ExtracuricullarOverview() {
                                                 Click save when you're done.
                                             </DialogDescription>
                                         </DialogHeader>
-                                        {/* <div className="">
-                                            <AchievementUpdateForm
+                                        <div className="">
+                                            <ExtracurricularUpdateForm
                                                 event={event}
-                                                achievementId={achievementId}
+                                                eventId={extracuricullarEventId}
                                             />
-                                        </div> */}
+                                        </div>
                                     </DialogContent>
                                 </ScrollArea>
                             </Dialog>
