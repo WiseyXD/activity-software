@@ -120,6 +120,24 @@ export async function updateEventById(
     }
 }
 
+export async function getEventById(
+    req: Request<{ eventId: string }, {}, any, { query: string }>,
+    res: Response
+) {
+    const id = req.params.eventId;
+
+    try {
+        const event = await prisma.extraCurricularEvent.findFirst({
+            where: { id },
+        });
+        res.status(201).json({ event });
+    } catch (error: any) {
+        res.status(500).json({
+            msg: "Error while fetching event" + error.message,
+        });
+    }
+}
+
 export async function deleteEventById(
     req: Request<{ eventId: string }, {}, {}, { query: string }>,
     res: Response

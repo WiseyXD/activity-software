@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../app/store";
 
-export interface ExtracurricularEvent {
+export interface IExtracurricularEvent {
+    id?: string;
     title: string;
     department: string;
     eventLevel: string;
@@ -41,7 +42,7 @@ export const extracuricullarApi = createApi({
     }),
     tagTypes: ["Extracurricular", "ExtracurricularOverview"],
     endpoints: (builder) => ({
-        createExtracurricular: builder.mutation<string, ExtracurricularEvent>({
+        createExtracurricular: builder.mutation<string, IExtracurricularEvent>({
             query: (credentials) => ({
                 url: "create",
                 method: "POST",
@@ -49,7 +50,7 @@ export const extracuricullarApi = createApi({
             }),
             invalidatesTags: ["Extracurricular"],
         }),
-        getAllExtracuricullar: builder.query<ExtracurricularEvent[], void>({
+        getAllExtracuricullar: builder.query<IExtracurricularEvent[], void>({
             query: () => ({
                 url: "read",
                 method: "GET",
@@ -65,7 +66,7 @@ export const extracuricullarApi = createApi({
         }),
         updateExtracurricularById: builder.mutation<
             string,
-            { id: string; credentials: ExtracurricularEvent }
+            { id: string; credentials: IExtracurricularEvent }
         >({
             query: ({ id, credentials }) => ({
                 url: "update/" + id,
@@ -74,7 +75,7 @@ export const extracuricullarApi = createApi({
             }),
             invalidatesTags: ["Extracurricular", "ExtracurricularOverview"],
         }),
-        getExtracuricullarById: builder.query<ExtracurricularEvent, string>({
+        getExtracuricullarById: builder.query<IExtracurricularEvent, string>({
             query: (id) => ({
                 url: "read/" + id,
                 method: "GET",

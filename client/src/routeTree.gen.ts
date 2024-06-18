@@ -16,6 +16,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as UserImport } from './routes/_user'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as ExtracuricullarEventsExtracuricullarEventIdImport } from './routes/extracuricullarEvents.$extracuricullarEventId'
 import { Route as AchievementsAchievementIdImport } from './routes/achievements.$achievementId'
 import { Route as UserTechnicalHomeImport } from './routes/_user/technicalHome'
 import { Route as UserTechnicalFormImport } from './routes/_user/technicalForm'
@@ -52,6 +53,12 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const ExtracuricullarEventsExtracuricullarEventIdRoute =
+  ExtracuricullarEventsExtracuricullarEventIdImport.update({
+    path: '/extracuricullarEvents/$extracuricullarEventId',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 const AchievementsAchievementIdRoute = AchievementsAchievementIdImport.update({
   path: '/achievements/$achievementId',
@@ -158,6 +165,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AchievementsAchievementIdImport
       parentRoute: typeof rootRoute
     }
+    '/extracuricullarEvents/$extracuricullarEventId': {
+      preLoaderRoute: typeof ExtracuricullarEventsExtracuricullarEventIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -179,6 +190,7 @@ export const routeTree = rootRoute.addChildren([
   LoginRoute,
   NoobRoute,
   AchievementsAchievementIdRoute,
+  ExtracuricullarEventsExtracuricullarEventIdRoute,
 ])
 
 /* prettier-ignore-end */
