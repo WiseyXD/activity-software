@@ -98,6 +98,15 @@ const departmentOptions = [
     "CIVIL",
     "AUTOMOBILE",
     "NON-TEACHING",
+    "FE",
+    "YIN-CELL",
+    "NSS-CELL",
+    "STUDENT-COUNCIL",
+    "REMOTE-CENTER",
+    "STUDENT-SECTION",
+    "ROTRACT-CLUB",
+    "EDCII-CELL",
+    "RND-CELL",
 ];
 
 const formSchema: any = z.object({

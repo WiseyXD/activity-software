@@ -45,14 +45,24 @@ export const Route = createFileRoute("/_user/technicalForm")({
 });
 
 const eventTypeOptions: string[] = [
-    "social",
-    "sports",
-    "cultural",
-    "health",
-    "ptm",
-    "alumni-meet",
-    "farewell",
-    "any-other",
+    "add on",
+    "site visit",
+    "poster presentation",
+    "technical conference",
+    "sddp",
+    "fdp",
+    "industrial visit",
+    "model competition",
+    "project presentation",
+    "paper presentation",
+    "training",
+    "guest lecture",
+    "seminar",
+    "workshop",
+    "technical talk",
+    "webinar",
+    "orientation",
+    "any other",
 ];
 
 const eventLevelOptions = [
@@ -63,18 +73,7 @@ const eventLevelOptions = [
     "institutional",
 ];
 
-const personCategoryOptions = [
-    "student",
-    "teaching-staff",
-    "non-teaching-staff",
-    "male-students",
-    "female-students",
-    "male teaching-staff",
-    "female teaching-staff",
-    "male non-teaching-staff",
-    "female non-teaching-staff",
-    "all",
-];
+const personCategoryOptions = ["student", "staff", "both"];
 
 const departmentOptions = [
     "CSE-AIML",
@@ -85,9 +84,15 @@ const departmentOptions = [
     "CIVIL",
     "AUTOMOBILE",
     "NON-TEACHING",
-    // "FE",
-    // "YIN CELL",
-    // ""
+    "FE",
+    "YIN-CELL",
+    "NSS-CELL",
+    "STUDENT-COUNCIL",
+    "REMOTE-CENTER",
+    "STUDENT-SECTION",
+    "ROTRACT-CLUB",
+    "EDCII-CELL",
+    "RND-CELL",
 ];
 
 const formSchema = z.object({
