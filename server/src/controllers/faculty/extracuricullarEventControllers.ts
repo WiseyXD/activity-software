@@ -87,13 +87,14 @@ export async function findEventsByUserId(
     res: Response
 ) {
     const id = req.id;
-    console.log(id);
+
     try {
         const events = await prisma.extraCurricularEvent.findMany({
             where: {
                 userId: id,
             },
         });
+
         res.status(200).json({ events });
     } catch (error: any) {
         const msg = error.message;

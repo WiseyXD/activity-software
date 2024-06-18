@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../../app/store";
 
-interface ExtracurricularEvent {
+export interface ExtracurricularEvent {
     title: string;
     department: string;
     eventLevel: string;
@@ -15,6 +15,16 @@ interface ExtracurricularEvent {
     resourcePersonDesignation: string;
     resourcePersonOrg: string;
     resourcePersonDomain: string;
+    description: string;
+    outcome: string;
+    expenditure: number;
+    revenue: number;
+    fundingAgency: string;
+    fundsReceived: number;
+    honorariumPaid: number;
+    rankAchieved: string;
+    departmentAchievement: string;
+    collegeAchievement: string;
 }
 
 export const extracuricullarApi = createApi({
