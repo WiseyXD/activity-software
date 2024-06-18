@@ -39,7 +39,7 @@ type TAchievementCardProps = {
     };
 };
 
-export default function AchievementCard({
+export default function ExtracuricullarCard({
     achievementData,
 }: TAchievementCardProps) {
     return (

@@ -15,35 +15,11 @@ import {
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useGetAllExtracuricullarQuery } from "@/services/api/extracuricullarApi";
+// import ExtracurricularEvent from "@/services/api/extracuricullarApi";
 
 export const Route = createFileRoute("/_user/extracuricullarHome")({
     component: ExtracurricularHome,
 });
-
-export type TAchievementData = {
-    id: string;
-    instituteName: string;
-    activityType: string;
-    eventLevel: string;
-    dateOfEvent: Date;
-    title: string;
-    description: string;
-    rankAchieved: string;
-    personCategory: string;
-    achievement: string;
-    awardAmount: number;
-    achievementProof: string;
-    participants: Participant[];
-};
-
-export interface Participant {
-    id: string;
-    createdBy: string;
-    name: string;
-    department: string;
-    year: string;
-    files: string[];
-}
 
 function ExtracurricularHome() {
     const cardsPerPage = 8;
@@ -58,7 +34,7 @@ function ExtracurricularHome() {
     const { events } = data;
     console.log(events);
     return (
-        <h1>Hey</h1>
+        <>hey</>
         // <div className="flex flex-col justify-between">
         //     <div className="basis-5/6">
         //         <h1 className="mb-3 text-2xl">Extracuricullar Events</h1>
@@ -79,7 +55,7 @@ function ExtracurricularHome() {
         //                 ))}
         //             {events
         //                 .slice(startIndex, endIndex)
-        //                 .map((achievement: TAchievementData) => {
+        //                 .map((achievement: ExtracurricularEvent) => {
         //                     return (
         //                         <AchievementCard
         //                             achievementData={achievement}
