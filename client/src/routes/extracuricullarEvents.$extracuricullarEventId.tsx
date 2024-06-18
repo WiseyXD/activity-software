@@ -477,7 +477,7 @@ function ExtracuricullarOverview() {
                         >
                             Export PDF
                         </Button>
-                        <Link to="/achievements">
+                        <Link to="/extracuricullarHome">
                             <Button
                                 className="w-full"
                                 variant={"destructive"}
