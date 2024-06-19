@@ -54,7 +54,6 @@ export default function Navbar() {
                     <h1 className="text-2xl">Actify</h1>
                 </div>
                 <div className="flex gap-3">
-                    <ModeToggle />
                     <Button onClick={handleLogout}>Logout</Button>
                 </div>
             </div>
@@ -89,7 +88,6 @@ export default function Navbar() {
                     </Link>
                 </div>
                 <div className="flex gap-3">
-                    <ModeToggle />
                     <Button onClick={handleLogout}>Logout</Button>
                 </div>
             </div>

@@ -16,6 +16,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as UserImport } from './routes/_user'
 import { Route as AdminImport } from './routes/_admin'
 import { Route as IndexImport } from './routes/index'
+import { Route as PlacementPlacementIdImport } from './routes/placement.$placementId'
 import { Route as ExtracuricullarEventsExtracuricullarEventIdImport } from './routes/extracuricullarEvents.$extracuricullarEventId'
 import { Route as AchievementsAchievementIdImport } from './routes/achievements.$achievementId'
 import { Route as UserTechnicalHomeImport } from './routes/_user/technicalHome'
@@ -51,6 +52,11 @@ const AdminRoute = AdminImport.update({
 
 const IndexRoute = IndexImport.update({
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PlacementPlacementIdRoute = PlacementPlacementIdImport.update({
+  path: '/placement/$placementId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -169,6 +175,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExtracuricullarEventsExtracuricullarEventIdImport
       parentRoute: typeof rootRoute
     }
+    '/placement/$placementId': {
+      preLoaderRoute: typeof PlacementPlacementIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -191,6 +201,7 @@ export const routeTree = rootRoute.addChildren([
   NoobRoute,
   AchievementsAchievementIdRoute,
   ExtracuricullarEventsExtracuricullarEventIdRoute,
+  PlacementPlacementIdRoute,
 ])
 
 /* prettier-ignore-end */
