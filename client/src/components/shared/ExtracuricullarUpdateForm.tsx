@@ -91,26 +91,26 @@ const personCategoryOptions = [
 ];
 
 const departmentOptions = [
-    "CSE-AIML",
-    "CSE-DS",
-    "COMPS",
-    "IT",
-    "MECH",
-    "CIVIL",
-    "AUTOMOBILE",
-    "NON-TEACHING",
-    "FE",
-    "YIN-CELL",
-    "NSS-CELL",
-    "STUDENT-COUNCIL",
-    "REMOTE-CENTER",
-    "STUDENT-SECTION",
-    "ROTRACT-CLUB",
-    "EDCII-CELL",
-    "RND-CELL",
+    "cse-aiml",
+    "cse-ds",
+    "comps",
+    "it",
+    "mech",
+    "civil",
+    "automobile",
+    "non-teaching",
+    "fe",
+    "yin-cell",
+    "nss-cell",
+    "student-council",
+    "remote-center",
+    "student-section",
+    "rotract-club",
+    "edcii-cell",
+    "rnd-cell",
 ];
 
-const formSchema: any = z.object({
+const formSchema = z.object({
     title: z
         .string()
         .min(2, "Minimum 2 Characters are required")
@@ -186,21 +186,28 @@ export default function ExtracurricularUpdateForm({
         defaultValues: {
             title: `${event.title}`,
             description: `${event.description}`,
+            department: `${event.department}`,
+            organisedFor: `${event.organisedFor}`,
+            eventType: `${event.eventType}`,
+            eventLevel: `${event.eventLevel}`,
+            typeOfParticipant: `${event.typeOfParticipant}`,
+            startDate: new Date(event.startDate),
+            endDate: new Date(event.endDate),
+
             resourcePersonName: `${event.resourcePersonName}`,
-            resourcePersonDesignation: "",
-            resourcePersonOrg: "",
-            resourcePersonDomain: "",
-            // organizedFor: [{ department: "" }],
-            organisedFor: "",
-            outcome: "",
-            expenditure: 0,
-            revenue: 0,
-            fundingAgency: "",
-            fundsReceived: 0,
-            honorariumPaid: 0,
-            rankAchieved: "",
-            departmentAchievement: "",
-            collegeAchievement: "",
+            resourcePersonDesignation: `${event.resourcePersonDesignation}`,
+            resourcePersonOrg: `${event.resourcePersonOrg}`,
+            resourcePersonDomain: `${event.resourcePersonDomain}`,
+
+            outcome: `${event.outcome}`,
+            expenditure: parseInt(`${event.expenditure}`),
+            revenue: parseInt(`${event.revenue}`),
+            fundingAgency: `${event.fundingAgency}`,
+            fundsReceived: parseInt(`${event.fundsReceived}`),
+            honorariumPaid: parseInt(`${event.honorariumPaid}`),
+            rankAchieved: `${event.rankAchieved}`,
+            departmentAchievement: `${event.departmentAchievement}`,
+            collegeAchievement: `${event.collegeAchievement}`,
         },
     });
 
@@ -218,40 +225,36 @@ export default function ExtracurricularUpdateForm({
             if (isError) {
                 toast({
                     variant: "destructive",
-                    title: "Extracurricular Event Created error",
+                    title: "Extracurricular Event updation error",
                 });
                 setIsLoading(false);
                 return;
             }
             toast({
-                title: "Extracurricular Event Created",
+                title: "Extracurricular Event Updated",
             });
             setFormDirty(false);
             form.reset();
-            navigate({
-                from: "/extracurricularForm",
-                to: "/extracuricullarHome",
-            });
         } catch (error) {
             toast({
-                title: "Error while creating extracuricullar entry.",
+                title: "Error while updating extracuricullar entry.",
             });
             setIsLoading(false);
         }
     }
 
-    const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: "organizedFor",
-    });
+    // const { fields, append, remove } = useFieldArray({
+    //     control: form.control,
+    //     name: "organizedFor",
+    // });
 
-    function handleAppend() {
-        append({ department: "" });
-    }
+    // function handleAppend() {
+    //     append({ department: "" });
+    // }
 
-    function handleRemove(index: number) {
-        remove(index);
-    }
+    // function handleRemove(index: number) {
+    //     remove(index);
+    // }
 
     return (
         <>

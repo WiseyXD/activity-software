@@ -119,7 +119,7 @@ function ExtracuricullarOverview() {
                                     Organizing Dept :
                                 </Label>
                                 <p className="font-semibold">
-                                    {event?.department}
+                                    {event?.department.toUpperCase()}
                                 </p>
                             </div>
                             <div className="flex-col flex gap-1">
