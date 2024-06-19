@@ -516,7 +516,7 @@ function AchievementFrom() {
                     <div className="flex flex-col my-2">
                         {fields.map((participant, index) => {
                             return (
-                                <div key={index}>
+                                <div key={participant.id}>
                                     <div className="grid gap-2 grid-cols-1 md:grid-cols-3">
                                         <FormField
                                             control={form.control}

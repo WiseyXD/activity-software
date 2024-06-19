@@ -19,19 +19,16 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../ui/select";
-import {
-    useCreateParticipantMutation,
-    useUpdateParticipantDetailsByIdMutation,
-} from "@/services/api/achievementApi";
+import { useCreateParticipantMutation } from "@/services/api/achievementApi";
 
-type AchievementUpdateParticipantProps = {
-    participantData: {
-        name: string;
-        year: string;
-        department: string;
-        id: string;
-    };
-};
+// type AchievementUpdateParticipantProps = {
+//     participantData: {
+//         name: string;
+//         year: string;
+//         department: string;
+//         id: string;
+//     };
+// };
 
 const departmentOptions = [
     "CSE-AIML",

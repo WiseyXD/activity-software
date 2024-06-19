@@ -10,13 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useLoginMutation, useSignupMutation } from "@/services/auth";
+import { useLoginMutation } from "@/services/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/features/auth/authSlice";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "@tanstack/react-router";
 
 import { createFileRoute } from "@tanstack/react-router";
 import { RootState } from "@/app/store";
@@ -71,6 +70,7 @@ function Login() {
         console.log(data);
         setIsLoading(false);
         form.reset();
+        // @ts-ignore
         dispatch(setUser(data));
     }
     return !isAuthorized ? (

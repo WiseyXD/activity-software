@@ -1,6 +1,5 @@
 import { RootState } from "@/app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { ModeToggle } from "../mode-toggle";
 import { unsetUser } from "@/features/auth/authSlice";
 import { Button } from "../ui/button";
 import {
@@ -13,7 +12,6 @@ import {
 } from "@/components/ui/sheet";
 import { AlignLeft } from "lucide-react";
 import Links from "./Links";
-import { Separator } from "../ui/separator";
 import { Link } from "@tanstack/react-router";
 
 export default function Navbar() {

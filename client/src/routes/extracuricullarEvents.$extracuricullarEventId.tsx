@@ -1,36 +1,21 @@
-import { useState, useRef } from "react";
-import {
-    createFileRoute,
-    useNavigate,
-    Link,
-    Navigate,
-} from "@tanstack/react-router";
+import { useRef } from "react";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useReactToPrint } from "react-to-print";
 import moment from "moment";
 import {
     useDeleteExtracurricularByIdMutation,
-    useUpdateExtracurricularByIdMutation,
     useGetExtracuricullarByIdQuery,
     IExtracurricularEvent,
 } from "@/services/api/extracuricullarApi";
-import { PencilIcon, Trash2Icon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
 import Shimmer from "@/components/shared/Shimmer";
 
 import { Label } from "@/components/ui/label";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
+
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
+
 import { Separator } from "@/components/ui/separator";
 import {
     Dialog,
@@ -59,9 +44,9 @@ function ExtracuricullarOverview() {
     );
 
     const [deleteExtracuricullar] = useDeleteExtracurricularByIdMutation();
-    const naviagte = useNavigate();
+
     const componentRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
+
     const { extracuricullarEventId } = Route.useParams();
 
     const { data, isFetching } = useGetExtracuricullarByIdQuery(

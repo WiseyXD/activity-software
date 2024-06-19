@@ -1,18 +1,15 @@
-import AchievementCard from "@/components/shared/AchievementCard";
 import NewEventCard from "@/components/shared/NewEventCard";
 import Shimmer from "@/components/shared/Shimmer";
 
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useGetAllExtracuricullarQuery } from "@/services/api/extracuricullarApi";
 import { IExtracurricularEvent } from "@/services/api/extracuricullarApi";

@@ -1,10 +1,5 @@
-import { useState, useRef } from "react";
-import {
-    createFileRoute,
-    useNavigate,
-    Link,
-    Navigate,
-} from "@tanstack/react-router";
+import { useRef } from "react";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useReactToPrint } from "react-to-print";
 import moment from "moment";
 import {
@@ -58,9 +53,9 @@ function AchievementOverview() {
     );
     const [deleteParticipant] = useDeleteParticipantDetailsByIdMutation();
     const [deleteAchievement] = useDeleteAchievementByIdMutation();
-    const naviagte = useNavigate();
+
     const componentRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
+
     const { achievementId } = Route.useParams();
 
     const { data, isFetching } = useGetAchievementByIdQuery(achievementId);

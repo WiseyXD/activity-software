@@ -1,12 +1,4 @@
-import React from "react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 type NewEventCardProps = {
     eventType: string;
@@ -15,14 +7,13 @@ type NewEventCardProps = {
 };
 
 import { Button } from "../ui/button";
-import { useNavigate } from "@tanstack/react-router";
+
 import { Link } from "@tanstack/react-router";
 export default function NewEventCard({
     eventType,
     to,
     firstCard,
 }: NewEventCardProps) {
-    const navigate = useNavigate();
     return (
         <Card
             className={

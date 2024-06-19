@@ -1,19 +1,17 @@
 import AchievementCard from "@/components/shared/AchievementCard";
 import NewEventCard from "@/components/shared/NewEventCard";
 import Shimmer from "@/components/shared/Shimmer";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
 import {
     Pagination,
     PaginationContent,
-    PaginationEllipsis,
     PaginationItem,
-    PaginationLink,
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
 import { useGetAllAchievementQuery } from "@/services/api/achievementApi";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_user/achievements")({

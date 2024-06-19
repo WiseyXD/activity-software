@@ -116,66 +116,114 @@ const UserAchievementFormRoute = UserAchievementFormImport.update({
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof AdminImport
       parentRoute: typeof rootRoute
     }
     '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof UserImport
       parentRoute: typeof rootRoute
     }
     '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
     '/noob': {
+      id: '/noob'
+      path: '/noob'
+      fullPath: '/noob'
       preLoaderRoute: typeof NoobImport
       parentRoute: typeof rootRoute
     }
     '/_user/achievementForm': {
+      id: '/_user/achievementForm'
+      path: '/achievementForm'
+      fullPath: '/achievementForm'
       preLoaderRoute: typeof UserAchievementFormImport
       parentRoute: typeof UserImport
     }
     '/_user/achievements': {
+      id: '/_user/achievements'
+      path: '/achievements'
+      fullPath: '/achievements'
       preLoaderRoute: typeof UserAchievementsImport
       parentRoute: typeof UserImport
     }
     '/_user/extracuricullarHome': {
+      id: '/_user/extracuricullarHome'
+      path: '/extracuricullarHome'
+      fullPath: '/extracuricullarHome'
       preLoaderRoute: typeof UserExtracuricullarHomeImport
       parentRoute: typeof UserImport
     }
     '/_user/extracurricularForm': {
+      id: '/_user/extracurricularForm'
+      path: '/extracurricularForm'
+      fullPath: '/extracurricularForm'
       preLoaderRoute: typeof UserExtracurricularFormImport
       parentRoute: typeof UserImport
     }
     '/_user/placementForm': {
+      id: '/_user/placementForm'
+      path: '/placementForm'
+      fullPath: '/placementForm'
       preLoaderRoute: typeof UserPlacementFormImport
       parentRoute: typeof UserImport
     }
     '/_user/placementHome': {
+      id: '/_user/placementHome'
+      path: '/placementHome'
+      fullPath: '/placementHome'
       preLoaderRoute: typeof UserPlacementHomeImport
       parentRoute: typeof UserImport
     }
     '/_user/technicalForm': {
+      id: '/_user/technicalForm'
+      path: '/technicalForm'
+      fullPath: '/technicalForm'
       preLoaderRoute: typeof UserTechnicalFormImport
       parentRoute: typeof UserImport
     }
     '/_user/technicalHome': {
+      id: '/_user/technicalHome'
+      path: '/technicalHome'
+      fullPath: '/technicalHome'
       preLoaderRoute: typeof UserTechnicalHomeImport
       parentRoute: typeof UserImport
     }
     '/achievements/$achievementId': {
+      id: '/achievements/$achievementId'
+      path: '/achievements/$achievementId'
+      fullPath: '/achievements/$achievementId'
       preLoaderRoute: typeof AchievementsAchievementIdImport
       parentRoute: typeof rootRoute
     }
     '/extracuricullarEvents/$extracuricullarEventId': {
+      id: '/extracuricullarEvents/$extracuricullarEventId'
+      path: '/extracuricullarEvents/$extracuricullarEventId'
+      fullPath: '/extracuricullarEvents/$extracuricullarEventId'
       preLoaderRoute: typeof ExtracuricullarEventsExtracuricullarEventIdImport
       parentRoute: typeof rootRoute
     }
     '/placement/$placementId': {
+      id: '/placement/$placementId'
+      path: '/placement/$placementId'
+      fullPath: '/placement/$placementId'
       preLoaderRoute: typeof PlacementPlacementIdImport
       parentRoute: typeof rootRoute
     }
@@ -184,10 +232,9 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([
+export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AdminRoute,
-  UserRoute.addChildren([
+  UserRoute: UserRoute.addChildren({
     UserAchievementFormRoute,
     UserAchievementsRoute,
     UserExtracuricullarHomeRoute,
@@ -196,12 +243,98 @@ export const routeTree = rootRoute.addChildren([
     UserPlacementHomeRoute,
     UserTechnicalFormRoute,
     UserTechnicalHomeRoute,
-  ]),
+  }),
   LoginRoute,
   NoobRoute,
   AchievementsAchievementIdRoute,
   ExtracuricullarEventsExtracuricullarEventIdRoute,
   PlacementPlacementIdRoute,
-])
+})
 
 /* prettier-ignore-end */
+
+/* ROUTE_MANIFEST_START
+{
+  "routes": {
+    "__root__": {
+      "filePath": "__root.tsx",
+      "children": [
+        "/",
+        "/_admin",
+        "/_user",
+        "/login",
+        "/noob",
+        "/achievements/$achievementId",
+        "/extracuricullarEvents/$extracuricullarEventId",
+        "/placement/$placementId"
+      ]
+    },
+    "/": {
+      "filePath": "index.tsx"
+    },
+    "/_admin": {
+      "filePath": "_admin.tsx"
+    },
+    "/_user": {
+      "filePath": "_user.tsx",
+      "children": [
+        "/_user/achievementForm",
+        "/_user/achievements",
+        "/_user/extracuricullarHome",
+        "/_user/extracurricularForm",
+        "/_user/placementForm",
+        "/_user/placementHome",
+        "/_user/technicalForm",
+        "/_user/technicalHome"
+      ]
+    },
+    "/login": {
+      "filePath": "login.tsx"
+    },
+    "/noob": {
+      "filePath": "noob.tsx"
+    },
+    "/_user/achievementForm": {
+      "filePath": "_user/achievementForm.tsx",
+      "parent": "/_user"
+    },
+    "/_user/achievements": {
+      "filePath": "_user/achievements.tsx",
+      "parent": "/_user"
+    },
+    "/_user/extracuricullarHome": {
+      "filePath": "_user/extracuricullarHome.tsx",
+      "parent": "/_user"
+    },
+    "/_user/extracurricularForm": {
+      "filePath": "_user/extracurricularForm.tsx",
+      "parent": "/_user"
+    },
+    "/_user/placementForm": {
+      "filePath": "_user/placementForm.tsx",
+      "parent": "/_user"
+    },
+    "/_user/placementHome": {
+      "filePath": "_user/placementHome.tsx",
+      "parent": "/_user"
+    },
+    "/_user/technicalForm": {
+      "filePath": "_user/technicalForm.tsx",
+      "parent": "/_user"
+    },
+    "/_user/technicalHome": {
+      "filePath": "_user/technicalHome.tsx",
+      "parent": "/_user"
+    },
+    "/achievements/$achievementId": {
+      "filePath": "achievements.$achievementId.tsx"
+    },
+    "/extracuricullarEvents/$extracuricullarEventId": {
+      "filePath": "extracuricullarEvents.$extracuricullarEventId.tsx"
+    },
+    "/placement/$placementId": {
+      "filePath": "placement.$placementId.tsx"
+    }
+  }
+}
+ROUTE_MANIFEST_END */

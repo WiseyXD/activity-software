@@ -1,5 +1,5 @@
 import { RootState } from "@/app/store";
-import { Link, Navigate, createFileRoute } from "@tanstack/react-router";
+import { Navigate, createFileRoute } from "@tanstack/react-router";
 import { useSelector } from "react-redux";
 
 export const Route = createFileRoute("/")({

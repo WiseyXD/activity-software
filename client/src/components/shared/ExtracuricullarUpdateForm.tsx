@@ -1,11 +1,7 @@
 "use client";
 import { z } from "zod";
-import {
-    createFileRoute,
-    useNavigate,
-    useBlocker,
-} from "@tanstack/react-router";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useBlocker } from "@tanstack/react-router";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,31 +28,20 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format, addDays } from "date-fns";
-import { DateRange } from "react-day-picker";
-import { ChevronLeft, ChevronRight, PlusCircle, Trash2 } from "lucide-react";
+import { format } from "date-fns";
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useState } from "react";
 import {
     IExtracurricularEvent,
-    useCreateExtracurricularMutation,
     useUpdateExtracurricularByIdMutation,
 } from "@/services/api/extracuricullarApi";
 import { Textarea } from "@/components/ui/textarea";
-import { useUpdateAchievementByIdMutation } from "@/services/api/achievementApi";
 
 const eventTypeOptions: string[] = [
     "social",
@@ -177,7 +162,7 @@ export default function ExtracurricularUpdateForm({
 }: ExtracurricularUpdateFormProps) {
     const [step, setStep] = useState(0);
     const [updateExtracuricullar] = useUpdateExtracurricularByIdMutation();
-    const navigate = useNavigate();
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formDirty, setFormDirty] = useState<boolean>(true);
     useBlocker(() => window.confirm("From is not fully filled yet"), formDirty);
