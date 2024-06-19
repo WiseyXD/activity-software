@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma/index";
+import main from "../../services/mail";
 import { TPlacement } from "../../types";
 import { Request, Response } from "express";
 
@@ -39,6 +40,8 @@ export async function createPlacementEvent(
                 listOfSelectedStudentsFromSaraswati,
             },
         });
+        await main(createPlacement, req.email);
+
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;

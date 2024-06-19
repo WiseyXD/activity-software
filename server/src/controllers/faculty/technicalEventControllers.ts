@@ -1,4 +1,5 @@
 import { prisma } from "../../prisma/index";
+import main from "../../services/mail";
 import { TTechnicalEvent } from "../../types";
 import { Request, Response } from "express";
 
@@ -31,7 +32,7 @@ export async function createTechnicalEvent(
     } = req.body;
     const createdBy = req.id;
     try {
-        await prisma.technicalEvent.create({
+        const createdTechnical = await prisma.technicalEvent.create({
             data: {
                 title,
                 department,
@@ -61,6 +62,7 @@ export async function createTechnicalEvent(
                 collegeAchievement,
             },
         });
+        await main(createTechnicalEvent, req.email);
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;

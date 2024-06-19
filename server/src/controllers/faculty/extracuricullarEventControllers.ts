@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../../prisma/index";
 
 import { TExtracurricularEvent } from "../../types";
+import main from "../../services/mail";
 
 export async function createExtracuricullarEvent(
     req: Request<
@@ -69,6 +70,7 @@ export async function createExtracuricullarEvent(
                 collegeAchievement,
             },
         });
+        await main(created, req.email);
         res.status(201).json({ msg: "Successful creation" });
     } catch (error: any) {
         const msg = error.message;

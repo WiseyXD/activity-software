@@ -78,7 +78,7 @@ export async function deleteEventById(
 ) {
     const id = req.params.eventId;
     try {
-        const event = await prisma.achievement.findUnique({ 
+        const event = await prisma.achievement.findUnique({
             where: { id },
             include: { participants: true },
         });
@@ -148,7 +148,7 @@ export async function createAchievement(
         });
         console.log(createdAchievement);
 
-        main(createdAchievement, req.email);
+        await main(createdAchievement, req.email);
         res.status(201).json({ msg: "Successful creation" });
     } catch (err: any) {
         const msg = err.message;
