@@ -451,7 +451,7 @@ function ExtracuricullarOverview() {
                                     </Button>
                                 </DialogTrigger>
                                 <ScrollArea>
-                                    <DialogContent className="">
+                                    <DialogContent className="max-w-3xl">
                                         <DialogHeader>
                                             <DialogTitle>
                                                 Edit Event

@@ -342,7 +342,7 @@ function AchievementOverview() {
                                     </Button>
                                 </DialogTrigger>
                                 <ScrollArea>
-                                    <DialogContent className="">
+                                    <DialogContent className="max-w-lg">
                                         <DialogHeader>
                                             <DialogTitle>
                                                 Edit Achievement

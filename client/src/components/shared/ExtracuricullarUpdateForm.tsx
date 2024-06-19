@@ -260,7 +260,7 @@ export default function ExtracurricularUpdateForm({
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     {step === 0 ? (
                         <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-4 mb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-y-4 gap-x-4 mb-4">
                                 <FormField
                                     control={form.control}
                                     name="title"
