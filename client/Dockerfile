@@ -16,4 +16,4 @@ ENV VITE_BASE_PLACEMENT=http://localhost:8000/faculty/actions/placement/
 
 EXPOSE 2003
 
-CMD [ "pnpm","run","dev" ]
+CMD [ "pnpm","run","dev" ]1-
